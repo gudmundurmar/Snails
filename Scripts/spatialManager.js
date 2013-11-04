@@ -66,7 +66,7 @@ findEntityInRange: function(posX, posY, radius) {
         sqDistance = util.distSq(Position.posX, Position.posY, posX, posY);
         sqRad = Math.pow(radius+this._entities[i].getRadius(), 2);
         if(sqDistance - sqRad < 0) {
-            if(this._entities[i].name === "line") {
+            if(this._entities[i].name === "Landscape") {
                 //don't die if background
             }
             else {

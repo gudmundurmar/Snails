@@ -13,7 +13,7 @@
 
 
 // A generic contructor which accepts an arbitrary descriptor object
-function Line(descr) {
+function Landscape(descr) {
 
     // Common inherited setup logic from Entity
     this.setup(descr);
@@ -21,41 +21,38 @@ function Line(descr) {
     this.rememberResets();
     
     // Default sprite, if not otherwise specified
-    this.sprite = this.sprite || g_sprites.line;
+    this.sprite = this.sprite || g_sprites.land;
     
 };
 
-Line.prototype = new Entity();
+Landscape.prototype = new Entity();
 
-Line.prototype.update = function (du) {
+Landscape.prototype.update = function (du) {
 
 	spatialManager.unregister(this);
 	spatialManager.register(this);
 	
-
 };
 
-Line.prototype.cx = 300;
-Line.prototype.cy = 300;
-Line.prototype.width = 600;
-Line.prototype.name = "line";
+Landscape.prototype.cx = 300;
+Landscape.prototype.cy = 300;
+Landscape.prototype.width = 600;
+Landscape.prototype.name = "Landscape";
 
-Line.prototype.getRadius = function () {
+Landscape.prototype.getRadius = function () {
     return (this.sprite.width / 2) * 0.9;
 };
 
 
 
-Line.prototype.rememberResets = function () {
+Landscape.prototype.rememberResets = function () {
     // Remember my reset positions
     this.reset_cx = this.cx;
     this.reset_cy = this.cy;
     this.reset_rotation = this.rotation;
 };
 
-
-
-Line.prototype.render = function (ctx) {
+Landscape.prototype.render = function (ctx) {
     var origScale = this.sprite.scale;
     // pass my scale into the sprite, for drawing
     this.sprite.scale = this._scale;
@@ -65,7 +62,7 @@ Line.prototype.render = function (ctx) {
     this.sprite.scale = origScale;
 };
 
-Line.prototype.init = function(ctx, canvas) {
+Landscape.prototype.init = function(ctx, canvas) {
     console.log('here');
     this.render(ctx);
 
@@ -77,9 +74,9 @@ Line.prototype.init = function(ctx, canvas) {
 };
 
 
-Line.prototype.pixelMap;
+Landscape.prototype.pixelMap;
 
-Line.prototype.buildPixelMap = function( ctx ) {
+Landscape.prototype.buildPixelMap = function( ctx ) {
         var resolution = 10;
         var pixelMap = [];
  
@@ -100,7 +97,7 @@ Line.prototype.buildPixelMap = function( ctx ) {
         };
     };
 
-Line.prototype.pixelHitTest = function( source, target ) {
+Landscape.prototype.pixelHitTest = function( source, target ) {
  
             var top = parseInt( Math.max( source.y, target.y ) );
             var bottom = parseInt( Math.min(source.y+source.height, target.y+target.height) );
@@ -127,4 +124,3 @@ Line.prototype.pixelHitTest = function( source, target ) {
  
             return false;
     };
-

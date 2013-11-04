@@ -30,7 +30,7 @@ var entityManager = {
 //_rocks   : [],
 _bullets : [],
 _ships   : [],
-_lines  : [],
+_Landscape  : [],
 
 _bShowRocks : true,
 
@@ -88,13 +88,13 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._lines,/*this._rocks,*/ this._bullets, this._ships];
+    this._categories = [this._Landscape,/*this._rocks,*/ this._bullets, this._ships];
 },
 
 init: function() {
     //this._generateRocks();
     //this._generateShip();
-    this.generateLine();
+    this.generateLandscape();
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
@@ -113,8 +113,8 @@ fireBullet: function(cx, cy, velX, velY, rotation) {
 },*/
 
 //New background line
-generateLine : function(descr) {
-    this._lines.push(new Line(descr));
+generateLandscape : function(descr) {
+    this._Landscape.push(new Landscape(descr));
 },
 
 
@@ -197,10 +197,10 @@ render: function(ctx) {
 },
 
 renderLandscape: function(ctx, canvas) {
-    for(var landscape in this._lines) {
+    for(var landscape in this._Landscape) {
         console.log('asdlfkjasdf'+landscape); 
-        console.log(this._lines);
-        this._lines[landscape].init(ctx, canvas);
+        console.log(this._Landscape);
+        this._Landscape[landscape].init(ctx, canvas);
     }
 }
 
