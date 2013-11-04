@@ -81,51 +81,30 @@ Landscape.prototype.init = function(ctx, canvas) {
 Landscape.prototype.pixelMap;
 
 Landscape.prototype.buildPixelMap = function( ctx ) {
-        var resolution = 10;
-        var pixelMap = [];
- 
-        for( var y = 0; y < this.height; y=y+10) {
-            for( var x = 0; x < this.width; x=x+10 ) {
-                var dataRowColOffset = y+"_"+x;//((y * source.width) + x);
+        var resolution = 1;
+        var pixelMap = new Array(this.width/10);
+        for(var i = 0; i< this.width/10;i++)
+        {
+            pixelMap[i] = new Array(this.height/10);
+        }
+        for( var x = 0; x < this.width; x=x+10) {
+            for( var y = 0; y < this.height; y=y+10 ) {
                 var pixel = g_ctx.getImageData(x,y,resolution,resolution);
                 //get the opacity
                 var pixelData = pixel.data;
-                
-                pixelMap[dataRowColOffset] = { x:x, y:y, pixelData: pixelData };
+                pixelMap[x/10][y/10] = {pixMap :pixelData};
+                //pixelMap[x] = { x:x, y:y, pixelData: pixelData };
  
             }
         }
-        return {
-            data: pixelMap,
-            resolution: resolution
-        };
+        return pixelMap;
     };
 
-Landscape.prototype.pixelHitTest = function( source, target ) {
- 
-
-            var top = parseInt( Math.max( source.y, target.y ) );
-            var bottom = parseInt( Math.min(source.y+source.height, target.y+target.height) );
-            var left = parseInt( Math.max(source.x, target.x) );
-            var right = parseInt( Math.min(source.x+source.width, target.x+target.width) );
- 
-            for (var y = top; y < bottom; y++)
-            {
-                for (var x = left; x < right; x++)
-                {
-                    var pixel1 = source.pixelMap.data[ (x - source.x) +"_"+ (y - source.y) ];
-                    var pixel2 = target.pixelMap.data[ (x - target.x) +"_"+ (y - target.y) ];
- 
-                    if( !pixel1 || !pixel2 ) {
-                        continue;
-                    };
-                    
-                    if (pixel1.pixelData[3] === 255 && pixel2.pixelData[3] === 255)
-                    {
-                        return true;
-                    }
-                }
-            }
- 
+Landscape.prototype.pixelHitTest = function(target ) {
+    var pos = target.getPos();
+        if(this.pixelMap[Math.floor(pos.posX/10)][Math.floor(pos.posY/10)].pixMap[0] !== 0){
+            return true;
+        }
+        else 
             return false;
     };
