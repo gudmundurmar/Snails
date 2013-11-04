@@ -43,9 +43,6 @@ register: function(entity) {
     
     // TODO: YOUR STUFF HERE!
     this._entities[spatialID] = entity;
-
-
-
 },
 
 unregister: function(entity) {

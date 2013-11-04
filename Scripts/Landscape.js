@@ -30,19 +30,23 @@ Landscape.prototype = new Entity();
 Landscape.prototype.update = function (du) {
 
 	spatialManager.unregister(this);
+    if(this.isColliding()){
+        var obj =this.isColliding();
+        obj.hitland();
+    }
 	spatialManager.register(this);
 	
 };
 
 Landscape.prototype.cx = 300;
 Landscape.prototype.cy = 300;
-Landscape.prototype.width = 600;
 Landscape.prototype.name = "Landscape";
+Landscape.prototype.width = g_canvas.width;
+Landscape.prototype.height = g_canvas.height;
 
 Landscape.prototype.getRadius = function () {
-    return (this.sprite.width / 2) * 0.9;
+    return 0;
 };
-
 
 
 Landscape.prototype.rememberResets = function () {
@@ -80,7 +84,7 @@ Landscape.prototype.buildPixelMap = function( ctx ) {
         var resolution = 10;
         var pixelMap = [];
  
-        for( var y = 0; y < this.width; y=y+10) {
+        for( var y = 0; y < this.height; y=y+10) {
             for( var x = 0; x < this.width; x=x+10 ) {
                 var dataRowColOffset = y+"_"+x;//((y * source.width) + x);
                 var pixel = g_ctx.getImageData(x,y,resolution,resolution);
@@ -99,6 +103,7 @@ Landscape.prototype.buildPixelMap = function( ctx ) {
 
 Landscape.prototype.pixelHitTest = function( source, target ) {
  
+
             var top = parseInt( Math.max( source.y, target.y ) );
             var bottom = parseInt( Math.min(source.y+source.height, target.y+target.height) );
             var left = parseInt( Math.max(source.x, target.x) );

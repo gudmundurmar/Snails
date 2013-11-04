@@ -282,6 +282,11 @@ Ship.prototype.halt = function () {
     this.velY = 0;
 };
 
+Ship.prototype.hitland = function () {
+    this.velX = 0;
+    this.velY = 0;
+};
+
 var NOMINAL_ROTATE_RATE = 0.1;
 
 Ship.prototype.updateRotation = function (du) {

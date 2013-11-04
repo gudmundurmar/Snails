@@ -51,6 +51,11 @@ Entity.prototype.setPos = function (cx, cy) {
     this.cy = cy;
 };
 
+Entity.prototype.hitland = function () {
+    this.velX = 0;
+    this.velY = 0;
+};
+
 Entity.prototype.getPos = function () {
     return {posX : this.cx, posY : this.cy};
 };
