@@ -1,0 +1,167 @@
+//Ormurinn getur fært sig KOMIÐ
+//Ormurinn getur hoppað KOMIÐ
+//Ormurinn hefur ákveðinn powerbar KOMIÐ
+//Ormur deyr þegar hann dettur af kortinu Á AÐ VERA KOMIÐ
+//Ormurinn getur skipt um vopn
+//Ormurinn getur fengið nýtt vopn
+
+//Svo þetta er það sem komið er á orminn/snigilinn. Þarf að læra á þetta github, spurning um að reyna fá orminn
+//til að klessa og getað labbað eftir landscape í dag (5.11.2013)
+
+Snail.prototype = new Entity();
+
+function Snail(descr) {
+
+    // Common inherited setup logic from Entity
+    this.setup(descr);
+
+    this.rememberResets();
+    
+    // Default sprite, if not otherwise specified
+    this.sprite = this.sprite || g_sprites.snail;
+    
+  
+    this._scale = 1;
+    this._isActive = false;
+};
+
+Snail.prototype.rememberResets = function () {
+    // Remember my reset positions
+    this.reset_cx = this.cx;
+    this.reset_cy = this.cy;
+    this.reset_rotation = this.rotation;
+};
+
+Snail.prototype.KEY_JUMP = '0'.charCodeAt(0); // held sé svona
+Snail.prototype.KEY_LEFT   = 'A'.charCodeAt(0);
+Snail.prototype.KEY_SHOOT  = ' '.charCodeAt(0); // hafa computeThrustMag fyrir þetta t.d. fyrir bazooka?
+Snail.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
+
+
+Snail.prototype.cx = 100;
+Snail.prototype.cy = 50;
+Snail.prototype.health = 100;
+Snail.prototype._isActive = false; //til að ákveða hvern á að hreyfa
+Snail.prototype.yVel = 0;
+
+Snail.prototype.weapon = new Gun(this.cx,this.cy);
+
+Snail.prototype.isOutOfMap = function(){
+
+	if(this.cx < 0 || this.cx > g_canvas.width /*|| this.cy >= seaLevel*/) return true;
+	//vantar hér breytuna seaLevel til að tjékka á hvenær snigillinn drukknar
+
+}
+
+Snail.prototype.update = function (du) {
+
+
+	spatialManager.unregister(this);
+	if(this._isDeadNow || this.isOutOfMap()){
+		return entityManager.KILL_ME_NOW;
+	}
+	 
+	this.cy+=this.yVel* du;
+	var prevY = this.cy;
+	var nextY = prevY + this.yVel * du;
+	
+	if (keys[this.KEY_LEFT] && this._isActive === true && this.isCollidingLandscape()){this.cx -= 3 * du;}
+	if (keys[this.KEY_RIGHT] && this._isActive === true && this.isCollidingLandscape()){this.cx += 3 * du;}
+	
+   
+	if (eatKey(this.KEY_JUMP) && this._isActive === true && this.isCollidingLandscape()) { 
+   
+		this.yVel = -4.5;
+		this.cy += this.yVel * du;
+		//jump.play();hoppu hljoð Hér þurfum við að hafa exp fall og ákveða max hæð sem má hoppa
+    }
+	
+	if(!this.isCollidingLandscape()){
+		this.yVel += NOMINAL_GRAVITY;
+		//eða hafa hér this.computeGravity og returna ef við erum að collide-a?
+		}
+		else{
+			this.yVel = 0;
+			}
+    
+    this.maybeFireBullet();
+
+	/*if(this.isColliding()){
+		this.warp();
+		}
+	else{
+		spatialManager.register(this);
+		}*/
+};
+
+Snail.prototype.isCollidingLandscape = function() {
+
+
+	return true;
+}
+
+
+var NOMINAL_GRAVITY = 0.12;
+
+Snail.prototype.computeGravity = function () {
+    return g_useGravity ? NOMINAL_GRAVITY : 0;
+};
+
+
+
+Snail.prototype.maybeFireBullet = function () {
+
+    if (keys[this.KEY_FIRE]) {
+    
+        var dX = +Math.sin(this.rotation);
+        var dY = -Math.cos(this.rotation);
+        var launchDist = this.getRadius() * 1.2;
+        
+        var relVel = this.launchVel;
+        var relVelX = dX * relVel;
+        var relVelY = dY * relVel;
+
+        entityManager.fireBullet(
+           this.cx + dX * launchDist, this.cy + dY * launchDist,
+           this.velX + relVelX, this.velY + relVelY,
+           this.rotation);
+           
+    }
+	
+	//Þurfum að enda turnið hér sem breytir meðal annars this._isActive yfir í false
+    
+};
+
+Snail.prototype.getRadius = function () {
+    return (this.sprite.width / 2) * 0.9;
+};
+
+Snail.prototype.takeBulletHit = function () {
+    this.takeDamage();
+};
+
+Snail.prototype.takeDamage = function(){
+	//eitthvað með að við skoðum hvaða vopn hann tók hitt frá
+	//breyta þessu yfir í það að þegar þeir eru hættir að hreyfast eða þegar turnið klárast þá minnka lífið þeirra. Bara eins og í leiknum
+	this.health -= 20;
+	if(this.health <= 0) this._isDeadNow = true;
+}
+
+Snail.prototype.render = function (ctx) {
+
+	ctx.fillStyle="white";
+	ctx.fillRect(this.cx-50,this.cy-70,100,20);
+	ctx.fillStyle="red";
+	ctx.font= "20px Arial"; 
+	ctx.fillText(this.health, this.cx-25, this.cy-55);
+
+    var origScale = this.sprite.scale;
+    // pass my scale into the sprite, for drawing
+    this.sprite.scale = this._scale;
+	
+    this.sprite.drawAt(ctx, this.cx, this.cy); // teiknum orminn á ákveðnum stað
+	//teiknum miðið hans hér á ákveðnum stað líklegast með drawAt sem hefur rotation líka
+	//eitthvað með að teikna vopnið með this.drawWeapon
+	this.weapon.render(ctx);
+    this.sprite.scale = origScale;
+};
