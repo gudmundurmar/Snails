@@ -155,7 +155,7 @@ function requestPreloads() {
         ship2  : "https://notendur.hi.is/~pk/308G/images/ship_2.png",
         rock   : "https://notendur.hi.is/~pk/308G/images/rock.png",
         land   : "img/Whiteline.png",
-		snail  : "img/snail.gif",
+		snail  : "img/army-snail.png",
 		explosion : "img/explosion.png",
 		aim: "img/aim.png"
 	
