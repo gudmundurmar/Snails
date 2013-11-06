@@ -26,7 +26,7 @@ function createInitialShips() {
         cx : 200,
         cy : 200
     });
-    
+	
 }
 
 // =============
@@ -155,10 +155,10 @@ function requestPreloads() {
         ship2  : "https://notendur.hi.is/~pk/308G/images/ship_2.png",
         rock   : "https://notendur.hi.is/~pk/308G/images/rock.png",
         land   : "img/Whiteline.png",
-        snail  : "img/snail.png",
-        explosion : "img/explosion.png",
-        aim: "img/aim.png"
-    
+		snail  : "img/snail.gif",
+		explosion : "img/explosion.png",
+		aim: "img/aim.png"
+	
     };
     imagesPreload(requiredImages, g_images, preloadDone);
 }
@@ -176,11 +176,11 @@ function preloadDone() {
     g_sprites.bullet.scale = 0.25;
 
     g_sprites.land = new Sprite(g_images.land);
-    g_sprites.snail = new Sprite(g_images.snail);
-    g_sprites.aim = new Sprite(g_images.aim);
-    g_sprites.aim.scale = 0.25;
-    
-    loadExplosion(g_images.explosion);
+	g_sprites.snail = new Sprite(g_images.snail);
+	g_sprites.aim = new Sprite(g_images.aim);
+	g_sprites.aim.scale = 0.25;
+	
+	loadExplosion(g_images.explosion);
 
 
     entityManager.init();
@@ -210,8 +210,8 @@ g_explosion = [];
             g_explosion.push(explosionSprite);
         }
     }
-    g_explosion.splice(numCels);*/
-        
+	g_explosion.splice(numCels);*/
+		
 }
 
 function explosionSprite(sx, sy, width, height) {

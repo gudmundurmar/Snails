@@ -30,10 +30,10 @@ Sprite.prototype.drawAt = function (ctx, x, y) {
 Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation) {
     if (rotation === undefined) rotation = 0;
     
-    
+	
     var w = this.width,
         h = this.height;
-    
+	
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(rotation);
@@ -50,10 +50,10 @@ Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation) {
 Sprite.prototype.drawSnailCentredAt = function (ctx, cx, cy, rotation) {
     if (rotation === undefined) rotation = 0;
     
-    
+	
     var w = this.width,
         h = this.height;
-    
+	
     ctx.save();
     ctx.translate(cx, cy);
     //ctx.rotate(rotation);

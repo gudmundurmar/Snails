@@ -31,7 +31,7 @@ var entityManager = {
 _bullets : [],
 _ships   : [],
 _Landscape  : [],
-_Snails     : [],
+_Snails 	: [],
 
 _bShowRocks : true,
 
@@ -96,7 +96,7 @@ init: function() {
     //this._generateRocks();
     //this._generateShip();
     this.generateLandscape();
-    this.generateSnail();
+	this.generateSnail();
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
@@ -148,7 +148,7 @@ resetShips: function() {
 
 haltShips: function() {
     this._forEachOf(this._ships, Ship.prototype.halt);
-},  
+},	
 
 /*toggleRocks: function() {
     this._bShowRocks = !this._bShowRocks;
@@ -160,11 +160,11 @@ update: function(du) {
 
         var aCategory = this._categories[c];
         var i = 0;
-        
+		
         while (i < aCategory.length) {
 
             var status = aCategory[i].update(du);
-            
+			
             if (status === this.KILL_ME_NOW) {
                 // remove the dead guy, and shuffle the others down to
                 // prevent a confusing gap from appearing in the array
