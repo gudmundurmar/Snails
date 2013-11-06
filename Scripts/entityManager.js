@@ -31,6 +31,7 @@ var entityManager = {
 _bullets : [],
 _ships   : [],
 _Landscape  : [],
+_Snails     : [],
 
 _bShowRocks : true,
 
@@ -88,13 +89,14 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._Landscape,/*this._rocks,*/ this._bullets, this._ships];
+    this._categories = [this._Landscape,/*this._rocks,*/ this._bullets, this._ships,this._Snails];
 },
 
 init: function() {
     //this._generateRocks();
     //this._generateShip();
     this.generateLandscape();
+    this.generateSnail();
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
@@ -115,6 +117,10 @@ fireBullet: function(cx, cy, velX, velY, rotation) {
 //New background line
 generateLandscape : function(descr) {
     this._Landscape.push(new Landscape(descr));
+},
+
+generateSnail : function(descr) {
+    this._Snails.push(new Snail(descr));
 },
 
 
@@ -142,7 +148,7 @@ resetShips: function() {
 
 haltShips: function() {
     this._forEachOf(this._ships, Ship.prototype.halt);
-},	
+},  
 
 /*toggleRocks: function() {
     this._bShowRocks = !this._bShowRocks;
@@ -154,11 +160,11 @@ update: function(du) {
 
         var aCategory = this._categories[c];
         var i = 0;
-
+        
         while (i < aCategory.length) {
 
             var status = aCategory[i].update(du);
-
+            
             if (status === this.KILL_ME_NOW) {
                 // remove the dead guy, and shuffle the others down to
                 // prevent a confusing gap from appearing in the array
@@ -208,4 +214,3 @@ renderLandscape: function(ctx, canvas) {
 
 // Some deferred setup which needs the object to have been created first
 entityManager.deferredSetup();
-

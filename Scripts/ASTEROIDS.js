@@ -1,29 +1,7 @@
 // =========
-// ASTEROIDS
+// Snails
 // =========
-/*
 
-A sort-of-playable version of the classic arcade game.
-
-
-HOMEWORK INSTRUCTIONS:
-
-You have some "TODO"s to fill in again, particularly in:
-
-spatialManager.js
-
-But also, to a lesser extent, in:
-
-Rock.js
-Bullet.js
-Ship.js
-
-
-...Basically, you need to implement the core of the spatialManager,
-and modify the Rock/Bullet/Ship so that the register (and unregister)
-with it correctly, so that they can participate in collisions.
-
-*/
 
 "use strict";
 
@@ -48,6 +26,7 @@ function createInitialShips() {
         cx : 200,
         cy : 200
     });
+    
 }
 
 // =============
@@ -175,13 +154,17 @@ function requestPreloads() {
         ship   : "https://notendur.hi.is/~pk/308G/images/ship.png",
         ship2  : "https://notendur.hi.is/~pk/308G/images/ship_2.png",
         rock   : "https://notendur.hi.is/~pk/308G/images/rock.png",
-        land   : "img/Whiteline.png"
+        land   : "img/Whiteline.png",
+        snail  : "img/snail.png",
+        explosion : "img/explosion.png",
+        aim: "img/aim.png"
+    
     };
-
     imagesPreload(requiredImages, g_images, preloadDone);
 }
 
 var g_sprites = {};
+
 
 function preloadDone() {
 
@@ -193,6 +176,11 @@ function preloadDone() {
     g_sprites.bullet.scale = 0.25;
 
     g_sprites.land = new Sprite(g_images.land);
+    g_sprites.snail = new Sprite(g_images.snail);
+    g_sprites.aim = new Sprite(g_images.aim);
+    g_sprites.aim.scale = 0.25;
+    
+    loadExplosion(g_images.explosion);
 
 
     entityManager.init();
@@ -203,6 +191,36 @@ function preloadDone() {
     main.init();
 }
 
+var g_explosion;
+
+function loadExplosion(explosionSprite){
+
+var celWidth  = 320;
+var celHeight = 320;
+var numCols = 5;
+var numRows = 5;
+var numCels = 25;
+
+g_explosion = [];
+
+/* for (var row = 0; row < numRows; ++row) {
+        for (var col = 0; col < numCols; ++col) {
+            explosionSprite = new explosionSprite(col * celWidth, row * celHeight,
+                                celWidth, celHeight) 
+            g_explosion.push(explosionSprite);
+        }
+    }
+    g_explosion.splice(numCels);*/
+        
+}
+
+function explosionSprite(sx, sy, width, height) {
+    this.sx = sx;
+    this.sy = sy;
+    this.width = width;
+    this.height = height;
+    this.image = g_spriteSheet;
+}
+
 // Kick it off
 requestPreloads();
-

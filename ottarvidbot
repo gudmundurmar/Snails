@@ -1,0 +1,793 @@
+Okei strákar við lögum þetta á morgun og þið kennið mér á GitHub
+
+En hér posta ég 5 skráum sem ég breytti sem fær allt sem komið er til að virka, eða það sem ég sýndi ykkur í dag + snigill getur
+Skotið byssukúlum
+
+------SNAIL.JS----
+
+// ==========
+// SNAIL STUFF
+// ==========
+
+"use strict";
+
+/* jshint browser: true, devel: true, globalstrict: true */
+
+/*
+0        1         2         3         4         5         6         7         8
+12345678901234567890123456789012345678901234567890123456789012345678901234567890
+*/
+
+
+function Snail(descr) {
+
+    // Common inherited setup logic from Entity
+    this.setup(descr);
+
+    this.rememberResets();
+    
+    // Default sprite, if not otherwise specified
+    this.sprite = this.sprite || g_sprites.snail;
+    
+  
+    this._scale = 1;
+    this._isActive = true
+	
+};
+
+Snail.prototype = new Entity();
+
+Snail.prototype.rememberResets = function () {
+    // Remember my reset positions
+    this.reset_cx = this.cx;
+    this.reset_cy = this.cy;
+    this.reset_rotation = this.rotation;
+};
+
+Snail.prototype.KEY_JUMP = 'J'.charCodeAt(0); // þarf að finna fyrir enter. J fyrru jump
+Snail.prototype.KEY_LEFT   = 'A'.charCodeAt(0);
+Snail.prototype.KEY_FIRE  = ' '.charCodeAt(0); // hafa computeThrustMag fyrir þetta t.d. fyrir bazooka?
+Snail.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
+/*.prototype.KEY_AIM_UP = 'up'.charCodeAt(0);
+Snail.prototype.KEY_AIM_DOWN = 'down'.charCodeAt(0);*/
+
+Snail.prototype.cx = 200;
+Snail.prototype.cy = 300;
+Snail.prototype.health = 100;
+Snail.prototype._isActive = false; //til að ákveða hvern á að hreyfa
+Snail.prototype.yVel = 0;
+Snail.prototype.direction = 1; // skoða í hvaða átt er verið að skjóta
+
+//Snail.prototype.weapon = new Gun(this.cx,this.cy);
+
+Snail.prototype.isOutOfMap = function(){
+
+	if(this.cx < 0 || this.cx > g_canvas.width /*|| this.cy >= seaLevel*/) return true;
+	//vantar hér breytuna seaLevel til að tjékka á hvenær snigillinn drukknar
+
+}
+
+Snail.prototype.update = function (du) {
+	
+	
+	
+	
+	spatialManager.unregister(this);
+	if(this._isDeadNow || this.isOutOfMap()){
+		return entityManager.KILL_ME_NOW;
+	}
+	
+	this.cy+=this.yVel* du;
+	var prevY = this.cy;
+	var nextY = prevY + this.yVel * du;
+	
+	if (keys[this.KEY_LEFT] && this._isActive === true)
+	{
+	this.cx -= 3* du;
+	this.direction = -1;
+	}
+	if (keys[this.KEY_RIGHT] && this._isActive === true)
+	{
+	this.cx += 3 * du;
+	this.direction = 1;
+	}
+	
+   
+	if (eatKey(this.KEY_JUMP) && this._isActive === true && this.isCollidingLandscape()) { 
+	
+		this.yVel = -4.5;
+		this.cy += this.yVel * du;
+		//jump.play();hoppu hljoð Hér þurfum við að hafa exp fall og ákveða max hæð sem má hoppa
+    }
+	
+	if(!this.isCollidingLandscape()){
+		this.yVel += NOMINAL_GRAVITY;
+		//
+		}
+	else{
+		this.yVel = 0;
+		}
+    
+    this.maybeFireBullet();
+
+	/*if(this.isColliding()){
+		this.warp();
+		}
+	else{*/
+		spatialManager.register(this);
+		
+};
+
+Snail.prototype.isCollidingLandscape = function() {
+
+	if(entityManager._Landscape[0].pixelHitTest(this))
+    {
+        console.log("hit");
+		return true;
+    }
+
+	
+}
+
+
+var NOMINAL_GRAVITY = 0.12;
+
+Snail.prototype.computeGravity = function () {
+    return g_useGravity ? NOMINAL_GRAVITY : 0;
+};
+
+
+
+Snail.prototype.maybeFireBullet = function () {
+
+    if (keys[this.KEY_FIRE]) {
+    
+        var dX = this.cx+100*this.direction;
+        var dY = this.cy;
+        var launchDist = this.getRadius() * 1.2;
+       
+        var relVel = 2;
+        var relVelX = dX * relVel;
+        var relVelY = dY * relVel;
+
+        entityManager.fireBullet(
+           dX , dY ,
+           1*this.direction , NOMINAL_GRAVITY, 
+           200);
+           
+    }
+	
+	//Þurfum að enda turnið hér sem breytir meðal annars this._isActive yfir í false
+    
+};
+
+Snail.prototype.getRadius = function () {
+    return (this.sprite.width / 2) * 0.9;
+};
+
+Snail.prototype.takeBulletHit = function () {
+    this.takeDamage();
+};
+
+Snail.prototype.takeDamage = function(){
+	//eitthvað með að við skoðum hvaða vopn hann tók hitt frá
+	//breyta þessu yfir í það að þegar þeir eru hættir að hreyfast eða þegar turnið klárast þá minnka lífið þeirra. Bara eins og í leiknum
+	this.health -= 20;
+	//explosion(this.cx,this.cy);
+	if(this.health <= 0) this._isDeadNow = true;
+}
+
+Snail.prototype.render = function (ctx) {
+	//if(this.health >= 40){
+	g_sprites.aim.drawCentredAt(ctx,this.cx+100*this.direction,this.cy);
+	
+	
+	ctx.fillStyle="white";
+	ctx.fillRect(this.cx-50,this.cy-70,100,20);
+	ctx.fillStyle="red";
+	ctx.font= "20px Arial"; 
+	ctx.fillText(this.health, this.cx-25, this.cy-55);
+
+    var origScale = this.sprite.scale;
+	
+    this.sprite.scale = this._scale;
+	
+    this.sprite.drawSnailCentredAt(ctx, this.cx, this.cy,this.direction*-1); // teiknum orminn á ákveðnum stað
+	//teiknum miðið hans hér á ákveðnum stað líklegast með drawAt sem hefur rotation líka
+	//eitthvað með að teikna vopnið með this.drawWeapon
+	//this.weapon.render(ctx);
+    this.sprite.scale = origScale;
+	
+	/*else{
+		
+		var g_cel = 0;
+	
+		var cel = g_explosion[g_cel]
+		
+		cel.drawCentredAt(ctx,this.cx, this.cy - g_cel*5);
+		++g_cel;
+		console.log(g_cel);
+		if (g_cel === g_sprites.length) g_cel = 0;
+		
+	}*/
+};
+
+
+-----ENTITYMANAGER.JS----
+/*
+
+entityManager.js
+
+A module which handles arbitrary entity-management for "Asteroids"
+
+
+We create this module as a single global object, and initialise it
+with suitable 'data' and 'methods'.
+
+"Private" properties are denoted by an underscore prefix convention.
+
+*/
+
+
+"use strict";
+
+
+// Tell jslint not to complain about my use of underscore prefixes (nomen),
+// my flattening of some indentation (white), or my use of incr/decr ops 
+// (plusplus).
+//
+/*jslint nomen: true, white: true, plusplus: true*/
+
+
+var entityManager = {
+
+// "PRIVATE" DATA
+
+//_rocks   : [],
+_bullets : [],
+_ships   : [],
+_Landscape  : [],
+_Snails 	: [],
+
+_bShowRocks : true,
+
+// "PRIVATE" METHODS
+
+/*_generateRocks : function() {
+    var i,
+        NUM_ROCKS = 4;
+
+    for (i = 0; i < NUM_ROCKS; ++i) {
+        this.generateRock();
+    }
+},*/
+
+_findNearestShip : function(posX, posY) {
+    var closestShip = null,
+        closestIndex = -1,
+        closestSq = 1000 * 1000;
+
+    for (var i = 0; i < this._ships.length; ++i) {
+
+        var thisShip = this._ships[i];
+        var shipPos = thisShip.getPos();
+        var distSq = util.wrappedDistSq(
+            shipPos.posX, shipPos.posY, 
+            posX, posY,
+            g_canvas.width, g_canvas.height);
+
+        if (distSq < closestSq) {
+            closestShip = thisShip;
+            closestIndex = i;
+            closestSq = distSq;
+        }
+    }
+    return {
+        theShip : closestShip,
+        theIndex: closestIndex
+    };
+},
+
+_forEachOf: function(aCategory, fn) {
+    for (var i = 0; i < aCategory.length; ++i) {
+        fn.call(aCategory[i]);
+    }
+},
+
+// PUBLIC METHODS
+
+// A special return value, used by other objects,
+// to request the blessed release of death!
+//
+KILL_ME_NOW : -1,
+
+// Some things must be deferred until after initial construction
+// i.e. thing which need `this` to be defined.
+//
+deferredSetup : function () {
+    this._categories = [this._Landscape,/*this._rocks,*/ this._bullets, this._ships,this._Snails];
+},
+
+init: function() {
+    //this._generateRocks();
+    //this._generateShip();
+    this.generateLandscape();
+	this.generateSnail();
+},
+
+fireBullet: function(cx, cy, velX, velY, rotation) {
+    this._bullets.push(new Bullet({
+        cx   : cx,
+        cy   : cy,
+        velX : velX,
+        velY : velY,
+
+        rotation : rotation
+    }));
+},
+
+/*generateRock : function(descr) {
+    this._rocks.push(new Rock(descr));
+},*/
+
+//New background line
+generateLandscape : function(descr) {
+    this._Landscape.push(new Landscape(descr));
+},
+
+generateSnail : function(descr) {
+    this._Snails.push(new Snail(descr));
+},
+
+
+generateShip : function(descr) {
+    this._ships.push(new Ship(descr));
+},
+
+killNearestShip : function(xPos, yPos) {
+    var theShip = this._findNearestShip(xPos, yPos).theShip;
+    if (theShip) {
+        theShip.kill();
+    }
+},
+
+yoinkNearestShip : function(xPos, yPos) {
+    var theShip = this._findNearestShip(xPos, yPos).theShip;
+    if (theShip) {
+        theShip.setPos(xPos, yPos);
+    }
+},
+
+resetShips: function() {
+    this._forEachOf(this._ships, Ship.prototype.reset);
+},
+
+haltShips: function() {
+    this._forEachOf(this._ships, Ship.prototype.halt);
+},	
+
+/*toggleRocks: function() {
+    this._bShowRocks = !this._bShowRocks;
+},*/
+
+update: function(du) {
+
+    for (var c = 0; c < this._categories.length; ++c) {
+
+        var aCategory = this._categories[c];
+        var i = 0;
+		
+        while (i < aCategory.length) {
+
+            var status = aCategory[i].update(du);
+			
+            if (status === this.KILL_ME_NOW) {
+                // remove the dead guy, and shuffle the others down to
+                // prevent a confusing gap from appearing in the array
+                aCategory.splice(i,1);
+            }
+            else {
+                ++i;
+            }
+        }
+    }
+    
+    //if (this._rocks.length === 0) this._generateRocks();
+
+},
+
+render: function(ctx) {
+
+    var debugX = 10, debugY = 100;
+
+    for (var c = 0; c < this._categories.length; ++c) {
+
+        var aCategory = this._categories[c];
+/*
+        if (!this._bShowRocks && 
+            aCategory == this._rocks)
+            continue;*/
+
+        for (var i = 0; i < aCategory.length; ++i) {
+
+            aCategory[i].render(ctx);
+            //debug.text(".", debugX + i * 10, debugY);
+
+        }
+        debugY += 10;
+    }
+},
+
+renderLandscape: function(ctx, canvas) {
+    for(var landscape in this._Landscape) {
+        console.log('asdlfkjasdf'+landscape); 
+        console.log(this._Landscape);
+        this._Landscape[landscape].init(ctx, canvas);
+    }
+}
+
+}
+
+// Some deferred setup which needs the object to have been created first
+entityManager.deferredSetup();
+
+------ASTEROIDS.JS-----
+
+// =========
+// Snails
+// =========
+
+
+"use strict";
+
+/* jshint browser: true, devel: true, globalstrict: true */
+
+var g_canvas = document.getElementById("myCanvas");
+var g_ctx = g_canvas.getContext("2d");
+
+/*
+0        1         2         3         4         5         6         7         8
+12345678901234567890123456789012345678901234567890123456789012345678901234567890
+*/
+
+
+// ====================
+// CREATE INITIAL SHIPS
+// ====================
+
+function createInitialShips() {
+
+    entityManager.generateShip({
+        cx : 200,
+        cy : 200
+    });
+	
+}
+
+// =============
+// GATHER INPUTS
+// =============
+
+function gatherInputs() {
+    // Nothing to do here!
+    // The event handlers do everything we need for now.
+}
+
+
+// =================
+// UPDATE SIMULATION
+// =================
+
+// We take a very layered approach here...
+//
+// The primary `update` routine handles generic stuff such as
+// pausing, single-step, and time-handling.
+//
+// It then delegates the game-specific logic to `updateSimulation`
+
+
+// GAME-SPECIFIC UPDATE LOGIC
+
+function updateSimulation(du) {
+    
+    processDiagnostics();
+    
+    entityManager.update(du);
+
+    // Prevent perpetual firing!
+    eatKey(Ship.prototype.KEY_FIRE);
+}
+
+// GAME-SPECIFIC DIAGNOSTICS
+
+var g_allowMixedActions = true;
+var g_useGravity = false;
+var g_useAveVel = true;
+var g_renderSpatialDebug = false;
+
+var KEY_MIXED   = keyCode('M');;
+var KEY_GRAVITY = keyCode('G');
+var KEY_AVE_VEL = keyCode('V');
+var KEY_SPATIAL = keyCode('X');
+
+var KEY_HALT  = keyCode('H');
+var KEY_RESET = keyCode('R');
+
+var KEY_0 = keyCode('0');
+
+var KEY_1 = keyCode('1');
+var KEY_2 = keyCode('2');
+
+var KEY_K = keyCode('K');
+
+function processDiagnostics() {
+
+    if (eatKey(KEY_MIXED))
+        g_allowMixedActions = !g_allowMixedActions;
+
+    if (eatKey(KEY_GRAVITY)) g_useGravity = !g_useGravity;
+
+    if (eatKey(KEY_AVE_VEL)) g_useAveVel = !g_useAveVel;
+
+    if (eatKey(KEY_SPATIAL)) g_renderSpatialDebug = !g_renderSpatialDebug;
+
+    if (eatKey(KEY_HALT)) entityManager.haltShips();
+
+    if (eatKey(KEY_RESET)) entityManager.resetShips();
+
+    if (eatKey(KEY_0)) entityManager.toggleRocks();
+
+    if (eatKey(KEY_1)) entityManager.generateShip({
+        cx : g_mouseX,
+        cy : g_mouseY,
+        
+        sprite : g_sprites.ship});
+
+    if (eatKey(KEY_2)) entityManager.generateShip({
+        cx : g_mouseX,
+        cy : g_mouseY,
+        
+        sprite : g_sprites.ship2
+        });
+
+    if (eatKey(KEY_K)) entityManager.killNearestShip(
+        g_mouseX, g_mouseY);
+}
+
+
+// =================
+// RENDER SIMULATION
+// =================
+
+// We take a very layered approach here...
+//
+// The primary `render` routine handles generic stuff such as
+// the diagnostic toggles (including screen-clearing).
+//
+// It then delegates the game-specific logic to `gameRender`
+
+
+// GAME-SPECIFIC RENDERING
+
+function renderSimulation(ctx) {
+
+    entityManager.render(ctx);
+
+    if (g_renderSpatialDebug) spatialManager.render(ctx);
+}
+
+
+// =============
+// PRELOAD STUFF
+// =============
+
+var g_images = {};
+
+function requestPreloads() {
+
+    var requiredImages = {
+        ship   : "https://notendur.hi.is/~pk/308G/images/ship.png",
+        ship2  : "https://notendur.hi.is/~pk/308G/images/ship_2.png",
+        rock   : "https://notendur.hi.is/~pk/308G/images/rock.png",
+        land   : "img/Whiteline.png",
+		snail  : "img/snail.gif",
+		explosion : "img/explosion.png",
+		aim: "img/aim.png"
+	
+    };
+    imagesPreload(requiredImages, g_images, preloadDone);
+}
+
+var g_sprites = {};
+
+
+function preloadDone() {
+
+    g_sprites.ship  = new Sprite(g_images.ship);
+    g_sprites.ship2 = new Sprite(g_images.ship2);
+    g_sprites.rock  = new Sprite(g_images.rock);
+
+    g_sprites.bullet = new Sprite(g_images.ship);
+    g_sprites.bullet.scale = 0.25;
+
+    g_sprites.land = new Sprite(g_images.land);
+	g_sprites.snail = new Sprite(g_images.snail);
+	g_sprites.aim = new Sprite(g_images.aim);
+	g_sprites.aim.scale = 0.25;
+	
+	loadExplosion(g_images.explosion);
+
+
+    entityManager.init();
+    createInitialShips();
+
+    entityManager.renderLandscape(g_ctx, g_canvas);
+    
+    main.init();
+}
+
+var g_explosion;
+
+function loadExplosion(explosionSprite){
+
+var celWidth  = 320;
+var celHeight = 320;
+var numCols = 5;
+var numRows = 5;
+var numCels = 25;
+
+g_explosion = [];
+
+/* for (var row = 0; row < numRows; ++row) {
+        for (var col = 0; col < numCols; ++col) {
+            explosionSprite = new explosionSprite(col * celWidth, row * celHeight,
+                                celWidth, celHeight) 
+            g_explosion.push(explosionSprite);
+        }
+    }
+	g_explosion.splice(numCels);*/
+		
+}
+
+function explosionSprite(sx, sy, width, height) {
+    this.sx = sx;
+    this.sy = sy;
+    this.width = width;
+    this.height = height;
+    this.image = g_spriteSheet;
+}
+
+// Kick it off
+requestPreloads();
+
+----SPRITE.JS----
+// ============
+// SPRITE STUFF
+// ============
+
+"use strict";
+
+/* jshint browser: true, devel: true, globalstrict: true */
+
+/*
+0        1         2         3         4         5         6         7         8
+12345678901234567890123456789012345678901234567890123456789012345678901234567890
+*/
+
+
+// Construct a "sprite" from the given `image`,
+//
+function Sprite(image) {
+    this.image = image;
+
+    this.width = image.width;
+    this.height = image.height;
+    this.scale = 1;
+}
+
+Sprite.prototype.drawAt = function (ctx, x, y) {
+    ctx.drawImage(this.image, 
+                  x, y);
+};
+
+Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation) {
+    if (rotation === undefined) rotation = 0;
+    
+	
+    var w = this.width,
+        h = this.height;
+	
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(rotation);
+    ctx.scale(this.scale, this.scale);
+    
+    // drawImage expects "top-left" coords, so we offset our destination
+    // coords accordingly, to draw our sprite centred at the origin
+    ctx.drawImage(this.image, 
+                  -w/2, -h/2);
+    
+    ctx.restore();
+};  
+
+Sprite.prototype.drawSnailCentredAt = function (ctx, cx, cy, rotation) {
+    if (rotation === undefined) rotation = 0;
+    
+	
+    var w = this.width,
+        h = this.height;
+	
+    ctx.save();
+    ctx.translate(cx, cy);
+    //ctx.rotate(rotation);
+    ctx.scale(rotation, this.scale);
+    
+    // drawImage expects "top-left" coords, so we offset our destination
+    // coords accordingly, to draw our sprite centred at the origin
+    ctx.drawImage(this.image, 
+                  -w/2, -h/2);
+    
+    ctx.restore();
+};  
+
+Sprite.prototype.drawWrappedCentredAt = function (ctx, cx, cy, rotation) {
+    
+    // Get "screen width"
+    var sw = g_canvas.width;
+    
+    // Draw primary instance
+    this.drawWrappedVerticalCentredAt(ctx, cx, cy, rotation);
+    
+    // Left and Right wraps
+    this.drawWrappedVerticalCentredAt(ctx, cx - sw, cy, rotation);
+    this.drawWrappedVerticalCentredAt(ctx, cx + sw, cy, rotation);
+};
+
+Sprite.prototype.drawWrappedVerticalCentredAt = function (ctx, cx, cy, rotation) {
+
+    // Get "screen height"
+    var sh = g_canvas.height;
+    
+    // Draw primary instance
+    this.drawCentredAt(ctx, cx, cy, rotation);
+    
+    // Top and Bottom wraps
+    this.drawCentredAt(ctx, cx, cy - sh, rotation);
+    this.drawCentredAt(ctx, cx, cy + sh, rotation);
+};
+
+-----INDEX.HTML----
+
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Worms</title>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height = "600" style ="border:1px solid black">
+		Sorry, your browser doesn't suppert the HTML5 canvas tag
+		</canvas> 
+		<script src="Scripts/globals.js"></script>
+		
+		<script src="Scripts/consts.js"></script>
+		<script src="Scripts/util.js"></script>
+		<script src="Scripts/keys.js"></script>
+		<script src="Scripts/handleMouse.js"></script>
+		<script src="Scripts/spatialManager.js"></script>
+		<script src="Scripts/entityManager.js"></script>
+		<script src="Scripts/Sprite.js"></script>
+		<script src="Scripts/Entity.js"></script>
+		<script src="Scripts/snail.js"></script>
+		<script src="Scripts/Rock.js"></script>
+		<script src="Scripts/Bullet.js"></script>
+		<script src="Scripts/Ship.js"></script>
+		
+		<script src="Scripts/update.js"></script>
+		<script src="Scripts/render.js"></script>
+		<script src="Scripts/imagesPreload.js"></script>
+		<script src="Scripts/Landscape.js"></script>
+		<script src="Scripts/main.js"></script>
+		<script src="Scripts/ASTEROIDS.js"></script>
+
+	</body>
+</html>
