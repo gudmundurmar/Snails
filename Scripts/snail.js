@@ -37,7 +37,7 @@ Snail.prototype.rememberResets = function () {
     this.reset_rotation = this.rotation;
 };
 
-Snail.prototype.KEY_JUMP = 'J'.charCodeAt(0); // þarf að finna fyrir enter. J fyrru jump
+Snail.prototype.KEY_JUMP = 13; // 13 fyrir enter.
 Snail.prototype.KEY_LEFT   = 'A'.charCodeAt(0);
 Snail.prototype.KEY_FIRE  = ' '.charCodeAt(0); // hafa computeThrustMag fyrir þetta t.d. fyrir bazooka?
 Snail.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
@@ -62,9 +62,6 @@ Snail.prototype.isOutOfMap = function(){
 
 Snail.prototype.update = function (du) {
 	
-	
-	
-	
 	spatialManager.unregister(this);
 	if(this._isDeadNow || this.isOutOfMap()){
 		return entityManager.KILL_ME_NOW;
@@ -86,29 +83,34 @@ Snail.prototype.update = function (du) {
 	}
 	
    
-	if (eatKey(this.KEY_JUMP) && this._isActive === true && this.isCollidingLandscape()) { 
+	if (eatKey(this.KEY_JUMP) && this._isActive === true) { 
 	
 		this.yVel = -4.5;
 		this.cy += this.yVel * du;
 		//jump.play();hoppu hljoð Hér þurfum við að hafa exp fall og ákveða max hæð sem má hoppa
     }
 	
-	if(!this.isCollidingLandscape()){
-		this.yVel += NOMINAL_GRAVITY;
-		//
-		}
-	else{
-		this.yVel = 0;
-		}
+	//if(!this.isCollidingLandscape()){
+	//	this.yVel += NOMINAL_GRAVITY;
+	//	//
+	//	}
+	//else{
+	//		//Colliding with land.
+	//		//Set this y coord the same as the land y coord in this x line
+	//		for(var i =0;i <600;i++)
+	//		{
+	//			if(entityManager._Landscape[0].isPxLand(this.cx,i))
+	//				{
+	//					console.log(entityManager._Landscape[0]);
+	//					this.yVel = 0;
+	//					this.cy = i;
+	//					return;
+	//				}
+	//		}
+	
     
     this.maybeFireBullet();
-
-	/*if(this.isColliding()){
-		this.warp();
-		}
-	else{*/
-		spatialManager.register(this);
-		
+	spatialManager.register(this);		
 };
 
 Snail.prototype.isCollidingLandscape = function() {

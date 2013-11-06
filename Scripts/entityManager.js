@@ -202,10 +202,8 @@ render: function(ctx) {
     }
 },
 
-renderLandscape: function(ctx, canvas) {
+createLandscape: function(ctx, canvas) {
     for(var landscape in this._Landscape) {
-        console.log('asdlfkjasdf'+landscape); 
-        console.log(this._Landscape);
         this._Landscape[landscape].init(ctx, canvas);
     }
 }

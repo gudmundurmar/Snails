@@ -108,12 +108,12 @@ function processDiagnostics() {
         
         sprite : g_sprites.ship});
 
-    if (eatKey(KEY_2)) entityManager.generateShip({
-        cx : g_mouseX,
-        cy : g_mouseY,
-        
-        sprite : g_sprites.ship2
-        });
+
+    if (eatKey(KEY_2)) 
+    {
+        var pix = entityManager._Landscape[0].deletePixAt(g_mouseX,g_mouseY);
+        console.log(pix);
+    }
 
     if (eatKey(KEY_K)) entityManager.killNearestShip(
         g_mouseX, g_mouseY);
@@ -186,7 +186,7 @@ function preloadDone() {
     entityManager.init();
     createInitialShips();
 
-    entityManager.renderLandscape(g_ctx, g_canvas);
+    entityManager.createLandscape(g_ctx, g_canvas);
     
     main.init();
 }

@@ -56,7 +56,7 @@ Landscape.prototype.rememberResets = function () {
     this.reset_rotation = this.rotation;
 };
 
-Landscape.prototype.render = function (ctx) {
+Landscape.prototype.firstRender = function (ctx) {
     var origScale = this.sprite.scale;
     // pass my scale into the sprite, for drawing
     this.sprite.scale = this._scale;
@@ -67,44 +67,51 @@ Landscape.prototype.render = function (ctx) {
 };
 
 Landscape.prototype.init = function(ctx, canvas) {
-    console.log('here');
-    this.render(ctx);
-
+    this.firstRender(ctx);
     //make pixelMap
-    this.pixelMap = this.buildPixelMap(canvas);
-    for(var i in this.pixelMap) {
-        console.log(this.pixelMap[i]);
-    }
+    this.pixelMap = this.buildPixelMap(ctx);
 };
 
 
 Landscape.prototype.pixelMap;
 
 Landscape.prototype.buildPixelMap = function( ctx ) {
-        var resolution = 1;
-        var pixelMap = new Array(this.width/10);
-        for(var i = 0; i< this.width/10;i++)
-        {
-            pixelMap[i] = new Array(this.height/10);
-        }
-        for( var x = 0; x < this.width; x=x+10) {
-            for( var y = 0; y < this.height; y=y+10 ) {
-                var pixel = g_ctx.getImageData(x,y,resolution,resolution);
-                //get the opacity
-                var pixelData = pixel.data;
-                pixelMap[x/10][y/10] = {pixMap :pixelData};
-                //pixelMap[x] = { x:x, y:y, pixelData: pixelData };
- 
-            }
-        }
-        return pixelMap;
+        return ctx.getImageData(0,0,600,600);
     };
 
 Landscape.prototype.pixelHitTest = function(target ) {
     var pos = target.getPos();
-        if(this.pixelMap[Math.floor(pos.posX/10)][Math.floor(pos.posY/10)].pixMap[0] !== 0){
-            return true;
+    return this.isPxLand(pos.posX,pos.posY);
+};
+Landscape.prototype.isPxLand = function(x,y){
+    //Erum nuna bara ad tjekka hvort pixel sé ekki svartur. 
+    //if(this.pixelMap[Math.floor(x/10)][Math.floor(y/10)].pixMap[0] !==0)
+    //    return true;
+    //return false;
+};
+Landscape.prototype.render = function(ctx){
+    ctx.putImageData(this.pixelMap,0,0);
+};
+Landscape.prototype.getPixAt = function(x,y){
+    return  {
+            R:   this.pixelMap.data[this.findIndex(x,y)],
+            G:   this.pixelMap.data[this.findIndex(x,y)+1],
+            B:   this.pixelMap.data[this.findIndex(x,y)+2],
+            A:   this.pixelMap.data[this.findIndex(x,y)+3]
+            };
+};
+Landscape.prototype.findIndex = function(x,y){
+    return 4*(600*y + x);
+};
+Landscape.prototype.deletePixAt = function(x,y){
+    var offset = 100;
+    for(var i =x-offset;i<x+offset;i++)
+    {
+        for(var j = y-offset;j<y+offset;j++){
+            this.pixelMap.data[this.findIndex(i,j)] = 0;
+            this.pixelMap.data[this.findIndex(i,j)+1] = 0;
+            this.pixelMap.data[this.findIndex(i,j)+2]=0;
+            this.pixelMap.data[this.findIndex(i,j)+3] = 255;
         }
-        else 
-            return false;
-    };
+    }
+};
