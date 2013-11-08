@@ -26,6 +26,10 @@ function createInitialShips() {
         cx : 200,
         cy : 200
     });
+	entityManager.generateSnail({
+        cx : 400,
+        cy : 200
+    });
 	
 }
 
@@ -102,11 +106,17 @@ function processDiagnostics() {
 
     if (eatKey(KEY_0)) entityManager.toggleRocks();
 
-    if (eatKey(KEY_1)) entityManager.generateShip({
+    /*if (eatKey(KEY_1)) entityManager.generateShip({
         cx : g_mouseX,
         cy : g_mouseY,
         
-        sprite : g_sprites.ship});
+        sprite : g_sprites.ship});*/
+		if (eatKey(KEY_1)) 
+    		{
+			var pix = entityManager._Landscape[0].getPixAt(g_mouseX,g_mouseY);
+
+			var sn = entityManager._Snails[0].getPos();
+    		}
 
 
     if (eatKey(KEY_2)) 
@@ -114,6 +124,7 @@ function processDiagnostics() {
         var pix = entityManager._Landscape[0].deletePixAt(g_mouseX,g_mouseY);
         console.log(pix);
     }
+
 
     if (eatKey(KEY_K)) entityManager.killNearestShip(
         g_mouseX, g_mouseY);
@@ -179,6 +190,7 @@ function preloadDone() {
 	g_sprites.snail = new Sprite(g_images.snail);
 	g_sprites.aim = new Sprite(g_images.aim);
 	g_sprites.aim.scale = 0.25;
+	//g_sprites.explosion = new Sprite(g_images.explosion);
 	
 	loadExplosion(g_images.explosion);
 
@@ -186,14 +198,14 @@ function preloadDone() {
     entityManager.init();
     createInitialShips();
 
-    entityManager.createLandscape(g_ctx, g_canvas);
+    entityManager.renderLandscape(g_ctx, g_canvas);
     
     main.init();
 }
 
-var g_explosion;
+var g_explosion = [];
 
-function loadExplosion(explosionSprite){
+function loadExplosion(exploImage){
 
 var celWidth  = 320;
 var celHeight = 320;
@@ -201,25 +213,17 @@ var numCols = 5;
 var numRows = 5;
 var numCels = 25;
 
-g_explosion = [];
+var exploSprite;
 
-/* for (var row = 0; row < numRows; ++row) {
+ for (var row = 0; row < numRows; ++row) {
         for (var col = 0; col < numCols; ++col) {
-            explosionSprite = new explosionSprite(col * celWidth, row * celHeight,
-                                celWidth, celHeight) 
-            g_explosion.push(explosionSprite);
+            exploSprite = new Explosionsprite(col * celWidth, row * celHeight,
+                                celWidth, celHeight,exploImage) 
+            g_explosion.push(exploSprite);
         }
     }
-	g_explosion.splice(numCels);*/
+	g_explosion.splice(numCels);
 		
-}
-
-function explosionSprite(sx, sy, width, height) {
-    this.sx = sx;
-    this.sy = sy;
-    this.width = width;
-    this.height = height;
-    this.image = g_spriteSheet;
 }
 
 // Kick it off

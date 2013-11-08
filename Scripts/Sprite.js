@@ -14,6 +14,15 @@
 
 // Construct a "sprite" from the given `image`,
 //
+
+function Explosionsprite(sx, sy, width, height, spriteSheet) {
+    this.sx = sx;
+    this.sy = sy;
+    this.width = width;
+    this.height = height;
+    this.image = spriteSheet;
+}
+
 function Sprite(image) {
     this.image = image;
 
@@ -46,6 +55,13 @@ Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation) {
     
     ctx.restore();
 };  
+
+Sprite.prototype.drawSheetAt = function (x, y) {
+    ctx.drawImage(this.image, 
+                  this.sx, this.sy, this.width, this.height,
+                  x, y, this.width, this.height);
+}
+
 
 Sprite.prototype.drawSnailCentredAt = function (ctx, cx, cy, rotation) {
     if (rotation === undefined) rotation = 0;
@@ -92,3 +108,22 @@ Sprite.prototype.drawWrappedVerticalCentredAt = function (ctx, cx, cy, rotation)
     this.drawCentredAt(ctx, cx, cy - sh, rotation);
     this.drawCentredAt(ctx, cx, cy + sh, rotation);
 };
+
+Explosionsprite.prototype.drawSpritesheetCentredAt = function (ctx, cx, cy) {
+   
+    
+	
+    var w = this.width,
+        h = this.height;
+	
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.scale(this.scale, this.scale);
+    
+    // drawImage expects "top-left" coords, so we offset our destination
+    // coords accordingly, to draw our sprite centred at the origin
+    ctx.drawImage(this.image, 
+                  -w/2, -h/2);
+    
+    ctx.restore();
+};  

@@ -134,7 +134,7 @@ Ship.prototype.update = function (du) {
 
     if(entityManager._Landscape[0].pixelHitTest(this))
     {
-        console.log("HIT");
+        //console.log("HIT");
     }
     
     // TODO: YOUR STUFF HERE! --- Unregister and check for death

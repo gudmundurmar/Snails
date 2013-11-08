@@ -37,7 +37,7 @@ Snail.prototype.rememberResets = function () {
     this.reset_rotation = this.rotation;
 };
 
-Snail.prototype.KEY_JUMP = 13; // 13 fyrir enter.
+Snail.prototype.KEY_JUMP = 'J'.charCodeAt(0); // þarf að finna fyrir enter. J fyrru jump
 Snail.prototype.KEY_LEFT   = 'A'.charCodeAt(0);
 Snail.prototype.KEY_FIRE  = ' '.charCodeAt(0); // hafa computeThrustMag fyrir þetta t.d. fyrir bazooka?
 Snail.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
@@ -47,7 +47,7 @@ Snail.prototype.KEY_AIM_DOWN = 'down'.charCodeAt(0);*/
 Snail.prototype.cx = 200;
 Snail.prototype.cy = 300;
 Snail.prototype.health = 100;
-Snail.prototype._isActive = false; //til að ákveða hvern á að hreyfa
+Snail.prototype._isActive = true; //til að ákveða hvern á að hreyfa
 Snail.prototype.yVel = 0;
 Snail.prototype.direction = 1; // skoða í hvaða átt er verið að skjóta
 
@@ -61,6 +61,7 @@ Snail.prototype.isOutOfMap = function(){
 }
 
 Snail.prototype.update = function (du) {
+	
 	
 	spatialManager.unregister(this);
 	if(this._isDeadNow || this.isOutOfMap()){
@@ -83,41 +84,46 @@ Snail.prototype.update = function (du) {
 	}
 	
    
-	if (eatKey(this.KEY_JUMP) && this._isActive === true) { 
+	if (eatKey(this.KEY_JUMP) && this._isActive === true && this.isCollidingLandscape()) { 
 	
 		this.yVel = -4.5;
 		this.cy += this.yVel * du;
 		//jump.play();hoppu hljoð Hér þurfum við að hafa exp fall og ákveða max hæð sem má hoppa
     }
 	
-	//if(!this.isCollidingLandscape()){
-	//	this.yVel += NOMINAL_GRAVITY;
-	//	//
-	//	}
-	//else{
-	//		//Colliding with land.
-	//		//Set this y coord the same as the land y coord in this x line
-	//		for(var i =0;i <600;i++)
-	//		{
-	//			if(entityManager._Landscape[0].isPxLand(this.cx,i))
-	//				{
-	//					console.log(entityManager._Landscape[0]);
-	//					this.yVel = 0;
-	//					this.cy = i;
-	//					return;
-	//				}
-	//		}
-	
+	if(!this.isCollidingLandscape()){
+		this.yVel += NOMINAL_GRAVITY;
+		//
+		}
+	else{
+		this.yVel = 0;
+	}
+
+	/*if(entityManager._Landscape[0].pixelHitTest(this))
+    	{
+        	this.yVel = 0;
+		console.log("HIT");
+    	}
+	else{
+		this.yVel += NOMINAL_GRAVITY;
+	}*/
+
     
     this.maybeFireBullet();
-	spatialManager.register(this);		
+
+	/*if(this.isColliding()){
+		this.warp();
+		}
+	else{*/
+		spatialManager.register(this);
+		
 };
 
 Snail.prototype.isCollidingLandscape = function() {
 
 	if(entityManager._Landscape[0].pixelHitTest(this))
     {
-        console.log("hit");
+     //console.log(g_explosion[2]);
 		return true;
     }
 
@@ -168,12 +174,18 @@ Snail.prototype.takeDamage = function(){
 	//eitthvað með að við skoðum hvaða vopn hann tók hitt frá
 	//breyta þessu yfir í það að þegar þeir eru hættir að hreyfast eða þegar turnið klárast þá minnka lífið þeirra. Bara eins og í leiknum
 	this.health -= 20;
-	//explosion(this.cx,this.cy);
-	if(this.health <= 0) this._isDeadNow = true;
+	
+	if(this.health <= 0){
+		entityManager.generateDeath({
+        cx : this.cx,
+        cy : this.cy
+    });
+		this._isDeadNow = true;
+		}
 }
 
 Snail.prototype.render = function (ctx) {
-	//if(this.health >= 40){
+	
 	g_sprites.aim.drawCentredAt(ctx,this.cx+100*this.direction,this.cy);
 	
 	
@@ -193,16 +205,5 @@ Snail.prototype.render = function (ctx) {
 	//this.weapon.render(ctx);
     this.sprite.scale = origScale;
 	
-	/*else{
-		
-		var g_cel = 0;
 	
-		var cel = g_explosion[g_cel]
-		
-		cel.drawCentredAt(ctx,this.cx, this.cy - g_cel*5);
-		++g_cel;
-		console.log(g_cel);
-		if (g_cel === g_sprites.length) g_cel = 0;
-		
-	}*/
 };

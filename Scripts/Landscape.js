@@ -67,7 +67,8 @@ Landscape.prototype.firstRender = function (ctx) {
 };
 
 Landscape.prototype.init = function(ctx, canvas) {
-    this.firstRender(ctx);
+
+	this.firstRender(ctx);
     //make pixelMap
     this.pixelMap = this.buildPixelMap(ctx);
 };
@@ -76,22 +77,35 @@ Landscape.prototype.init = function(ctx, canvas) {
 Landscape.prototype.pixelMap;
 
 Landscape.prototype.buildPixelMap = function( ctx ) {
-        return ctx.getImageData(0,0,600,600);
+	return ctx.getImageData(0,0,600,600);
     };
 
 Landscape.prototype.pixelHitTest = function(target ) {
-    var pos = target.getPos();
-    return this.isPxLand(pos.posX,pos.posY);
+	var pos = target.getPos();
+	var halfheight = g_images.snail.height/2;
+	
+	var x = Math.floor(pos.posX);
+	var y = Math.floor(pos.posY+halfheight);
+	var R = this.getPixAt(x,y).R;
+	var G = this.getPixAt(x,y).G;
+	var B = this.getPixAt(x,y).B;
+
+	
+	if(R !== 0 && G !== 0 && B !== 0)
+	{
+		return true;
+	}
+	else
+	{
+    		return false;
+	}
+	
 };
-Landscape.prototype.isPxLand = function(x,y){
-    //Erum nuna bara ad tjekka hvort pixel sé ekki svartur. 
-    //if(this.pixelMap[Math.floor(x/10)][Math.floor(y/10)].pixMap[0] !==0)
-    //    return true;
-    //return false;
-};
+
 Landscape.prototype.render = function(ctx){
     ctx.putImageData(this.pixelMap,0,0);
 };
+
 Landscape.prototype.getPixAt = function(x,y){
     return  {
             R:   this.pixelMap.data[this.findIndex(x,y)],

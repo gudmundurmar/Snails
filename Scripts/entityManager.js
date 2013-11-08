@@ -32,6 +32,7 @@ _bullets : [],
 _ships   : [],
 _Landscape  : [],
 _Snails 	: [],
+_Death : [],
 
 _bShowRocks : true,
 
@@ -89,7 +90,7 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._Landscape,/*this._rocks,*/ this._bullets, this._ships,this._Snails];
+    this._categories = [this._Landscape,/*this._rocks,*/ this._bullets, this._ships,this._Snails,this._Death];
 },
 
 init: function() {
@@ -121,6 +122,10 @@ generateLandscape : function(descr) {
 
 generateSnail : function(descr) {
     this._Snails.push(new Snail(descr));
+},
+
+generateDeath : function(descr) {
+    this._Death.push(new Death(descr));
 },
 
 
@@ -202,8 +207,10 @@ render: function(ctx) {
     }
 },
 
-createLandscape: function(ctx, canvas) {
+renderLandscape: function(ctx, canvas) {
     for(var landscape in this._Landscape) {
+        console.log('asdlfkjasdf'+landscape); 
+        console.log(this._Landscape);
         this._Landscape[landscape].init(ctx, canvas);
     }
 }
