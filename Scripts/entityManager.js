@@ -31,7 +31,7 @@ var entityManager = {
 _bullets : [],
 _ships   : [],
 _Landscape  : [],
-_Snails 	: [],
+_Snails : [],
 _Death : [],
 
 _bShowRocks : true,
@@ -46,6 +46,16 @@ _bShowRocks : true,
         this.generateRock();
     }
 },*/
+
+/*_generateSnails : function() {
+    var i,
+        NUM_SNAILS = 2;
+
+    for (i = 0; i < NUM_SNAILS; ++i) {
+        this.generateSnail();
+    }
+},*/
+
 
 _findNearestShip : function(posX, posY) {
     var closestShip = null,
@@ -97,6 +107,7 @@ init: function() {
     //this._generateRocks();
     //this._generateShip();
     this.generateLandscape();
+	//this._generateSnails();
 	this.generateSnail();
 },
 

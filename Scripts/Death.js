@@ -17,6 +17,8 @@ Death.prototype = new Entity();
 Death.prototype.cx = 200;
 Death.prototype.cy = 300;
 Death.prototype.timeFrame = 0;
+Death.prototype.height = 64;
+Death.prototype.width = 64;
 
 Death.prototype.rememberResets = function () {
     // Remember my reset positions
@@ -49,8 +51,8 @@ Death.prototype.getRadius = function () {
 };
 
 Death.prototype.render = function (ctx) {
-	ctx.fillStyle="red";
-	ctx.fillRect(this.cx,this.cy,100,100);
+	//ctx.fillStyle="red";
+	//ctx.fillRect(this.cx,this.cy,100,100);
 
 
    // var origScale = this.sprite.scale;
@@ -61,9 +63,11 @@ Death.prototype.render = function (ctx) {
 	
    // this.sprite.scale = origScale;
 
-	var cel = g_explosion[this.timeFrame]
+	var cel = g_explosion[this.timeFrame];
 	
-	cel.drawSpritesheetCentredAt(ctx,this.cx, this.cy - this.timeFrame*5);
+	//cel.drawSpritesheetCentredAt(ctx,this.cx, this.cy - this.timeFrame*5);
+	
+	cel.drawSheetAt(ctx,this.cx-(this.width/2), this.cy-(this.height/2));	
 		
 		//if (g_cel === g_sprites.length) g_cel = 0;
 		

@@ -56,7 +56,7 @@ Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation) {
     ctx.restore();
 };  
 
-Sprite.prototype.drawSheetAt = function (x, y) {
+Explosionsprite.prototype.drawSheetAt = function (ctx, x, y) {
     ctx.drawImage(this.image, 
                   this.sx, this.sy, this.width, this.height,
                   x, y, this.width, this.height);

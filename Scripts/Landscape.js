@@ -117,10 +117,10 @@ Landscape.prototype.getPixAt = function(x,y){
 Landscape.prototype.findIndex = function(x,y){
     return 4*(600*y + x);
 };
-Landscape.prototype.deletePixAt = function(x0,y0){
+Landscape.prototype.deletePixAt = function(x0,y0,radius){
     //Teiknar fylltan kassa
-	/*var offset = 20;
-    for(var i =x0-offset;i<x0+offset;i++)
+	var offset = 20;
+    /*for(var i =x0-offset;i<x0+offset;i++)
     {
         for(var j = y0-offset;j<y0+offset;j++){
             this.pixelMap.data[this.findIndex(i,j)] = 0;
@@ -131,7 +131,7 @@ Landscape.prototype.deletePixAt = function(x0,y0){
     }*/
 	
 	//Teiknar hring
-	var radius = 20;
+	/*var radius = 20;
 	var x = radius, y = 0;
   	var radiusError = 1-x;
  
@@ -154,9 +154,39 @@ Landscape.prototype.deletePixAt = function(x0,y0){
         	        x--;
         	        radiusError+=2*(y-x+1);
         	}
-  	}
+  	}*/
+	
 
+	//Teiknar fylltan hring
+	var x = radius;
+    	var y = 0;
+    	var xChange = 1 - (radius << 1);
+    	var yChange = 0;
+    	var radiusError = 0;
 
+    	while (x >= y)
+    	{
+        	for (var i = x0 - x; i <= x0 + x; i++)
+        	{
+        	    this.drawPixAt(i, y0 + y);
+        	    this.drawPixAt(i, y0 - y);
+        	}
+        	for (var i = x0 - y; i <= x0 + y; i++)
+        	{
+        	    this.drawPixAt(i, y0 + x);
+        	    this.drawPixAt(i, y0 - x);
+        	}
+
+        	y++;
+        	radiusError += yChange;
+        	yChange += 2;
+        	if (((radiusError << 1) + xChange) > 0)
+        	{
+        	    x--;
+        	    radiusError += xChange;
+        	    xChange += 2;
+        	}
+    	}
 	
 };
 

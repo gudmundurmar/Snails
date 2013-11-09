@@ -111,17 +111,17 @@ function processDiagnostics() {
         cy : g_mouseY,
         
         sprite : g_sprites.ship});*/
-		if (eatKey(KEY_1)) 
-    		{
-			var pix = entityManager._Landscape[0].getPixAt(g_mouseX,g_mouseY);
+	if (eatKey(KEY_1)) 
+    	{
+		var pix = entityManager._Landscape[0].getPixAt(g_mouseX,g_mouseY);
 
-			var sn = entityManager._Snails[0].getPos();
-    		}
+		var sn = entityManager._Snails[0].getPos();
+    	}
 
 
     if (eatKey(KEY_2)) 
     {
-        var pix = entityManager._Landscape[0].deletePixAt(g_mouseX,g_mouseY);
+        var pix = entityManager._Landscape[0].deletePixAt(g_mouseX,g_mouseY,40 /*bara til ad prufa*/);
         console.log(pix);
     }
 
@@ -207,22 +207,23 @@ var g_explosion = [];
 
 function loadExplosion(exploImage){
 
-var celWidth  = 320;
-var celHeight = 320;
+var celWidth  = 64;//320
+var celHeight = 64;//320
 var numCols = 5;
 var numRows = 5;
 var numCels = 25;
 
 var exploSprite;
 
- for (var row = 0; row < numRows; ++row) {
+for (var row = 0; row < numRows; ++row) {
         for (var col = 0; col < numCols; ++col) {
             exploSprite = new Explosionsprite(col * celWidth, row * celHeight,
-                                celWidth, celHeight,exploImage) 
+                                celWidth, celHeight,exploImage); 
             g_explosion.push(exploSprite);
         }
-    }
-	g_explosion.splice(numCels);
+}
+
+g_explosion.splice(numCels);
 		
 }
 

@@ -99,15 +99,6 @@ Snail.prototype.update = function (du) {
 		this.yVel = 0;
 	}
 
-	/*if(entityManager._Landscape[0].pixelHitTest(this))
-    	{
-        	this.yVel = 0;
-		console.log("HIT");
-    	}
-	else{
-		this.yVel += NOMINAL_GRAVITY;
-	}*/
-
     
     this.maybeFireBullet();
 
