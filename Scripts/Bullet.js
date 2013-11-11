@@ -52,11 +52,16 @@ Bullet.prototype.update = function (du) {
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
     spatialManager.unregister(this);
     if(this._isDeadNow) {
+		//entityManager.changeTurn(entityManager.changeWormP1,entityManager.changeWormP2, entityManager.changePlayer);
         return entityManager.KILL_ME_NOW;
+		
     }
 
     this.lifeSpan -= du;
-    if (this.lifeSpan < 0) return entityManager.KILL_ME_NOW;
+    if (this.lifeSpan < 0) {
+		entityManager.changeTurn(entityManager.changeWormP1,entityManager.changeWormP2, entityManager.changePlayer);
+		return entityManager.KILL_ME_NOW;
+		}
 
     this.cx += this.velX * du;
     this.cy += this.velY * du;
@@ -75,6 +80,7 @@ Bullet.prototype.update = function (du) {
     if (hitEntity) {
         var canTakeHit = hitEntity.takeBulletHit;
         if (canTakeHit) canTakeHit.call(hitEntity); 
+		entityManager.changeTurn(entityManager.changeWormP1,entityManager.changeWormP2, entityManager.changePlayer);
         return entityManager.KILL_ME_NOW;
     }
     
