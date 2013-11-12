@@ -86,6 +86,10 @@ var KEY_0 = keyCode('0');
 
 var KEY_1 = keyCode('1');
 var KEY_2 = keyCode('2');
+var KEY_3 = keyCode('3');
+
+var KEY_W = keyCode('W');
+var KEY_S = keyCode('S');
 
 var KEY_K = keyCode('K');
 
@@ -106,6 +110,11 @@ function processDiagnostics() {
 
     if (eatKey(KEY_0)) entityManager.toggleRocks();
 
+    if(eatKey(KEY_1)) entityManager._activeSnail._weapon.selected =1;
+
+    if(eatKey(KEY_2)) entityManager._activeSnail._weapon.selected =2;
+
+    if(eatKey(KEY_3)) entityManager._activeSnail._weapon.selected =3;
     /*if (eatKey(KEY_1)) entityManager.generateShip({
         cx : g_mouseX,
         cy : g_mouseY,
@@ -223,4 +232,3 @@ g_explosion.splice(numCels);
 
 // Kick it off
 requestPreloads();
->>>>>>> Weapons klasinn. Byrjum a 3 vopnum. Er að smíða þetta

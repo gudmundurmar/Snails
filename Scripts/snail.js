@@ -59,8 +59,8 @@ Snail.prototype.KEY_FIRE  = ' '.charCodeAt(0); // hafa computeThrustMag fyrir þ
 Snail.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
 Snail.prototype.KEY_0 = '0'.charCodeAt(0);
 Snail.prototype.KEY_1 = '1'.charCodeAt(0);
-/*.prototype.KEY_AIM_UP = 'up'.charCodeAt(0);
-Snail.prototype.KEY_AIM_DOWN = 'down'.charCodeAt(0);*/
+Snail.prototype.KEY_AIM_UP = 'W'.charCodeAt(0);
+Snail.prototype.KEY_AIM_DOWN = 'S'.charCodeAt(0);
 
 Snail.prototype.health = 100;
 Snail.prototype._isActive = false; //til að ákveða hvern á að hreyfa
@@ -86,6 +86,8 @@ Snail.prototype.isOutOfMap = function(){
 
 }
 
+var NOMINAL_ROTATE_RATE = 0.1;
+
 Snail.prototype.update = function (du) {
 	//console.log(this._isActive);
 	spatialManager.unregister(this);
@@ -97,6 +99,7 @@ Snail.prototype.update = function (du) {
 	this.cy+=this.yVel* du;
 	var prevY = this.cy;
 	var nextY = prevY + this.yVel * du;
+	var addRotate = 0;
 	
 	if (keys[this.KEY_LEFT] && this._isActive === true)
 	{
@@ -115,6 +118,12 @@ Snail.prototype.update = function (du) {
 		this.cy += this.yVel * du;
 		//jump.play();hoppu hljoð Hér þurfum við að hafa exp fall og ákveða max hæð sem má hoppa
     }
+
+    if(keys[this.KEY_AIM_UP] && this._isActive)
+    	addRotate = NOMINAL_ROTATE_RATE*du;
+    if(keys[this.KEY_AIM_DOWN] && this._isActive)
+    	addRotate = -NOMINAL_ROTATE_RATE*du;
+
 	
 	if(!this.isCollidingLandscape()){
 		this.yVel += NOMINAL_GRAVITY;
@@ -123,12 +132,8 @@ Snail.prototype.update = function (du) {
 	else{
 		this.yVel = 0;
 	}
-	if(eatKey(KEY_1) && this._isActive)
-		this._weapon.selected = 1;
-	if(eatKey(KEY_2) && this._isActive)
-		this._weapon.selected = 2;
 
-    this._weapon.update(this.cx,this.cy);
+    this._weapon.update(this.cx,this.cy,addRotate*this.direction);
     this.maybeFireBullet();
 
 	/*if(this.isColliding()){
@@ -228,10 +233,7 @@ Snail.prototype.takeDamage = function(){
 	}
 }
 
-Snail.prototype.render = function (ctx) {
-	if(this._isActive)
-		g_sprites.aim.drawCentredAt(ctx,this.cx+100*this.direction,this.cy);
-	
+Snail.prototype.render = function (ctx) {	
 	
 	ctx.fillStyle="white";
 	ctx.fillRect(this.cx-50,this.cy-70,100,20);

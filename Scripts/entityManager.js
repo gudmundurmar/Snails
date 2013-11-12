@@ -148,7 +148,7 @@ generateSnail : function(descr) {
     this._SnailsP1.push(new Snail(descr,"p1"));
     this._SnailsP2.push(new Snail(descr,"p2"));
 	this._SnailsP1[0]._isActive = true;
-	//this._SnailsP2[0]._isActive = true;
+	this._activeSnail = this._SnailsP1[0];
 },
 
 generateDeath : function(descr) {
@@ -209,8 +209,6 @@ update: function(du) {
 		
     }
    this.changeTurn(this.changeWormP1,this.changeWormP2, this.changePlayer);
-    //if (this._rocks.length === 0) this._generateRocks();
-
 },
 changeWormP1 : 0,
 changeWormP2 : 0,
@@ -218,16 +216,19 @@ changePlayer : "empty",
 
 changeTurn : function (p1Worm, p2Worm, currentPlayer){
 		
-	/*console.log(this._SnailsP1.length);
-	console.log(this._SnailsP2.length);
-	console.log(this.changeWorm);
-	console.log(this.changePlayer);
-	console.log("test");
-   //console.log(this.changePlayer);*/
+	//console.log(this._SnailsP1.length);
+	//console.log(this._SnailsP2.length);
+	//console.log(this.changeWorm);
+	//console.log(this.changePlayer);
+	//console.log("test");
 	
 	switch(currentPlayer){
-	case "p1" :	if(p2Worm > entityManager._SnailsP2.length-1){p2Worm = 0;};	entityManager._SnailsP2[p2Worm]._isActive = true; break;
-	case "p2" :	if(p1Worm > entityManager._SnailsP1.length-1){p1Worm = 0;};	entityManager._SnailsP1[p1Worm]._isActive = true; break;
+	case "p1" :	if(p2Worm > entityManager._SnailsP2.length-1){p2Worm = 0;};	entityManager._SnailsP2[p2Worm]._isActive = true;
+                this._activeSnail = this._SnailsP2[p2Worm];
+                break;
+	case "p2" :	if(p1Worm > entityManager._SnailsP1.length-1){p1Worm = 0;};	entityManager._SnailsP1[p1Worm]._isActive = true;
+                this._activeSnail = this._SnailsP1[p1Worm];
+                break;
 	case "empty" : break;
 	}
 	this.changePlayer = "empty";
@@ -262,7 +263,6 @@ renderLandscape: function(ctx, canvas) {
         this._Landscape[landscape].init(ctx, canvas);
     }
 }
-//Change
 }
 
 // Some deferred setup which needs the object to have been created first

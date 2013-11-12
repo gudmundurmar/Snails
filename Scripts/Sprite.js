@@ -36,8 +36,9 @@ Sprite.prototype.drawAt = function (ctx, x, y) {
                   x, y);
 };
 
-Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation) {
+Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation, turn) {
     if (rotation === undefined) rotation = 0;
+    if(turn === undefined) turn = 1;
     
 	
     var w = this.width,
@@ -45,6 +46,7 @@ Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation) {
 	
     ctx.save();
     ctx.translate(cx, cy);
+    ctx.scale(turn,1);
     ctx.rotate(rotation);
     ctx.scale(this.scale, this.scale);
     
@@ -94,6 +96,15 @@ Sprite.prototype.drawWrappedCentredAt = function (ctx, cx, cy, rotation) {
     this.drawWrappedVerticalCentredAt(ctx, cx - sw, cy, rotation);
     this.drawWrappedVerticalCentredAt(ctx, cx + sw, cy, rotation);
 };
+
+Sprite.prototype.drawAimAwayFrom = function(ctx, cx,cy,rotation,dir){
+    //(ctx,this.cx,this.cy,this.rotation,dir)
+    ctx.save();
+    //ctx.translate();
+    ctx.scale(this.scale,this.scale);
+    ctx.drawImage(this.image,cx,cy);
+    ctx.restore();
+}
 
 Sprite.prototype.drawWrappedVerticalCentredAt = function (ctx, cx, cy, rotation) {
 

@@ -16,12 +16,16 @@ function Weapon(descr) {
     this.sprites[2] = g_sprites.shotgun;
    	this.sprites[3] = g_sprites.rocketlauncher;
 };
+Weapon.prototype.rotation =0;
 
 Weapon.prototype.render = function(ctx,dir){
 	var spriteNow = this.sprites[this.selected];
-	this.sprites[this.selected].drawSnailCentredAt(ctx,this.cx,this.cy,dir);
+	this.sprites[this.selected].drawCentredAt(ctx,this.cx,this.cy,this.rotation,dir);
+    g_sprites.aim.drawAimAwayFrom(ctx,this.cx,this.cy,this.rotation,dir);
 };
-Weapon.prototype.update = function(xVal,yVal){
+Weapon.prototype.update = function(xVal,yVal,rotation){
 	this.cx=xVal;
 	this.cy=yVal;
+    if( -Math.PI/2<this.rotation-rotation &&this.rotation-rotation<Math.PI/2)
+        this.rotation-=rotation;
 };
