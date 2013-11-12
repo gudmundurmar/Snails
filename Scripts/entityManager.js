@@ -262,7 +262,7 @@ renderLandscape: function(ctx, canvas) {
         this._Landscape[landscape].init(ctx, canvas);
     }
 }
-
+//Change
 }
 
 // Some deferred setup which needs the object to have been created first
