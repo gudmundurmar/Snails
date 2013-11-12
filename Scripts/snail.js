@@ -36,7 +36,10 @@ function Snail(descr, playerCheck) {
   
     this._scale = 1;
     this._isActive = false;
-	
+	this._weapon = new Weapon({
+		cx:this.cx,
+		cy:this.cy
+		});
 };
 
 
@@ -54,6 +57,8 @@ Snail.prototype.KEY_JUMP = 'J'.charCodeAt(0); // þarf að finna fyrir enter. J 
 Snail.prototype.KEY_LEFT   = 'A'.charCodeAt(0);
 Snail.prototype.KEY_FIRE  = ' '.charCodeAt(0); // hafa computeThrustMag fyrir þetta t.d. fyrir bazooka?
 Snail.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
+Snail.prototype.KEY_0 = '0'.charCodeAt(0);
+Snail.prototype.KEY_1 = '1'.charCodeAt(0);
 /*.prototype.KEY_AIM_UP = 'up'.charCodeAt(0);
 Snail.prototype.KEY_AIM_DOWN = 'down'.charCodeAt(0);*/
 
@@ -85,7 +90,7 @@ Snail.prototype.update = function (du) {
 	//console.log(this._isActive);
 	spatialManager.unregister(this);
 	if(this._isDeadNow || this.isOutOfMap()){
-		//endTurnMakeNextActive(this.player);   
+		endTurnMakeNextActive(this.player);   
 		return entityManager.KILL_ME_NOW;
 	}
 	
@@ -103,7 +108,6 @@ Snail.prototype.update = function (du) {
 	this.cx += 3 * du;
 	this.direction = 1;
 	}
-	
    
 	if (keys[this.KEY_JUMP] && this._isActive === true && this.isCollidingLandscape()) { 
 	
@@ -119,8 +123,12 @@ Snail.prototype.update = function (du) {
 	else{
 		this.yVel = 0;
 	}
+	if(eatKey(KEY_1) && this._isActive)
+		this._weapon.selected = 1;
+	if(eatKey(KEY_2) && this._isActive)
+		this._weapon.selected = 2;
 
-    
+    this._weapon.update(this.cx,this.cy);
     this.maybeFireBullet();
 
 	/*if(this.isColliding()){
@@ -221,8 +229,8 @@ Snail.prototype.takeDamage = function(){
 }
 
 Snail.prototype.render = function (ctx) {
-	
-	g_sprites.aim.drawCentredAt(ctx,this.cx+100*this.direction,this.cy);
+	if(this._isActive)
+		g_sprites.aim.drawCentredAt(ctx,this.cx+100*this.direction,this.cy);
 	
 	
 	ctx.fillStyle="white";
@@ -252,6 +260,6 @@ Snail.prototype.render = function (ctx) {
 	//eitthvað með að teikna vopnið með this.drawWeapon
 	//this.weapon.render(ctx);
     this.sprite.scale = origScale;
-	
+	this._weapon.render(ctx,this.direction);
 	
 };

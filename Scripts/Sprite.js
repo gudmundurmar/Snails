@@ -62,7 +62,6 @@ Explosionsprite.prototype.drawSheetAt = function (ctx, x, y) {
                   x, y, this.width, this.height);
 }
 
-
 Sprite.prototype.drawSnailCentredAt = function (ctx, cx, cy, rotation) {
     if (rotation === undefined) rotation = 0;
     

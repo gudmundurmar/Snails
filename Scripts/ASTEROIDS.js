@@ -111,19 +111,6 @@ function processDiagnostics() {
         cy : g_mouseY,
         
         sprite : g_sprites.ship});*/
-	if (eatKey(KEY_1)) 
-    	{
-		var pix = entityManager._Landscape[0].getPixAt(g_mouseX,g_mouseY);
-
-		var sn = entityManager._Snails[0].getPos();
-    	}
-
-
-    if (eatKey(KEY_2)) 
-    {
-        var pix = entityManager._Landscape[0].deletePixAt(g_mouseX,g_mouseY,40 /*bara til ad prufa*/);
-        console.log(pix);
-    }
 
 
     if (eatKey(KEY_K)) entityManager.killNearestShip(
@@ -168,8 +155,11 @@ function requestPreloads() {
         land   : "img/Whiteline.png",
 		snail  : "img/army-snail.png",
 		explosion : "img/explosion.png",
-		aim: "img/aim.png"
-	
+		aim: "img/aim.png",
+        smg: "img/weapons/smg.png",
+        shotgun: "img/weapons/shotgun.png",
+        rocketlauncher:"img/weapons/rocketlauncher.png",
+        rocket:"img/weapons/rocket.png"
     };
     imagesPreload(requiredImages, g_images, preloadDone);
 }
@@ -189,6 +179,10 @@ function preloadDone() {
     g_sprites.land = new Sprite(g_images.land);
 	g_sprites.snail = new Sprite(g_images.snail);
 	g_sprites.aim = new Sprite(g_images.aim);
+    g_sprites.smg = new Sprite(g_images.smg);
+    g_sprites.shotgun = new Sprite(g_images.shotgun);
+    g_sprites.rocketlauncher = new Sprite(g_images.rocketlauncher);
+    g_sprites.rocket = new Sprite(g_images.rocket);
 	g_sprites.aim.scale = 0.25;
 	//g_sprites.explosion = new Sprite(g_images.explosion);
 	
@@ -229,3 +223,4 @@ g_explosion.splice(numCels);
 
 // Kick it off
 requestPreloads();
+>>>>>>> Weapons klasinn. Byrjum a 3 vopnum. Er að smíða þetta

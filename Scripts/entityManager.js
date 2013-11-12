@@ -101,7 +101,7 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._Landscape,/*this._rocks,*/ /* this._ships,*/this._SnailsP1,this._SnailsP2,this._Death, this._bullets];
+    this._categories = [this._Landscape,/*this._rocks,*/ this._bullets,/* this._ships,*/this._SnailsP1,this._SnailsP2,this._Death];
 },
 
 init: function() {
@@ -120,6 +120,16 @@ fireBullet: function(cx, cy, velX, velY, rotation) {
         velY : velY,
 
         rotation : rotation
+    }));
+},
+
+fireRocket: function(cx,xy,velX,velY,power){
+    this._bullets.push(new Rocket({
+        cx : cx,
+        cy : cy,
+        velX:velX,
+        velY:velY
+        //Add power
     }));
 },
 
@@ -198,7 +208,7 @@ update: function(du) {
         }
 		
     }
-   //this.changeTurn(this.changeWormP1,this.changeWormP2, this.changePlayer);
+   this.changeTurn(this.changeWormP1,this.changeWormP2, this.changePlayer);
     //if (this._rocks.length === 0) this._generateRocks();
 
 },
@@ -207,10 +217,7 @@ changeWormP2 : 0,
 changePlayer : "empty",
 
 changeTurn : function (p1Worm, p2Worm, currentPlayer){
-	
-	console.log(entityManager._SnailsP1.length);
-	console.log(entityManager._SnailsP2.length);
-	
+		
 	/*console.log(this._SnailsP1.length);
 	console.log(this._SnailsP2.length);
 	console.log(this.changeWorm);
@@ -222,7 +229,7 @@ changeTurn : function (p1Worm, p2Worm, currentPlayer){
 	case "p1" :	if(p2Worm > entityManager._SnailsP2.length-1){p2Worm = 0;};	entityManager._SnailsP2[p2Worm]._isActive = true; break;
 	case "p2" :	if(p1Worm > entityManager._SnailsP1.length-1){p1Worm = 0;};	entityManager._SnailsP1[p1Worm]._isActive = true; break;
 	case "empty" : break;
-				}
+	}
 	this.changePlayer = "empty";
 },
 
