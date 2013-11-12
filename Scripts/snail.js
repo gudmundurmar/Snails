@@ -103,13 +103,31 @@ Snail.prototype.update = function (du) {
 	
 	if (keys[this.KEY_LEFT] && this._isActive === true)
 	{
-	this.cx -= 3* du;
-	this.direction = -1;
+		this.direction = -1;
+		
+		if(this.isUnderground())
+		{
+			this.cy -= 1*du;			
+		}	
+							
+		else{
+			this.cx-= 3*du;
+		}
+
 	}
 	if (keys[this.KEY_RIGHT] && this._isActive === true)
 	{
-	this.cx += 3 * du;
-	this.direction = 1;
+		this.direction = 1;
+		
+		if(this.isUnderground())
+		{
+			this.cy -= 1*du;			
+		}	
+							
+		else{
+			this.cx+= 3*du;
+		}
+
 	}
    
 	if (keys[this.KEY_JUMP] && this._isActive === true && this.isCollidingLandscape()) { 
@@ -142,6 +160,33 @@ Snail.prototype.update = function (du) {
 	else{*/
 		spatialManager.register(this);
 		
+};
+
+Snail.prototype.isUnderground = function(){
+
+	var halfheight = g_images.snail.height/2;
+	var width = g_images.snail.width;
+	var halfwidth = width/2;
+	var y = Math.floor(this.cy+halfheight-1);
+	var x = Math.floor(this.cx-halfwidth);
+
+
+	for(var i=x; i<width+x; i++)
+	{
+		var R = entityManager._Landscape[0].getPixAt(i,y).R;
+		var G = entityManager._Landscape[0].getPixAt(i,y).G;
+		var B = entityManager._Landscape[0].getPixAt(i,y).B;
+			
+		if(R !== 0 && G !== 0 && B !== 0)
+		{
+			console.log("HIT");
+			return true;
+		}
+			
+	}
+	return false;
+
+
 };
 
 Snail.prototype.isCollidingLandscape = function() {

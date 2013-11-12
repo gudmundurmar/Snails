@@ -83,22 +83,26 @@ Landscape.prototype.buildPixelMap = function( ctx ) {
 Landscape.prototype.pixelHitTest = function(target ) {
 	var pos = target.getPos();
 	var halfheight = g_images.snail.height/2;
-	
-	var x = Math.floor(pos.posX);
-	var y = Math.floor(pos.posY+halfheight);
-	var R = this.getPixAt(x,y).R;
-	var G = this.getPixAt(x,y).G;
-	var B = this.getPixAt(x,y).B;
+	var width = g_images.snail.width;
+	var halfwidth = width/2;
+	var y = Math.floor(pos.posY+halfheight);	
+	var x = Math.floor(pos.posX-halfwidth);
 
-	
-	if(R !== 0 && G !== 0 && B !== 0)
+
+	for(var i=x; i<width+x; i++)
 	{
-		return true;
+		var R = this.getPixAt(i,y).R;
+		var G = this.getPixAt(i,y).G;
+		var B = this.getPixAt(i,y).B;
+			
+		if(R !== 0 && G !== 0 && B !== 0)
+		{
+			console.log("HIT");
+			return true;
+		}
+			
 	}
-	else
-	{
-    		return false;
-	}
+
 	
 };
 
