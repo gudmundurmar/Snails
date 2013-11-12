@@ -64,7 +64,7 @@ function updateSimulation(du) {
     entityManager.update(du);
 
     // Prevent perpetual firing!
-    eatKey(Ship.prototype.KEY_FIRE);
+    eatKey(Snail.prototype.KEY_FIRE);
 }
 
 // GAME-SPECIFIC DIAGNOSTICS
@@ -110,11 +110,11 @@ function processDiagnostics() {
 
     if (eatKey(KEY_0)) entityManager.toggleRocks();
 
-    if(eatKey(KEY_1)) entityManager._activeSnail._weapon.selected =1;
+    if(eatKey(KEY_1)) entityManager._activeSnail._weapon.changeGun(1);
 
-    if(eatKey(KEY_2)) entityManager._activeSnail._weapon.selected =2;
+    if(eatKey(KEY_2)) entityManager._activeSnail._weapon.changeGun(2);
 
-    if(eatKey(KEY_3)) entityManager._activeSnail._weapon.selected =3;
+    if(eatKey(KEY_3)) entityManager._activeSnail._weapon.changeGun(3);
     /*if (eatKey(KEY_1)) entityManager.generateShip({
         cx : g_mouseX,
         cy : g_mouseY,

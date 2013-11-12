@@ -133,7 +133,7 @@ Snail.prototype.update = function (du) {
 		this.yVel = 0;
 	}
 
-    this._weapon.update(this.cx,this.cy,addRotate*this.direction);
+    this._weapon.update(this.cx,this.cy,addRotate,this.direction);
     this.maybeFireBullet();
 
 	/*if(this.isColliding()){
@@ -185,27 +185,27 @@ Snail.prototype.maybeFireBullet = function () {
 
     if (keys[this.KEY_FIRE] && this._isActive === true) {
     
-        var dX = this.cx+100*this.direction;
-        var dY = this.cy;
-        var launchDist = this.getRadius() * 1.2;
-       
-        var relVel = 2;
-        var relVelX = dX * relVel;
-        var relVelY = dY * relVel;
+    	this._weapon.fire();
 
-        entityManager.fireBullet(
-           dX , dY ,
-           1*this.direction , NOMINAL_GRAVITY, 
-           200);
-		   
-	endTurnMakeNextActive(this.player);   
+        //var dX = this.cx+100*this.direction;
+        //var dY = this.cy;
+        //var launchDist = this.getRadius() * 1.2;
+       
+        //var relVel = 2;
+        //var relVelX = dX * relVel;
+        //var relVelY = dY * relVel;
+
+        //entityManager.fireBullet(
+        //   dX , dY ,
+        //   1*this.direction , NOMINAL_GRAVITY, 
+        //   200);
+	if(this._weapon.ammo===0)
+		{endTurnMakeNextActive(this.player); 
+		this._weapon.ammo=50; 
+		this._isActive = false;} 
 	/*entityManager.changePlayer = this.player;
-	entityManager.changeWorm = endTurnMakeNextActive(this.player);*/
-    this._isActive = false;  
-	
+	entityManager.changeWorm = endTurnMakeNextActive(this.player);*/  
     }
-	
-	
     
 };
 
@@ -262,6 +262,7 @@ Snail.prototype.render = function (ctx) {
 	//eitthvað með að teikna vopnið með this.drawWeapon
 	//this.weapon.render(ctx);
     this.sprite.scale = origScale;
-	this._weapon.render(ctx,this.direction);
+    if(this._isActive)
+		this._weapon.render(ctx,this.direction);
 	
 };

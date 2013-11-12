@@ -17,15 +17,53 @@ function Weapon(descr) {
    	this.sprites[3] = g_sprites.rocketlauncher;
 };
 Weapon.prototype.rotation =0;
+Weapon.prototype.ammo = 50;
+Weapon.prototype.aimX=0;
+Weapon.prototype.aimY=0;
+Weapon.prototype.aimDistance = 70;
+Weapon.prototype.started =false;
 
 Weapon.prototype.render = function(ctx,dir){
 	var spriteNow = this.sprites[this.selected];
 	this.sprites[this.selected].drawCentredAt(ctx,this.cx,this.cy,this.rotation,dir);
-    g_sprites.aim.drawAimAwayFrom(ctx,this.cx,this.cy,this.rotation,dir);
+    this.drawAim(ctx);
 };
-Weapon.prototype.update = function(xVal,yVal,rotation){
+Weapon.prototype.update = function(xVal,yVal,rotation,dir){
 	this.cx=xVal;
 	this.cy=yVal;
-    if( -Math.PI/2<this.rotation-rotation &&this.rotation-rotation<Math.PI/2)
+
+    this.aimVectorX = dir*this.aimDistance*Math.cos(this.rotation);
+    this.aimVectorY = this.aimDistance*Math.sin(this.rotation);
+    this.aimX = this.aimVectorX+this.cx;
+    this.aimY = this.aimVectorY + this.cy;
+
+    if(-Math.PI/2<this.rotation-rotation &&this.rotation-rotation<Math.PI/2)
         this.rotation-=rotation;
+};
+Weapon.prototype.drawAim = function(ctx){
+
+    g_sprites.aim.drawCentredAt(ctx,this.aimX,this.aimY);
+};
+Weapon.prototype.changeGun = function(whatgun){
+    if(!this.started)
+        this.selected =whatgun;
+};
+Weapon.prototype.fire = function(){
+    this.started = true;
+    switch(this.selected){
+        case 1: 
+            this.ammo -= 5;
+            entityManager.fireBullet(this.aimX, this.aimY ,this.aimVectorX/10   ,this.aimVectorY/10,5);
+            break;
+        case 2: entityManager.fireBullet(this.aimX,this.aimY, this.aimVectorX/10, this.aimVectorY/10,20);
+            this.ammo =0;
+            break;
+        case 3: 
+            //Haldainnitakkanum
+            entityManager.fireRocket(this.aimX,this.aimY, this.aimVectorX/10,this.aimVectorY/10,30); 
+        default:
+            return;
+    }
+    if(this.ammo===0)
+        this.started = false;
 };

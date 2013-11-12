@@ -98,9 +98,7 @@ Sprite.prototype.drawWrappedCentredAt = function (ctx, cx, cy, rotation) {
 };
 
 Sprite.prototype.drawAimAwayFrom = function(ctx, cx,cy,rotation,dir){
-    //(ctx,this.cx,this.cy,this.rotation,dir)
     ctx.save();
-    //ctx.translate();
     ctx.scale(this.scale,this.scale);
     ctx.drawImage(this.image,cx,cy);
     ctx.restore();
