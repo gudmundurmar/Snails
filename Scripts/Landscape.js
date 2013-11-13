@@ -97,7 +97,7 @@ Landscape.prototype.pixelHitTest = function(target ) {
 			
 		if(R !== 0 && G !== 0 && B !== 0)
 		{
-			console.log("HIT");
+			//console.log("HIT");
 			return true;
 		}
 			

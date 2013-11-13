@@ -6,10 +6,17 @@ var keys = [];
 
 function handleKeydown(evt) {
     keys[evt.keyCode] = true;
+	//console.log(evt.keyCode);
 }
 
 function handleKeyup(evt) {
-    keys[evt.keyCode] = false;
+
+	if(evt.keyCode === 32){
+	hasBeenShot = true;
+	console.log("up");
+	}
+	keys[evt.keyCode] = false;
+	//console.log(evt.keyCode);
 }
 
 // Inspects, and then clears, a key's state

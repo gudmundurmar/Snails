@@ -37,6 +37,7 @@ Rocket.prototype.cx = 200;
 Rocket.prototype.cy = 200;
 Rocket.prototype.velX = 1;
 Rocket.prototype.velY = 1;
+Rocket.prototype.power = 1;
 
 
 Rocket.prototype.update = function (du) {
@@ -53,13 +54,13 @@ Rocket.prototype.update = function (du) {
         		cx : this.cx,
         		cy : this.cy
     	});
-        entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),50);
         return entityManager.KILL_ME_NOW;
     }
+	this.velY += NOMINAL_GRAVITY;
 	
-    this.cx += this.velX * du;
+    this.cx += (this.velX + this.power) * du;
     this.cy += this.velY * du;
-
+	
     
     // TODO? NO, ACTUALLY, I JUST DID THIS BIT FOR YOU! :-)
     //
@@ -74,7 +75,7 @@ Rocket.prototype.update = function (du) {
         		cx : this.cx,
         		cy : this.cy
     	});
-		entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),50);
+		
         return entityManager.KILL_ME_NOW;
     }
     

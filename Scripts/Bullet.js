@@ -69,7 +69,7 @@ Bullet.prototype.update = function (du) {
     if (hitEntity) {
         var canTakeHit = hitEntity.takeBulletHit;
         if (canTakeHit) canTakeHit.call(hitEntity); 
-		entityManager.changeTurn(entityManager.changeWormP1,entityManager.changeWormP2, entityManager.changePlayer);
+		//entityManager.changeTurn(entityManager.changeWormP1,entityManager.changeWormP2, entityManager.changePlayer);
         return entityManager.KILL_ME_NOW;
     }
 

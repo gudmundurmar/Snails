@@ -20,7 +20,7 @@ Weapon.prototype.rotation =0;
 Weapon.prototype.ammo = 50;
 Weapon.prototype.aimX=0;
 Weapon.prototype.aimY=0;
-Weapon.prototype.aimDistance = 70;
+Weapon.prototype.aimDistance = 35;
 Weapon.prototype.started =false;
 
 Weapon.prototype.render = function(ctx,dir){
@@ -42,13 +42,13 @@ Weapon.prototype.update = function(xVal,yVal,rotation,dir){
 };
 Weapon.prototype.drawAim = function(ctx){
 
-    g_sprites.aim.drawCentredAt(ctx,this.aimX,this.aimY);
+    g_sprites.aim.drawCentredAt(ctx,this.aimX/* + this.aimDistance*/,this.aimY);
 };
 Weapon.prototype.changeGun = function(whatgun){
     if(!this.started)
-        this.selected =whatgun;
+        this.selected = whatgun;
 };
-Weapon.prototype.fire = function(){
+Weapon.prototype.fire = function(power){
     this.started = true;
     switch(this.selected){
         case 1: 
@@ -60,7 +60,8 @@ Weapon.prototype.fire = function(){
             break;
         case 3: 
             //Haldainnitakkanum
-            entityManager.fireRocket(this.aimX,this.aimY, this.aimVectorX/10,this.aimVectorY/10,30); 
+			//console.log(power);
+            entityManager.fireRocket(this.aimX,this.aimY, this.aimVectorX/10,this.aimVectorY/10,power); 
 			this.ammo =0;
         default:
             return;

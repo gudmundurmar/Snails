@@ -101,7 +101,7 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._Landscape,/*this._rocks,*/ this._bullets,/* this._ships,*/this._SnailsP1,this._SnailsP2,this._Death];
+    this._categories = [this._Landscape,/*this._rocks,*/ /* this._ships,*/this._SnailsP1,this._SnailsP2,this._Death,this._bullets];
 },
 
 init: function() {
@@ -123,13 +123,14 @@ fireBullet: function(cx, cy, velX, velY, rotation) {
     }));
 },
 
-fireRocket: function(cx,cy,velX,velY/*,power*/){
+fireRocket: function(cx,cy,velX,velY,power){
+	console.log(power);
     this._bullets.push(new Rocket({
         cx : cx,
         cy : cy,
-        velX: velX,
-        velY: velY
-        //Add power
+        velX: velX * power,
+        velY: velY * power
+        //power : power
     }));
 },
 

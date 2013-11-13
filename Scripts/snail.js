@@ -53,6 +53,7 @@ Snail.prototype.rememberResets = function () {
 };
 
 Snail.prototype.player = "";
+Snail.prototype.thrust = 1;
 Snail.prototype.KEY_JUMP = 'J'.charCodeAt(0); // þarf að finna fyrir enter. J fyrru jump
 Snail.prototype.KEY_LEFT   = 'A'.charCodeAt(0);
 Snail.prototype.KEY_FIRE  = ' '.charCodeAt(0); // hafa computeThrustMag fyrir þetta t.d. fyrir bazooka?
@@ -82,7 +83,7 @@ Snail.prototype.randomisePosition = function () {
 Snail.prototype.isOutOfMap = function(){
 
 	if(this.cx < 0 || this.cx > g_canvas.width /*|| this.cy >= seaLevel*/){
-	endTurnMakeNextActive(this.player); 
+	if(this._isActive){endTurnMakeNextActive(this.player);}
 	return true;
 	}
 	//vantar hér breytuna seaLevel til að tjékka á hvenær snigillinn drukknar
@@ -100,8 +101,8 @@ Snail.prototype.update = function (du) {
 	}
 	
 	this.cy+=this.yVel* du;
-	var prevY = this.cy;
-	var nextY = prevY + this.yVel * du;
+	//var prevY = this.cy;
+	//var nextY = prevY + this.yVel * du;
 	var addRotate = 0;
 	
 	if (keys[this.KEY_LEFT] && this._isActive === true)
@@ -121,8 +122,8 @@ Snail.prototype.update = function (du) {
 	}
 	if (keys[this.KEY_RIGHT] && this._isActive === true)
 	{
-	this.direction = 1;
-	if(this.isUnderground())
+		this.direction = 1;
+		if(this.isUnderground())
 		{
 			this.cy -= 1*du;			
 		}	
@@ -130,7 +131,7 @@ Snail.prototype.update = function (du) {
 		else{
 			this.cx+= 3*du;
 			}
-	this.direction = 1;
+	
 	}
    
 	if (keys[this.KEY_JUMP] && this._isActive === true && this.isCollidingLandscape()) { 
@@ -157,10 +158,6 @@ Snail.prototype.update = function (du) {
     this._weapon.update(this.cx,this.cy,addRotate,this.direction);
     this.maybeFireBullet();
 
-	/*if(this.isColliding()){
-		this.warp();
-		}
-	else{*/
 		spatialManager.register(this);
 		
 };
@@ -182,7 +179,6 @@ Snail.prototype.isUnderground = function(){
 			
 		if(R !== 0 && G !== 0 && B !== 0)
 		{
-			console.log("HIT");
 			return true;
 		}
 			
@@ -224,35 +220,31 @@ function endTurnMakeNextActive(currentPlayer){
 	}
 }
 
+var hasBeenShot = false;
 
 Snail.prototype.maybeFireBullet = function () {
 
     if (keys[this.KEY_FIRE] && this._isActive === true) {
-    
-    	this._weapon.fire();
-
-        //var dX = this.cx+100*this.direction;
-        //var dY = this.cy;
-        //var launchDist = this.getRadius() * 1.2;
-       
-        //var relVel = 2;
-        //var relVelX = dX * relVel;
-        //var relVelY = dY * relVel;
-
-        //entityManager.fireBullet(
-        //   dX , dY ,
-        //   1*this.direction , NOMINAL_GRAVITY, 
-        //   200);
+		this.thrust += 0.5;
+		console.log(this.thrust);
+		}
+	
+	if((hasBeenShot === true || this.thrust > 5.5)&& this._isActive === true ){
+    	this._weapon.fire(this.thrust);
+		
+		hasBeenShot = false;
+		this.thrust = 0;
+		}
+		
+ 
 	if(this._weapon.ammo===0){
 		endTurnMakeNextActive(this.player); 
 		this._weapon.ammo=50; 
 		this._isActive = false;
 		} 
-	/*entityManager.changePlayer = this.player;
-	entityManager.changeWorm = endTurnMakeNextActive(this.player);*/  
+  
     }
-    
-};
+	
 
 Snail.prototype.getRadius = function () {
     return (this.sprite.width / 2) * 0.9;
@@ -272,7 +264,6 @@ Snail.prototype.takeDamage = function(){
         		cx : this.cx,
         		cy : this.cy
     	});
-		entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),30);
 		
 		this._isDeadNow = true;
 	}

@@ -8,8 +8,7 @@ function Death(descr) {
     // Default sprite, if not otherwise specified
   
     this._scale = 1;
-    this._isActive = true
-	
+	entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),60);
 };
 
 Death.prototype = new Entity();
@@ -28,7 +27,7 @@ Death.prototype.rememberResets = function () {
 };
 
 Death.prototype.update = function (du) {
-	console.log(this.timeFrame);
+	//console.log(this.timeFrame);
 	
 	this.timeFrame++;
 	
