@@ -250,7 +250,7 @@ function endTurnMakeNextActive(currentPlayer){
 		}
 	}
 	else{				
-		for(var i = 0 ; i < entityManager._SnailsP1.length; i++){
+		for(var i = 0 ; i < entityManager._SnailsP2.length; i++){
 			if(entityManager._SnailsP2[i]._isActive === true){
 				entityManager.changePlayer = "p2";
 				entityManager.changeWormP2 = i + 1;
