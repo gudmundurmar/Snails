@@ -38,8 +38,8 @@ Landscape.prototype.update = function (du) {
 	
 };
 
-Landscape.prototype.cx = 0;//938;
-Landscape.prototype.cy = 0;//404;
+Landscape.prototype.cx = 938;
+Landscape.prototype.cy = 404;
 Landscape.prototype.name = "Landscape";
 Landscape.prototype.width = g_canvas.width;
 Landscape.prototype.height = g_canvas.height;
@@ -61,7 +61,7 @@ Landscape.prototype.firstRender = function (ctx) {
     // pass my scale into the sprite, for drawing
     this.sprite.scale = this._scale;
     this.sprite.drawCentredAt(
-	ctx, this.width/2, this.height/2, this.rotation
+	ctx, this.cx, this.cy, this.rotation
     );
     this.sprite.scale = origScale;
 };
@@ -77,7 +77,7 @@ Landscape.prototype.init = function(ctx, canvas) {
 Landscape.prototype.pixelMap;
 
 Landscape.prototype.buildPixelMap = function( ctx ) {
-	return ctx.getImageData(0,0,this.width,this.height);
+	return ctx.getImageData(0,0,1876,809);
     };
 
 Landscape.prototype.pixelHitTest = function(target ) {
@@ -98,7 +98,7 @@ Landscape.prototype.pixelHitTest = function(target ) {
 		var G = this.getPixAt(i,y1).G;
 		var B = this.getPixAt(i,y1).B;
 			
-		if(R !== 0 && G !== 0)
+		if(R !== 0 && G !== 0 && B !== 0)
 		{
 			//console.log("HIT");
 			target.isCollidingBottom = true;
@@ -113,7 +113,7 @@ Landscape.prototype.pixelHitTest = function(target ) {
 		var G = this.getPixAt(i,y2).G;
 		var B = this.getPixAt(i,y2).B;
 			
-		if(R !== 0 && G !== 0)
+		if(R !== 0 && G !== 0 && B !== 0)
 		{
 			console.log("TOP HIT");
 			target.isCollidingTop = true;
@@ -218,5 +218,5 @@ Landscape.prototype.drawPixAt = function(x,y){
 	this.pixelMap.data[this.findIndex(x,y)] = 0;
         this.pixelMap.data[this.findIndex(x,y)+1] = 0;
         this.pixelMap.data[this.findIndex(x,y)+2]=0;
-        this.pixelMap.data[this.findIndex(x,y)+3] = 0;
+        this.pixelMap.data[this.findIndex(x,y)+3] = 255;
 };

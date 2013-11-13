@@ -11,6 +11,7 @@
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 */
 
+var NOMINAL_GRAVITY = 0.12;
 
 function Snail(descr, playerCheck) {
 
@@ -89,7 +90,7 @@ Snail.prototype.randomisePosition = function () {
 
 Snail.prototype.isOutOfMap = function(){
 
-	if(this.cx < 0 || this.cx > g_canvas.width /*|| this.cy >= seaLevel*/){
+	if(this.cx < 0 || this.cx > g_canvas.width || this.cy > entityManager.seaLevel){
 	if(this._isActive){endTurnMakeNextActive(this.player);}
 	return true;
 	}
@@ -100,6 +101,7 @@ Snail.prototype.isOutOfMap = function(){
 var NOMINAL_ROTATE_RATE = 0.1;
 
 Snail.prototype.update = function (du) {
+	//console.log("wind : " + entityManager.windThisTurn);
 	//console.log(this._isActive);
 	spatialManager.unregister(this);
 	if(this._isDeadNow || this.isOutOfMap()){
@@ -241,6 +243,9 @@ var NOMINAL_GRAVITY = 0.12;
 
 
 function endTurnMakeNextActive(currentPlayer){
+	
+	
+	entityManager.currentWind();
 	if(currentPlayer === "p1"){
 		for(var i = 0 ; i < entityManager._SnailsP1.length; i++){
 			if(entityManager._SnailsP1[i]._isActive === true){
@@ -312,11 +317,12 @@ Snail.prototype.takeDamage = function(){
 Snail.prototype.render = function (ctx) {	
 	
 	ctx.fillStyle="white";
-	ctx.fillRect(this.cx-50,this.cy-70,100,20);
+	ctx.fillRect(this.cx-50,this.cy-70,100,25);
 	
 	if(this._isActive === true){
 		ctx.strokeStyle="green";
-		ctx.strokeRect(this.cx-50,this.cy-70,100,20);
+		ctx.lineWidth = 5;
+		ctx.strokeRect(this.cx-50,this.cy-70,100,25);
 		}
 	
 	
@@ -327,7 +333,7 @@ Snail.prototype.render = function (ctx) {
 		ctx.fillStyle="blue";
 	}
 	ctx.font= "20px Arial"; 
-	ctx.fillText(this.health, this.cx-25, this.cy-55);
+	ctx.fillText(this.health, this.cx-18, this.cy-52);
 
     var origScale = this.sprite.scale;
 	

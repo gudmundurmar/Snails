@@ -52,7 +52,6 @@ Bullet.prototype.update = function (du) {
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
     spatialManager.unregister(this);
     if(this._isDeadNow) {
-		//entityManager.changeTurn(entityManager.changeWormP1,entityManager.changeWormP2, entityManager.changePlayer);
         return entityManager.KILL_ME_NOW;
 		
     }
@@ -78,7 +77,6 @@ Bullet.prototype.update = function (du) {
     if (hitEntity) {
         var canTakeHit = hitEntity.takeBulletHit;
         if (canTakeHit) canTakeHit.call(hitEntity); 
-		//entityManager.changeTurn(entityManager.changeWormP1,entityManager.changeWormP2, entityManager.changePlayer);
         return entityManager.KILL_ME_NOW;
     }
 

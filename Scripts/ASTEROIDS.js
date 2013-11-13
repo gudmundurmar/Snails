@@ -16,23 +16,6 @@ var g_ctx = g_canvas.getContext("2d");
 */
 
 
-// ====================
-// CREATE INITIAL SHIPS
-// ====================
-
-function createInitialShips() {
-
-    entityManager.generateShip({
-        cx : 200,
-        cy : 200
-    });
-	/*entityManager.generateSnail({
-        cx : 400,
-        cy : 200
-    });*/
-	
-}
-
 // =============
 // GATHER INPUTS
 // =============
@@ -69,14 +52,9 @@ function updateSimulation(du) {
 
 // GAME-SPECIFIC DIAGNOSTICS
 
-var g_allowMixedActions = true;
-var g_useGravity = false;
 var g_useAveVel = true;
 var g_renderSpatialDebug = false;
 
-var KEY_MIXED   = keyCode('M');;
-var KEY_GRAVITY = keyCode('G');
-var KEY_AVE_VEL = keyCode('V');
 var KEY_SPATIAL = keyCode('X');
 
 var KEY_HALT  = keyCode('H');
@@ -91,39 +69,18 @@ var KEY_3 = keyCode('3');
 var KEY_W = keyCode('W');
 var KEY_S = keyCode('S');
 
-var KEY_K = keyCode('K');
-
 function processDiagnostics() {
 
-    if (eatKey(KEY_MIXED))
-        g_allowMixedActions = !g_allowMixedActions;
 
-    if (eatKey(KEY_GRAVITY)) g_useGravity = !g_useGravity;
-
-    if (eatKey(KEY_AVE_VEL)) g_useAveVel = !g_useAveVel;
 
     if (eatKey(KEY_SPATIAL)) g_renderSpatialDebug = !g_renderSpatialDebug;
-
-    if (eatKey(KEY_HALT)) entityManager.haltShips();
-
-    if (eatKey(KEY_RESET)) entityManager.resetShips();
-
-    if (eatKey(KEY_0)) entityManager.toggleRocks();
 
     if(eatKey(KEY_1)) entityManager._activeSnail._weapon.changeGun(1);
 
     if(eatKey(KEY_2)) entityManager._activeSnail._weapon.changeGun(2);
 
     if(eatKey(KEY_3)) entityManager._activeSnail._weapon.changeGun(3);
-    /*if (eatKey(KEY_1)) entityManager.generateShip({
-        cx : g_mouseX,
-        cy : g_mouseY,
-        
-        sprite : g_sprites.ship});*/
 
-
-    if (eatKey(KEY_K)) entityManager.killNearestShip(
-        g_mouseX, g_mouseY);
 }
 
 
@@ -159,17 +116,15 @@ function requestPreloads() {
 
     var requiredImages = {
         ship   : "https://notendur.hi.is/~pk/308G/images/ship.png",
-        ship2  : "https://notendur.hi.is/~pk/308G/images/ship_2.png",
-        rock   : "https://notendur.hi.is/~pk/308G/images/rock.png",
         land   : "img/Whiteline.png",
+		sea    : "img/sea.png",
 		snail  : "img/army-snail.png",
 		explosion : "img/explosion.png",
 		aim: "img/aim.png",
         smg: "img/weapons/smg.png",
         shotgun: "img/weapons/shotgun.png",
         rocketlauncher:"img/weapons/rocketlauncher.png",
-        rocket:"img/weapons/rocket.png",
-        backgroundimage: "img/background.jpg"
+        rocket:"img/weapons/rocket.png"
     };
     imagesPreload(requiredImages, g_images, preloadDone);
 }
@@ -179,9 +134,6 @@ var g_sprites = {};
 
 function preloadDone() {
 
-    g_sprites.ship  = new Sprite(g_images.ship);
-    g_sprites.ship2 = new Sprite(g_images.ship2);
-    g_sprites.rock  = new Sprite(g_images.rock);
 
     g_sprites.bullet = new Sprite(g_images.ship);
     g_sprites.bullet.scale = 0.25;
@@ -193,15 +145,13 @@ function preloadDone() {
     g_sprites.shotgun = new Sprite(g_images.shotgun);
     g_sprites.rocketlauncher = new Sprite(g_images.rocketlauncher);
     g_sprites.rocket = new Sprite(g_images.rocket);
-    g_sprites.backgroundimage = new Sprite(g_images.backgroundimage);
+    g_sprites.sea = new Sprite(g_images.sea);
 	g_sprites.aim.scale = 0.25;
-	//g_sprites.explosion = new Sprite(g_images.explosion);
 	
 	loadExplosion(g_images.explosion);
 
 
     entityManager.init();
-    createInitialShips();
 
     entityManager.renderLandscape(g_ctx, g_canvas);
     

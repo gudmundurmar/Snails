@@ -27,26 +27,16 @@ var entityManager = {
 
 // "PRIVATE" DATA
 
-//_rocks   : [],
+
 _bullets : [],
-_ships   : [],
 _Landscape  : [],
 _SnailsP1 : [],
 _SnailsP2 : [],
 _Death : [],
 
-_bShowRocks : true,
 
 // "PRIVATE" METHODS
 
-/*_generateRocks : function() {
-    var i,
-        NUM_ROCKS = 4;
-
-    for (i = 0; i < NUM_ROCKS; ++i) {
-        this.generateRock();
-    }
-},*/
 
 _generateSnails : function() {
     var i,
@@ -55,33 +45,8 @@ _generateSnails : function() {
     for (i = 0; i < NUM_SNAILS; ++i) {
         this.generateSnail();
     }
-},
-
-
-_findNearestShip : function(posX, posY) {
-    var closestShip = null,
-        closestIndex = -1,
-        closestSq = 1000 * 1000;
-
-    for (var i = 0; i < this._ships.length; ++i) {
-
-        var thisShip = this._ships[i];
-        var shipPos = thisShip.getPos();
-        var distSq = util.wrappedDistSq(
-            shipPos.posX, shipPos.posY, 
-            posX, posY,
-            g_canvas.width, g_canvas.height);
-
-        if (distSq < closestSq) {
-            closestShip = thisShip;
-            closestIndex = i;
-            closestSq = distSq;
-        }
-    }
-    return {
-        theShip : closestShip,
-        theIndex: closestIndex
-    };
+	this.currentWind();
+	display.findTotalHealth(); // þurfum að hafa þessi 2 hér í einskonar initial game()
 },
 
 _forEachOf: function(aCategory, fn) {
@@ -90,26 +55,16 @@ _forEachOf: function(aCategory, fn) {
     }
 },
 
-// PUBLIC METHODS
 
-// A special return value, used by other objects,
-// to request the blessed release of death!
-//
 KILL_ME_NOW : -1,
 
-// Some things must be deferred until after initial construction
-// i.e. thing which need `this` to be defined.
-//
 deferredSetup : function () {
-    this._categories = [this._Landscape,/*this._rocks,*/ /* this._ships,*/this._SnailsP1,this._SnailsP2,this._Death,this._bullets];
+    this._categories = [this._Landscape,this._SnailsP1,this._SnailsP2,this._Death,this._bullets];
 },
 
 init: function() {
-    //this._generateRocks();
-    //this._generateShip();
     this.generateLandscape();
 	this._generateSnails();
-	//this.generateSnail();
 },
 
 fireBullet: function(cx, cy, velX, velY, rotation) {
@@ -130,15 +85,9 @@ fireRocket: function(cx,cy,velX,velY,power){
         cy : cy,
         velX: velX * power,
         velY: velY * power
-        //power : power
     }));
 },
 
-
-
-/*generateRock : function(descr) {
-    this._rocks.push(new Rock(descr));
-},*/
 
 //New background line
 generateLandscape : function(descr) {
@@ -156,36 +105,6 @@ generateDeath : function(descr) {
     this._Death.push(new Death(descr));
 },
 
-
-generateShip : function(descr) {
-    this._ships.push(new Ship(descr));
-},
-
-killNearestShip : function(xPos, yPos) {
-    var theShip = this._findNearestShip(xPos, yPos).theShip;
-    if (theShip) {
-        theShip.kill();
-    }
-},
-
-yoinkNearestShip : function(xPos, yPos) {
-    var theShip = this._findNearestShip(xPos, yPos).theShip;
-    if (theShip) {
-        theShip.setPos(xPos, yPos);
-    }
-},
-
-resetShips: function() {
-    this._forEachOf(this._ships, Ship.prototype.reset);
-},
-
-haltShips: function() {
-    this._forEachOf(this._ships, Ship.prototype.halt);
-},	
-
-/*toggleRocks: function() {
-    this._bShowRocks = !this._bShowRocks;
-},*/
 
 update: function(du) {
 
@@ -211,17 +130,14 @@ update: function(du) {
     }
    this.changeTurn(this.changeWormP1,this.changeWormP2, this.changePlayer);
 },
+
+seaLevel : 710,
+
 changeWormP1 : 0,
 changeWormP2 : 0,
 changePlayer : "empty",
 
 changeTurn : function (p1Worm, p2Worm, currentPlayer){
-		
-	//console.log(this._SnailsP1.length);
-	//console.log(this._SnailsP2.length);
-	//console.log(this.changeWorm);
-	//console.log(this.changePlayer);
-	//console.log("test");
 	
 	switch(currentPlayer){
 	case "p1" :	if(p2Worm > entityManager._SnailsP2.length-1){p2Worm = 0;};	entityManager._SnailsP2[p2Worm]._isActive = true;
@@ -233,35 +149,46 @@ changeTurn : function (p1Worm, p2Worm, currentPlayer){
 	case "empty" : break;
 	}
 	this.changePlayer = "empty";
+	display.findTotalHealth();
+},
+
+windThisTurn : 0,
+
+currentWind : function(){
+
+	var direction = Math.random() * 1;
+	if(direction < 0.5){direction = 1;}
+	else{direction = -1;}
+	
+	console.log("wat");
+	var maxWind = 0.15;
+	var	minWind = 0;
+		
+	this.windThisTurn = util.randRange(minWind,maxWind) * direction;
+	
 },
 
 render: function(ctx) {
-
+	console.log(display.p1Health);
     var debugX = 10, debugY = 100;
-
-
+	animation.renderSeaBack(ctx);
     for (var c = 0; c < this._categories.length; ++c) {
 
         var aCategory = this._categories[c];
-/*
-        if (!this._bShowRocks && 
-            aCategory == this._rocks)
-            continue;*/
 
         for (var i = 0; i < aCategory.length; ++i) {
 
             aCategory[i].render(ctx);
-            //debug.text(".", debugX + i * 10, debugY);
 
         }
         debugY += 10;
     }
+	animation.renderSeaFront(ctx);
+	display.renderInterface(ctx);
 },
 
 renderLandscape: function(ctx, canvas) {
     for(var landscape in this._Landscape) {
-        console.log('asdlfkjasdf'+landscape); 
-        console.log(this._Landscape);
         this._Landscape[landscape].init(ctx, canvas);
     }
 }
