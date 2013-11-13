@@ -44,6 +44,9 @@ Bullet.prototype.cy = 200;
 Bullet.prototype.velX = 1;
 Bullet.prototype.velY = 1;
 
+Bullet.prototype.height = null;
+Bullet.prototype.width = null;
+
 Bullet.prototype.update = function (du) {
 
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
@@ -53,6 +56,12 @@ Bullet.prototype.update = function (du) {
         return entityManager.KILL_ME_NOW;
 		
     }
+	
+	if(this.height === null || this.width === null)
+	{
+		this.height = g_images.ship.height/4; //define the height of bullet prototype
+		this.width = g_images.ship.width/4; //define the width of bullet prototype
+	}
 
     this.cx += this.velX * du;
     this.cy += this.velY * du;

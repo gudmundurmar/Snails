@@ -39,6 +39,8 @@ Rocket.prototype.velX = 1;
 Rocket.prototype.velY = 1;
 Rocket.prototype.power = 1;
 
+Rocket.prototype.height = null;
+Rocket.prototype.width = null;
 
 Rocket.prototype.update = function (du) {
 
@@ -47,6 +49,12 @@ Rocket.prototype.update = function (du) {
     if(this._isDeadNow) {
         return entityManager.KILL_ME_NOW;
     }
+
+	if(this.height === null || this.width === null)
+	{
+		this.height = g_images.rocket.height; //define the height of rocket prototype
+		this.width = g_images.rocket.width; //define the width of rocket prototype
+	}
 
 	if(entityManager._Landscape[0].pixelHitTest(this))
         {

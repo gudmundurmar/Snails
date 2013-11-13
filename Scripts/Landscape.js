@@ -82,27 +82,47 @@ Landscape.prototype.buildPixelMap = function( ctx ) {
 
 Landscape.prototype.pixelHitTest = function(target ) {
 	var pos = target.getPos();
-	var halfheight = g_images.snail.height/2;
-	var width = g_images.snail.width;
+	var halfheight = target.height/2;
+	var width = target.width;
 	var halfwidth = width/2;
-	var y = Math.floor(pos.posY+halfheight);	
+	var y1 = Math.floor(pos.posY+halfheight);
+	var y2 = Math.floor(pos.posY-halfheight);	
 	var x = Math.floor(pos.posX-halfwidth);
-
+	
+	target.isCollidingTop = false;
+	target.isCollidingBottom = false;
 
 	for(var i=x; i<width+x; i++)
 	{
-		var R = this.getPixAt(i,y).R;
-		var G = this.getPixAt(i,y).G;
-		var B = this.getPixAt(i,y).B;
+		var R = this.getPixAt(i,y1).R;
+		var G = this.getPixAt(i,y1).G;
+		var B = this.getPixAt(i,y1).B;
 			
 		if(R !== 0 && G !== 0 && B !== 0)
 		{
 			//console.log("HIT");
+			target.isCollidingBottom = true;
 			return true;
 		}
 			
 	}
 
+	for(var i=x; i<width+x; i++)
+	{
+		var R = this.getPixAt(i,y2).R;
+		var G = this.getPixAt(i,y2).G;
+		var B = this.getPixAt(i,y2).B;
+			
+		if(R !== 0 && G !== 0 && B !== 0)
+		{
+			console.log("TOP HIT");
+			target.isCollidingTop = true;
+			return true;
+		}
+			
+	}
+
+	return false;	
 	
 };
 

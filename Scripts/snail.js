@@ -66,6 +66,13 @@ Snail.prototype.KEY_AIM_DOWN = 'S'.charCodeAt(0);
 Snail.prototype.health = 100;
 Snail.prototype._isActive = false; //til að ákveða hvern á að hreyfa
 Snail.prototype.yVel = 0;
+
+Snail.prototype.height = null;
+Snail.prototype.width = null;
+
+Snail.prototype.isCollidingTop = false;
+Snail.prototype.isCollidingBottom = false;
+
 /*Snail.prototype.direction = 1;*/ // skoða í hvaða átt er verið að skjóta
 
 //Snail.prototype.weapon = new Gun(this.cx,this.cy);
@@ -100,38 +107,85 @@ Snail.prototype.update = function (du) {
 		return entityManager.KILL_ME_NOW;
 	}
 	
-	this.cy+=this.yVel* du;
-	//var prevY = this.cy;
-	//var nextY = prevY + this.yVel * du;
+	if(this.height === null || this.width === null)
+	{
+		this.height = g_images.snail.height; //define the height of snail prototype
+		this.width = g_images.snail.width; //define the width of snail prototype
+	}
+	
+	this.cy +=this.yVel* du;
+	var prevY = this.cy;
+	var prevX = this.cx;
+	var nextY = prevY + this.yVel * du;
 	var addRotate = 0;
+	
+	var halfheight = this.height/2;
+	var width = this.width;
+	var halfwidth = width/2;
 	
 	if (keys[this.KEY_LEFT] && this._isActive === true)
 	{
 		this.direction = -1;
 		
-		if(this.isUnderground())
+		var y1 = Math.floor(this.cy+halfheight-4); //check fourth pixel
+		var y2 = Math.floor(this.cy+halfheight-8); //check eighth pixel
+		var x = Math.floor(this.cx-halfwidth-1);
+
+		var R1 = entityManager._Landscape[0].getPixAt(x,y1).R;
+		var R2 = entityManager._Landscape[0].getPixAt(x,y2).R;
+		var G1 = entityManager._Landscape[0].getPixAt(x,y1).G;
+		var G2 = entityManager._Landscape[0].getPixAt(x,y2).G;
+		var B1 = entityManager._Landscape[0].getPixAt(x,y1).B;
+		var B2 = entityManager._Landscape[0].getPixAt(x,y2).B;
+
+		if(R1 !== 0 && G1 !== 0 && B1 !== 0)
 		{
-			this.cy -= 1*du;			
-		}	
-							
-		else{
-			this.cx-= 3*du;
+			if(R2 === 0 && G2 === 0 && B2 === 0)
+			{
+				this.cy -= 1*du;
+				this.cx -= 1*du;
+			}
+			else{
+				//do nothing
 			}
 
+		}
+		else{
+			this.cx -= 3*du;
+		}
 	
 	}
 	if (keys[this.KEY_RIGHT] && this._isActive === true)
 	{
 		this.direction = 1;
-		if(this.isUnderground())
+		
+		var y1 = Math.floor(this.cy+halfheight-4); //check fourth pixel
+		var y2 = Math.floor(this.cy+halfheight-8); //check eighth pixel
+		var x = Math.floor(this.cx+halfwidth+1);
+
+		var R1 = entityManager._Landscape[0].getPixAt(x,y1).R;
+		var R2 = entityManager._Landscape[0].getPixAt(x,y2).R;
+		var G1 = entityManager._Landscape[0].getPixAt(x,y1).G;
+		var G2 = entityManager._Landscape[0].getPixAt(x,y2).G;
+		var B1 = entityManager._Landscape[0].getPixAt(x,y1).B;
+		var B2 = entityManager._Landscape[0].getPixAt(x,y2).B;
+		
+
+		if(R1 !== 0 && G1 !== 0 && B1 !== 0)
 		{
-			this.cy -= 1*du;			
-		}	
-							
-		else{
-			this.cx+= 3*du;
+			if(R2 === 0)
+			{
+				this.cy -= 1*du;
+				this.cx += 1*du;
 			}
-	
+			else{
+				//do nothing
+			}
+
+		}
+		else{
+			this.cx += 3*du;
+		}	
 	}
    
 	if (keys[this.KEY_JUMP] && this._isActive === true && this.isCollidingLandscape()) { 
@@ -148,44 +202,30 @@ Snail.prototype.update = function (du) {
 
 	
 	if(!this.isCollidingLandscape()){
+		
 		this.yVel += NOMINAL_GRAVITY;
-		//
-		}
-	else{
-		this.yVel = 0;
+		
 	}
-
+	else
+	{
+		if(this.isCollidingTop)
+		{
+			this.yVel *= -0.8;
+			this.yVel += NOMINAL_GRAVITY;
+			this.cx = prevX;
+			this.cy = prevY;
+		}
+		if(this.isCollidingBottom)
+		{
+			this.yVel = 0;
+		}
+	}
+	
     this._weapon.update(this.cx,this.cy,addRotate,this.direction);
     this.maybeFireBullet();
 
 		spatialManager.register(this);
 		
-};
-
-Snail.prototype.isUnderground = function(){
-
-	var halfheight = g_images.snail.height/2;
-	var width = g_images.snail.width;
-	var halfwidth = width/2;
-	var y = Math.floor(this.cy+halfheight-1);
-	var x = Math.floor(this.cx-halfwidth);
-
-
-	for(var i=x; i<width+x; i++)
-	{
-		var R = entityManager._Landscape[0].getPixAt(i,y).R;
-		var G = entityManager._Landscape[0].getPixAt(i,y).G;
-		var B = entityManager._Landscape[0].getPixAt(i,y).B;
-			
-		if(R !== 0 && G !== 0 && B !== 0)
-		{
-			return true;
-		}
-			
-	}
-	return false;
-
-
 };
 
 Snail.prototype.isCollidingLandscape = function() {
