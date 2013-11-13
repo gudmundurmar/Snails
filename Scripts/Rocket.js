@@ -56,6 +56,9 @@ Rocket.prototype.update = function (du) {
 		this.width = g_images.rocket.width; //define the width of rocket prototype
 	}
 
+    if(this.cx > g_canvas.width || this.cx <0 || this.cy > g_canvas.height || this.cy<0)
+        return entityManager.KILL_ME_NOW;
+    
 	if(entityManager._Landscape[0].pixelHitTest(this))
         {
 		entityManager.generateDeath({

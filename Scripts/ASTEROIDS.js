@@ -168,7 +168,8 @@ function requestPreloads() {
         smg: "img/weapons/smg.png",
         shotgun: "img/weapons/shotgun.png",
         rocketlauncher:"img/weapons/rocketlauncher.png",
-        rocket:"img/weapons/rocket.png"
+        rocket:"img/weapons/rocket.png",
+        backgroundimage: "img/background.jpg"
     };
     imagesPreload(requiredImages, g_images, preloadDone);
 }
@@ -192,6 +193,7 @@ function preloadDone() {
     g_sprites.shotgun = new Sprite(g_images.shotgun);
     g_sprites.rocketlauncher = new Sprite(g_images.rocketlauncher);
     g_sprites.rocket = new Sprite(g_images.rocket);
+    g_sprites.backgroundimage = new Sprite(g_images.backgroundimage);
 	g_sprites.aim.scale = 0.25;
 	//g_sprites.explosion = new Sprite(g_images.explosion);
 	

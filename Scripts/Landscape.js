@@ -77,7 +77,7 @@ Landscape.prototype.init = function(ctx, canvas) {
 Landscape.prototype.pixelMap;
 
 Landscape.prototype.buildPixelMap = function( ctx ) {
-	return ctx.getImageData(0,0,1876,809);
+	return ctx.getImageData(0,0,this.width,this.height);
     };
 
 Landscape.prototype.pixelHitTest = function(target ) {
@@ -218,5 +218,5 @@ Landscape.prototype.drawPixAt = function(x,y){
 	this.pixelMap.data[this.findIndex(x,y)] = 0;
         this.pixelMap.data[this.findIndex(x,y)+1] = 0;
         this.pixelMap.data[this.findIndex(x,y)+2]=0;
-        this.pixelMap.data[this.findIndex(x,y)+3] = 255;
+        this.pixelMap.data[this.findIndex(x,y)+3] = 0;
 };
