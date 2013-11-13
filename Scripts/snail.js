@@ -81,9 +81,12 @@ Snail.prototype.randomisePosition = function () {
 
 Snail.prototype.isOutOfMap = function(){
 
-	if(this.cx < 0 || this.cx > g_canvas.width /*|| this.cy >= seaLevel*/) return true;
+	if(this.cx < 0 || this.cx > g_canvas.width /*|| this.cy >= seaLevel*/){
+	endTurnMakeNextActive(this.player); 
+	return true;
+	}
 	//vantar hér breytuna seaLevel til að tjékka á hvenær snigillinn drukknar
-
+	
 }
 
 var NOMINAL_ROTATE_RATE = 0.1;
@@ -92,7 +95,7 @@ Snail.prototype.update = function (du) {
 	//console.log(this._isActive);
 	spatialManager.unregister(this);
 	if(this._isDeadNow || this.isOutOfMap()){
-		endTurnMakeNextActive(this.player);   
+		  
 		return entityManager.KILL_ME_NOW;
 	}
 	
@@ -112,22 +115,22 @@ Snail.prototype.update = function (du) {
 							
 		else{
 			this.cx-= 3*du;
-		}
+			}
 
+	
 	}
 	if (keys[this.KEY_RIGHT] && this._isActive === true)
 	{
-		this.direction = 1;
-		
-		if(this.isUnderground())
+	this.direction = 1;
+	if(this.isUnderground())
 		{
 			this.cy -= 1*du;			
 		}	
 							
 		else{
 			this.cx+= 3*du;
-		}
-
+			}
+	this.direction = 1;
 	}
    
 	if (keys[this.KEY_JUMP] && this._isActive === true && this.isCollidingLandscape()) { 
@@ -200,10 +203,6 @@ Snail.prototype.isCollidingLandscape = function() {
 
 var NOMINAL_GRAVITY = 0.12;
 
-Snail.prototype.computeGravity = function () {
-    return g_useGravity ? NOMINAL_GRAVITY : 0;
-};
-
 
 function endTurnMakeNextActive(currentPlayer){
 	if(currentPlayer === "p1"){
@@ -244,10 +243,11 @@ Snail.prototype.maybeFireBullet = function () {
         //   dX , dY ,
         //   1*this.direction , NOMINAL_GRAVITY, 
         //   200);
-	if(this._weapon.ammo===0)
-		{endTurnMakeNextActive(this.player); 
+	if(this._weapon.ammo===0){
+		endTurnMakeNextActive(this.player); 
 		this._weapon.ammo=50; 
-		this._isActive = false;} 
+		this._isActive = false;
+		} 
 	/*entityManager.changePlayer = this.player;
 	entityManager.changeWorm = endTurnMakeNextActive(this.player);*/  
     }
@@ -302,10 +302,8 @@ Snail.prototype.render = function (ctx) {
 	
     this.sprite.scale = this._scale;
 	
-    this.sprite.drawSnailCentredAt(ctx, this.cx, this.cy,this.direction*-1); // teiknum orminn á ákveðnum stað
-	//teiknum miðið hans hér á ákveðnum stað líklegast með drawAt sem hefur rotation líka
-	//eitthvað með að teikna vopnið með this.drawWeapon
-	//this.weapon.render(ctx);
+    this.sprite.drawSnailCentredAt(ctx, this.cx, this.cy,this.direction*-1); 
+	
     this.sprite.scale = origScale;
     if(this._isActive)
 		this._weapon.render(ctx,this.direction);

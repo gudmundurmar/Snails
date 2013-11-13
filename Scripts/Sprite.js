@@ -59,6 +59,7 @@ Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation, turn) {
 };  
 
 Explosionsprite.prototype.drawSheetAt = function (ctx, x, y) {
+	//ctx.scale(5,5);
     ctx.drawImage(this.image, 
                   this.sx, this.sy, this.width, this.height,
                   x, y, this.width, this.height);

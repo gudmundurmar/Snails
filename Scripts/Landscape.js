@@ -38,8 +38,8 @@ Landscape.prototype.update = function (du) {
 	
 };
 
-Landscape.prototype.cx = 300;
-Landscape.prototype.cy = 300;
+Landscape.prototype.cx = 938;
+Landscape.prototype.cy = 404;
 Landscape.prototype.name = "Landscape";
 Landscape.prototype.width = g_canvas.width;
 Landscape.prototype.height = g_canvas.height;
@@ -60,7 +60,7 @@ Landscape.prototype.firstRender = function (ctx) {
     var origScale = this.sprite.scale;
     // pass my scale into the sprite, for drawing
     this.sprite.scale = this._scale;
-    this.sprite.drawWrappedCentredAt(
+    this.sprite.drawCentredAt(
 	ctx, this.cx, this.cy, this.rotation
     );
     this.sprite.scale = origScale;
@@ -77,7 +77,7 @@ Landscape.prototype.init = function(ctx, canvas) {
 Landscape.prototype.pixelMap;
 
 Landscape.prototype.buildPixelMap = function( ctx ) {
-	return ctx.getImageData(0,0,600,600);
+	return ctx.getImageData(0,0,1876,809);
     };
 
 Landscape.prototype.pixelHitTest = function(target ) {
@@ -119,7 +119,7 @@ Landscape.prototype.getPixAt = function(x,y){
             };
 };
 Landscape.prototype.findIndex = function(x,y){
-    return 4*(600*y + x);
+    return 4*(1876*y + x);
 };
 Landscape.prototype.deletePixAt = function(x0,y0,radius){
     //Teiknar fylltan kassa

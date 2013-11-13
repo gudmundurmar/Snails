@@ -19,7 +19,7 @@ function Rocket(descr) {
     this.setup(descr);
 
     // Make a noise when I am created (i.e. fired)
-    this.fireSound.play();
+   // this.fireSound.play();
     
 /*
     // Diagnostics to check inheritance stuff
@@ -47,6 +47,16 @@ Rocket.prototype.update = function (du) {
         return entityManager.KILL_ME_NOW;
     }
 
+	if(entityManager._Landscape[0].pixelHitTest(this))
+        {
+		entityManager.generateDeath({
+        		cx : this.cx,
+        		cy : this.cy
+    	});
+        entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),50);
+        return entityManager.KILL_ME_NOW;
+    }
+	
     this.cx += this.velX * du;
     this.cy += this.velY * du;
 
@@ -59,6 +69,12 @@ Rocket.prototype.update = function (du) {
     if (hitEntity) {
         var canTakeHit = hitEntity.takeBulletHit;
         if (canTakeHit) canTakeHit.call(hitEntity); 
+		
+		entityManager.generateDeath({
+        		cx : this.cx,
+        		cy : this.cy
+    	});
+		entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),50);
         return entityManager.KILL_ME_NOW;
     }
     
@@ -72,7 +88,7 @@ Rocket.prototype.getRadius = function () {
 };
 
 Rocket.prototype.render = function (ctx) {
-    g_sprites.rocket.drawWrappedCentredAt(
+    g_sprites.rocket.drawCentredAt(
         ctx, this.cx, this.cy, this.rotation
     );
 };

@@ -123,12 +123,12 @@ fireBullet: function(cx, cy, velX, velY, rotation) {
     }));
 },
 
-fireRocket: function(cx,xy,velX,velY,power){
+fireRocket: function(cx,cy,velX,velY/*,power*/){
     this._bullets.push(new Rocket({
         cx : cx,
         cy : cy,
-        velX:velX,
-        velY:velY
+        velX: velX,
+        velY: velY
         //Add power
     }));
 },

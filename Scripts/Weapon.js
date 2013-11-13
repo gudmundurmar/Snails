@@ -61,6 +61,7 @@ Weapon.prototype.fire = function(){
         case 3: 
             //Haldainnitakkanum
             entityManager.fireRocket(this.aimX,this.aimY, this.aimVectorX/10,this.aimVectorY/10,30); 
+			this.ammo =0;
         default:
             return;
     }
