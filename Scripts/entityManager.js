@@ -161,7 +161,6 @@ currentWind : function(){
 	if(direction < 0.5){direction = 1;}
 	else{direction = -1;}
 	
-	console.log("wat");
 	var maxWind = 0.15;
 	var	minWind = 0;
 		
@@ -170,7 +169,6 @@ currentWind : function(){
 },
 
 render: function(ctx) {
-
     var debugX = 10, debugY = 100;
 	
     for (var c = 0; c < this._categories.length; ++c) {
