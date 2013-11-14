@@ -73,6 +73,8 @@ Rocket.prototype.update = function (du) {
     }
 	this.velX += entityManager.windThisTurn;
 	this.velY += NOMINAL_GRAVITY;
+    this.direction = Math.atan(this.velY/this.velX);
+
     this.cx += (this.velX + this.power) * du;
     this.cy += this.velY * du;
 	
