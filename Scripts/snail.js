@@ -70,6 +70,7 @@ Snail.prototype.yVel = 0;
 
 Snail.prototype.height = null;
 Snail.prototype.width = null;
+Snail.prototype.xVel = 0;
 
 Snail.prototype.isCollidingTop = false;
 Snail.prototype.isCollidingBottom = false;
@@ -98,11 +99,16 @@ Snail.prototype.isOutOfMap = function(){
 	
 }
 
+Snail.prototype.blastAway = function(x,y,power){
+	this.xVel = (this.cx - x)*power;
+	this.yVel = (this.cy - y)*power;
+	console.log(this.velX);
+}
+
 var NOMINAL_ROTATE_RATE = 0.1;
 
 Snail.prototype.update = function (du) {
 	//console.log("wind : " + entityManager.windThisTurn);
-	//console.log(this._isActive);
 	spatialManager.unregister(this);
 	if(this._isDeadNow || this.isOutOfMap()){
 		  
@@ -116,6 +122,7 @@ Snail.prototype.update = function (du) {
 	}
 	
 	this.cy +=this.yVel* du;
+	this.cx += this.xVel*du;
 	var prevY = this.cy;
 	var prevX = this.cx;
 	var nextY = prevY + this.yVel * du;
@@ -206,10 +213,10 @@ Snail.prototype.update = function (du) {
 	if(!this.isCollidingLandscape()){
 		
 		this.yVel += NOMINAL_GRAVITY;
-		
 	}
 	else
 	{
+		this.xVel = this.xVel/2;
 		if(this.isCollidingTop)
 		{
 			this.yVel *= -0.8;
@@ -272,7 +279,6 @@ Snail.prototype.maybeFireBullet = function () {
 
     if (keys[this.KEY_FIRE] && this._isActive === true) {
 		this.thrust += 0.5;
-		console.log(this.thrust);
 		}
 	
 	if((hasBeenShot === true || this.thrust > 5.5)&& this._isActive === true ){
