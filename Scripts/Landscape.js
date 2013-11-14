@@ -38,8 +38,8 @@ Landscape.prototype.update = function (du) {
 	
 };
 
-Landscape.prototype.cx = 938;
-Landscape.prototype.cy = 404;
+Landscape.prototype.cx = 0;
+Landscape.prototype.cy = 0;
 Landscape.prototype.name = "Landscape";
 Landscape.prototype.width = g_canvas.width;
 Landscape.prototype.height = g_canvas.height;
@@ -61,7 +61,7 @@ Landscape.prototype.firstRender = function (ctx) {
     // pass my scale into the sprite, for drawing
     this.sprite.scale = this._scale;
     this.sprite.drawCentredAt(
-	ctx, this.cx, this.cy, this.rotation
+	ctx, this.width/2, this.height/2, this.rotation
     );
     this.sprite.scale = origScale;
 };
@@ -77,7 +77,7 @@ Landscape.prototype.init = function(ctx, canvas) {
 Landscape.prototype.pixelMap;
 
 Landscape.prototype.buildPixelMap = function( ctx ) {
-	return ctx.getImageData(0,0,1876,809);
+	return ctx.getImageData(0,0,this.width,this.height);
     };
 
 Landscape.prototype.pixelHitTest = function(target ) {
