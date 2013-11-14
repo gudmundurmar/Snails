@@ -38,16 +38,22 @@ Rocket.prototype.cy = 200;
 Rocket.prototype.velX = 1;
 Rocket.prototype.velY = 1;
 Rocket.prototype.power = 1;
-Rocket.prototype.direction = 0;
 
 Rocket.prototype.height = null;
 Rocket.prototype.width = null;
+
+Rocket.prototype.isOutOfMap = function(){
+
+	if(this.cx < 0 || this.cx > g_canvas.width || this.cy > entityManager.seaLevel){
+	return true;
+	}
+}
 
 Rocket.prototype.update = function (du) {
 
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
     spatialManager.unregister(this);
-    if(this._isDeadNow) {
+    if(this._isDeadNow || this.isOutOfMap()) {
         return entityManager.KILL_ME_NOW;
     }
 
@@ -67,8 +73,6 @@ Rocket.prototype.update = function (du) {
     }
 	this.velX += entityManager.windThisTurn;
 	this.velY += NOMINAL_GRAVITY;
-    this.direction = Math.atan(this.velY/this.velX);
-	console.log(this.velX);
     this.cx += (this.velX + this.power) * du;
     this.cy += this.velY * du;
 	
@@ -100,8 +104,7 @@ Rocket.prototype.getRadius = function () {
 };
 
 Rocket.prototype.render = function (ctx) {
-    if(this.velX<0)
-        g_sprites.rocket.drawCentredAt(ctx, this.cx, this.cy,this.direction*-1,-1)
-    else
-        g_sprites.rocket.drawCentredAt(ctx, this.cx, this.cy, this.direction);
+    g_sprites.rocket.drawCentredAt(
+        ctx, this.cx, this.cy, this.rotation
+    );
 };

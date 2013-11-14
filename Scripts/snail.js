@@ -54,7 +54,7 @@ Snail.prototype.rememberResets = function () {
 };
 
 Snail.prototype.player = "";
-Snail.prototype.thrust = 1;
+Snail.prototype.thrust = 0;
 Snail.prototype.KEY_JUMP = 'J'.charCodeAt(0); // þarf að finna fyrir enter. J fyrru jump
 Snail.prototype.KEY_LEFT   = 'A'.charCodeAt(0);
 Snail.prototype.KEY_FIRE  = ' '.charCodeAt(0); // hafa computeThrustMag fyrir þetta t.d. fyrir bazooka?
@@ -219,6 +219,7 @@ Snail.prototype.update = function (du) {
 		}
 		if(this.isCollidingBottom)
 		{
+			if(this.yVel > 6.5){this.takeDamage(this.yVel * 0.5);};
 			this.yVel = 0;
 		}
 	}
@@ -296,13 +297,13 @@ Snail.prototype.getRadius = function () {
 };
 
 Snail.prototype.takeBulletHit = function () {
-    this.takeDamage();
+    this.takeDamage(2);
 };
 
-Snail.prototype.takeDamage = function(){
+Snail.prototype.takeDamage = function(damage){
 	//eitthvað með að við skoðum hvaða vopn hann tók hitt frá
 	//breyta þessu yfir í það að þegar þeir eru hættir að hreyfast eða þegar turnið klárast þá minnka lífið þeirra. Bara eins og í leiknum
-	this.health -= 20;
+	this.health -= damage;
 	
 	if(this.health <= 0){
 		entityManager.generateDeath({
@@ -320,9 +321,11 @@ Snail.prototype.render = function (ctx) {
 	ctx.fillRect(this.cx-50,this.cy-70,100,25);
 	
 	if(this._isActive === true){
+	
 		ctx.strokeStyle="green";
 		ctx.lineWidth = 5;
 		ctx.strokeRect(this.cx-50,this.cy-70,100,25);
+		ctx.fillRect(this.cx-50,this.cy-80,this.thrust * 18, 5);
 		}
 	
 	
@@ -333,7 +336,8 @@ Snail.prototype.render = function (ctx) {
 		ctx.fillStyle="blue";
 	}
 	ctx.font= "20px Arial"; 
-	ctx.fillText(this.health, this.cx-18, this.cy-52);
+	ctx.fillText(Math.floor(this.health), this.cx-18, this.cy-52);
+	
 
     var origScale = this.sprite.scale;
 	
@@ -344,5 +348,6 @@ Snail.prototype.render = function (ctx) {
     this.sprite.scale = origScale;
     if(this._isActive)
 		this._weapon.render(ctx,this.direction);
+		
 	
 };

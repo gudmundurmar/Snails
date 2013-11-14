@@ -5,6 +5,7 @@ weaponActive : "",
 
 p1Health : 0,
 p2Health : 0,
+currentWeapon : "",
 
 	roundBox : function(ctx,x, y, width, height, radius, fill, stroke) {
 		if (typeof stroke == "undefined" ) {
@@ -36,27 +37,29 @@ p2Health : 0,
 
 	renderInterface: function(ctx){
 		ctx.strokeStyle="black";
-		ctx.fillStyle="blue";
+		ctx.fillStyle="red";
 		this.roundBox(ctx,800,700,this.p1Health,40,20, "blue",true);
 		this.roundBox(ctx,700,700,90,40,20, "blue",true);
-		ctx.fillStyle="red";
+		ctx.fillStyle="blue";
 		this.roundBox(ctx,800,750,this.p2Health,40,20, "red",true);
 		this.roundBox(ctx,700,750,90,40,20, "red",true);
 		ctx.fillStyle="black";
 		ctx.font="22px Arial";
 		ctx.fillText("Player 1", 707,725);
 		ctx.fillText("Player 2", 707,775);
-		
+		ctx.fillText(entityManager.windThisTurn,200,200);
 		this.roundBox(ctx,1600,725,200,40,20, "red",true);
 		var bar = 500 * entityManager.windThisTurn;
-		if(bar < 0){
+		if(bar > 0){
 			ctx.fillStyle="red";
 			}
 		else{
 			ctx.fillStyle="blue";
 			}
 		ctx.fillRect(1700,727, bar, 35);
-		
+		ctx.fillStyle = "black";
+		this.roundBox(ctx,50,700,100,100,20, "red",true);
+		this.currentWeapon.drawCentredAt(ctx,100,750);
 	},
 	
 	findTotalHealth : function(){
@@ -70,6 +73,10 @@ p2Health : 0,
 		for(var i = 0 ; i < entityManager._SnailsP2.length; i++){
 			this.p2Health += entityManager._SnailsP2[i].health;	
 		}
+	},
+	
+	renderActiveWeapon: function(_activeWeapon){
+		this.currentWeapon = _activeWeapon;
 	},
 	
 	

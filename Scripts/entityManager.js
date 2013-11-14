@@ -79,7 +79,6 @@ fireBullet: function(cx, cy, velX, velY, rotation) {
 },
 
 fireRocket: function(cx,cy,velX,velY,power){
-	console.log(power);
     this._bullets.push(new Rocket({
         cx : cx,
         cy : cy,
@@ -131,7 +130,7 @@ update: function(du) {
    this.changeTurn(this.changeWormP1,this.changeWormP2, this.changePlayer);
 },
 
-seaLevel : 710,
+seaLevel : 680,
 
 changeWormP1 : 0,
 changeWormP2 : 0,
@@ -142,6 +141,7 @@ changeTurn : function (p1Worm, p2Worm, currentPlayer){
 	switch(currentPlayer){
 	case "p1" :	if(p2Worm > entityManager._SnailsP2.length-1){p2Worm = 0;};	entityManager._SnailsP2[p2Worm]._isActive = true;
                 this._activeSnail = this._SnailsP2[p2Worm];
+				
                 break;
 	case "p2" :	if(p1Worm > entityManager._SnailsP1.length-1){p1Worm = 0;};	entityManager._SnailsP1[p1Worm]._isActive = true;
                 this._activeSnail = this._SnailsP1[p1Worm];
@@ -150,6 +150,7 @@ changeTurn : function (p1Worm, p2Worm, currentPlayer){
 	}
 	this.changePlayer = "empty";
 	display.findTotalHealth();
+	
 },
 
 windThisTurn : 0,
@@ -169,21 +170,22 @@ currentWind : function(){
 },
 
 render: function(ctx) {
-	console.log(display.p1Health);
+
     var debugX = 10, debugY = 100;
-	animation.renderSeaBack(ctx);
+	
     for (var c = 0; c < this._categories.length; ++c) {
 
         var aCategory = this._categories[c];
 
         for (var i = 0; i < aCategory.length; ++i) {
-
+			
             aCategory[i].render(ctx);
 
         }
         debugY += 10;
     }
 	animation.renderSeaFront(ctx);
+	
 	display.renderInterface(ctx);
 },
 
