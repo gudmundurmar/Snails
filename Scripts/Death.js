@@ -18,6 +18,8 @@ Death.prototype.cy = 300;
 Death.prototype.timeFrame = 0;
 Death.prototype.height = 64;
 Death.prototype.width = 64;
+Death.prototype.maxDamage = 70;
+Death.prototype.power =1;
 
 Death.prototype.rememberResets = function () {
     // Remember my reset positions
@@ -39,15 +41,29 @@ Death.prototype.update = function (du) {
 	if(this._isDeadNow){
 		return entityManager.KILL_ME_NOW;
 	}
-	
-		spatialManager.register(this);
-		
+
+	if(this.findWorms()&& this.timeFrame===1){
+		for(var i =0;i<this.findWorms().length;i++){
+			var worm =this.findWorms()[i].worm;
+			worm.blastAway(this.cx,this.cy,this.power);
+			//snail.hurt();
+		}
+	}
+
+	spatialManager.register(this);
 };
 
 
 Death.prototype.getRadius = function () {
     return (g_explosion[this.timeFrame].width / 2) * 0.9;
 };
+
+Death.prototype.findWorms = function(){
+	var pos= this.getPos();
+	return spatialManager.findSnailsInRange(
+    pos.posX, pos.posY, this.getRadius()
+    );
+}
 
 Death.prototype.render = function (ctx) {
 	//ctx.fillStyle="red";
