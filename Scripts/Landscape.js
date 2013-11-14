@@ -218,5 +218,5 @@ Landscape.prototype.drawPixAt = function(x,y){
 	this.pixelMap.data[this.findIndex(x,y)] = 0;
         this.pixelMap.data[this.findIndex(x,y)+1] = 0;
         this.pixelMap.data[this.findIndex(x,y)+2]=0;
-        this.pixelMap.data[this.findIndex(x,y)+3] = 255;
+        this.pixelMap.data[this.findIndex(x,y)+3] = 0;
 };
