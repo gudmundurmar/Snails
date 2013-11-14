@@ -22,6 +22,7 @@ Weapon.prototype.aimX=0;
 Weapon.prototype.aimY=0;
 Weapon.prototype.aimDistance = 35;
 Weapon.prototype.started =false;
+Weapon.prototype.direction = 1;
 
 Weapon.prototype.render = function(ctx,dir){
 	var spriteNow = this.sprites[this.selected];
@@ -31,6 +32,7 @@ Weapon.prototype.render = function(ctx,dir){
 Weapon.prototype.update = function(xVal,yVal,rotation,dir){
 	this.cx=xVal;
 	this.cy=yVal;
+    this.direction = dir;
 
     this.aimVectorX = dir*this.aimDistance*Math.cos(this.rotation);
     this.aimVectorY = this.aimDistance*Math.sin(this.rotation);
@@ -63,6 +65,7 @@ Weapon.prototype.fire = function(power){
 			//console.log(power);
             entityManager.fireRocket(this.aimX,this.aimY, this.aimVectorX/10,this.aimVectorY/10,power); 
 			this.ammo =0;
+            break;
         default:
             return;
     }
