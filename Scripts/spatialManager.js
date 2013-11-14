@@ -69,6 +69,32 @@ findEntityInRange: function(posX, posY, radius) {
     return;
 },
 
+findSnailsInRange: function(posX,posY,radius){
+    var Position;
+    var sqDistance;
+    var sqRad;
+    var snails = new Array();
+    for(var i = 0;i<entityManager._SnailsP1.length;i++){
+        var snail = entityManager._SnailsP1[i];
+        var position = snail.getPos();
+        sqDistance = util.distSq(position.posX,position.posY,posX,posY);
+        sqRad = Math.pow(radius+snail.getRadius(),2);
+        if(sqDistance - sqRad<0){
+            snails.push({worm: snail, distance: Math.sqrt(sqDistance)});
+        }
+    }
+    for(var i = 0;i<entityManager._SnailsP2.length;i++){
+        var snail = entityManager._SnailsP2[i];
+        var position = snail.getPos();
+        sqDistance = util.distSq(position.posX,position.posY,posX,posY);
+        sqRad = Math.pow(radius+snail.getRadius(),2);
+        if(sqDistance-sqRad<0){
+            snails.push({worm: snail,distance: Math.sqrt(sqDistance)});
+        }
+    }
+    return snails;
+},
+
 render: function(ctx) {
     var oldStyle = ctx.strokeStyle;
     ctx.strokeStyle = "red";
