@@ -32,12 +32,14 @@ function Rocket(descr) {
 Rocket.prototype = new Entity();
     
 // Initial, inheritable, default values
-Rocket.prototype.power = 0;
 Rocket.prototype.cx = 200;
 Rocket.prototype.cy = 200;
 Rocket.prototype.velX = 1;
 Rocket.prototype.velY = 1;
 Rocket.prototype.power = 1;
+Rocket.prototype.angle =0;
+Rocket.prototype.direction =1;
+
 
 Rocket.prototype.height = null;
 Rocket.prototype.width = null;
@@ -73,7 +75,7 @@ Rocket.prototype.update = function (du) {
     }
 	this.velX += entityManager.windThisTurn;
 	this.velY += NOMINAL_GRAVITY;
-    this.direction = Math.atan(this.velY/this.velX);
+    this.angle = Math.atan(this.velY/this.velX);
 
     this.cx += (this.velX + this.power) * du;
     this.cy += this.velY * du;
@@ -95,7 +97,6 @@ Rocket.prototype.update = function (du) {
 		
         return entityManager.KILL_ME_NOW;
     }
-    
     // TODO: YOUR STUFF HERE! --- (Re-)Register
     spatialManager.register(this);
 
@@ -106,7 +107,8 @@ Rocket.prototype.getRadius = function () {
 };
 
 Rocket.prototype.render = function (ctx) {
-    g_sprites.rocket.drawCentredAt(
-        ctx, this.cx, this.cy, this.rotation
-    );
+    if(this.velX>0)
+        g_sprites.rocket.drawCentredAt(ctx, this.cx, this.cy, this.angle);
+    else
+        g_sprites.rocket.drawCentredAt(ctx,this.cx,this.cy,-this.angle,-1);
 };
