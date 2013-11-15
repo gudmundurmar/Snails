@@ -46,7 +46,6 @@ Death.prototype.update = function (du) {
 		for(var i =0;i<this.findWorms().length;i++){
 			var worm =this.findWorms()[i].worm;
 			worm.blastAway(this.cx,this.cy,this.power);
-			//snail.hurt();
 		}
 	}
 

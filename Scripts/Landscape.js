@@ -80,6 +80,8 @@ Landscape.prototype.buildPixelMap = function( ctx ) {
 	return ctx.getImageData(0,0,this.width,this.height);
     };
 
+//Ætla aðeins að fikta í þessu þannig að þegar þú ferð upp fyrir skjáinn hverfuru bara útaf en kemur aftur!
+//Baldur
 Landscape.prototype.pixelHitTest = function(target ) {
 	var pos = target.getPos();
 	var halfheight = target.height/2;
@@ -100,7 +102,8 @@ Landscape.prototype.pixelHitTest = function(target ) {
 			
 		if(R !== 0 && G !== 0 && B !== 0)
 		{
-			//console.log("HIT");
+			if(target._isActive)
+                console.log("bottomHIT");
 			target.isCollidingBottom = true;
 			return true;
 		}
@@ -116,12 +119,11 @@ Landscape.prototype.pixelHitTest = function(target ) {
 		if(R !== 0 && G !== 0 && B !== 0)
 		{
 			console.log("TOP HIT");
-			target.isCollidingTop = true;
-			return true;
+			//target.isCollidingTop = true;
+			//return true;
 		}
 			
 	}
-
 	return false;	
 	
 };

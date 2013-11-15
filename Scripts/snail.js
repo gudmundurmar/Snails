@@ -72,6 +72,9 @@ Snail.prototype.height = null;
 Snail.prototype.width = null;
 Snail.prototype.xVel = 0;
 
+Snail.prototype.rotation = 0;
+Snail.prototype.rotationAdded =0;
+
 Snail.prototype.isCollidingTop = false;
 Snail.prototype.isCollidingBottom = false;
 
@@ -100,15 +103,14 @@ Snail.prototype.isOutOfMap = function(){
 }
 
 Snail.prototype.blastAway = function(x,y,power){
-	this.xVel = (this.cx - x)*power;
-	this.yVel = (this.cy - y)*power;
-	console.log(this.velX);
+	this.xVel = (this.cx - x)*power/2;
+	this.yVel = (this.cy - y)*power/2;
+	this.rotationAdded = power;
 }
 
 var NOMINAL_ROTATE_RATE = 0.1;
 
 Snail.prototype.update = function (du) {
-	//console.log("wind : " + entityManager.windThisTurn);
 	spatialManager.unregister(this);
 	if(this._isDeadNow || this.isOutOfMap()){
 		  
@@ -120,7 +122,9 @@ Snail.prototype.update = function (du) {
 		this.height = g_images.snail.height; //define the height of snail prototype
 		this.width = g_images.snail.width; //define the width of snail prototype
 	}
-	
+
+	this.rotation += this.rotationAdded*du;
+
 	this.cy +=this.yVel* du;
 	this.cx += this.xVel*du;
 	var prevY = this.cy;
@@ -157,7 +161,6 @@ Snail.prototype.update = function (du) {
 			else{
 				//do nothing
 			}
-
 		}
 		else{
 			this.cx -= 3*du;
@@ -217,13 +220,8 @@ Snail.prototype.update = function (du) {
 	else
 	{
 		this.xVel = this.xVel/2;
-		if(this.isCollidingTop)
-		{
-			this.yVel *= -0.8;
-			this.yVel += NOMINAL_GRAVITY;
-			this.cx = prevX;
-			this.cy = prevY;
-		}
+		this.rotationAdded=0;
+		this.rotation=0;
 		if(this.isCollidingBottom)
 		{
 			if(this.yVel > 6.5){this.takeDamage(this.yVel * 0.5);};
@@ -240,7 +238,7 @@ Snail.prototype.update = function (du) {
 
 Snail.prototype.isCollidingLandscape = function() {
 
-	if(entityManager._Landscape[0].pixelHitTest(this))
+	if(this.cy>0 && entityManager._Landscape[0].pixelHitTest(this))
     {
 		return true;
     }
@@ -349,11 +347,10 @@ Snail.prototype.render = function (ctx) {
 	
     this.sprite.scale = this._scale;
 	
-    this.sprite.drawSnailCentredAt(ctx, this.cx, this.cy,this.direction*-1); 
+    this.sprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation,this.direction*-1); 
 	
     this.sprite.scale = origScale;
     if(this._isActive)
 		this._weapon.render(ctx,this.direction);
-		
-	
+
 };
