@@ -90,9 +90,27 @@ Landscape.prototype.pixelHitTest = function(target ) {
 	var y1 = Math.floor(pos.posY+halfheight);
 	var y2 = Math.floor(pos.posY-halfheight);	
 	var x = Math.floor(pos.posX-halfwidth);
-	
-	target.isCollidingTop = false;
+
 	target.isCollidingBottom = false;
+	target.isCollidingLeft = false;
+	target.isCollidingRight = false;
+
+
+	for(var i=y1-10; i>y2+10; i--)
+	{
+		var S1 = this.getPixAt(x-2,i).A;
+		var S2 = this.getPixAt(x+width+2,i).A;
+					
+		if(S1 !== 0)
+		{
+			target.isCollidingLeft = true;
+		}
+		if(S2 !== 0)
+		{
+			target.isCollidingRight = true;
+		}
+			
+	}
 
 	for(var i=x; i<width+x; i++)
 	{
@@ -102,15 +120,14 @@ Landscape.prototype.pixelHitTest = function(target ) {
 			
 		if(R !== 0 && G !== 0 && B !== 0)
 		{
-			//if(target._isActive)
-              //  console.log("bottomHIT");
+              		//console.log("bottomHIT");
 			target.isCollidingBottom = true;
 			return true;
 		}
 			
 	}
 
-	for(var i=x; i<width+x; i++)
+	/*for(var i=x; i<width+x; i++)
 	{
 		var R = this.getPixAt(i,y2).R;
 		var G = this.getPixAt(i,y2).G;
@@ -123,7 +140,7 @@ Landscape.prototype.pixelHitTest = function(target ) {
 			//return true;
 		}
 			
-	}
+	}*/
 	return false;	
 	
 };

@@ -77,8 +77,11 @@ Snail.prototype.rotation = 0;
 Snail.prototype.rotationAdded =0;
 Snail.prototype.isBackJumping = false;
 
-Snail.prototype.isCollidingTop = false;
+//Snail.prototype.isCollidingTop = false;
 Snail.prototype.isCollidingBottom = false;
+Snail.prototype.isCollidingLeft = false;
+Snail.prototype.isCollidingRight = false;
+
 
 /*Snail.prototype.direction = 1;*/ // skoða í hvaða átt er verið að skjóta
 
@@ -221,7 +224,16 @@ Snail.prototype.update = function (du) {
     if(keys[this.KEY_AIM_DOWN] && this._isActive)
     	addRotate = -NOMINAL_ROTATE_RATE*du;
 
-	
+	if(this.isCollidingLeft)
+	{
+			
+		this.cx += 2;
+	}
+
+	if(this.isCollidingRight)
+	{
+		this.cx -= 2;
+	}
 	
 	if(!this.isCollidingLandscape()){
 		
@@ -349,7 +361,8 @@ Snail.prototype.render = function (ctx) {
 
 	
 	if(this._isActive === true){
-		display.renderBox(ctx,this.cx-50,this.cy-70,100,25,"white","green");
+			display.renderBox(ctx,this.cx-50,this.cy-70,100,25,"white","green");
+			display.renderBox(ctx, this.cx-50,this.cy-80,this.thrust * 18, 5, "red", "yellow");
 		}
 	
 	
