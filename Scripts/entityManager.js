@@ -37,16 +37,19 @@ _Death : [],
 
 // "PRIVATE" METHODS
 
+hasStarted : false,
 
 _generateSnails : function() {
     var i,
-        NUM_SNAILS = 2;
+        NUM_SNAILS = 4;
 
     for (i = 0; i < NUM_SNAILS; ++i) {
         this.generateSnail();
     }
 	this.currentWind();
 	display.findTotalHealth(); // þurfum að hafa þessi 2 hér í einskonar initial game()
+
+	
 },
 
 _forEachOf: function(aCategory, fn) {
@@ -105,8 +108,27 @@ generateDeath : function(descr) {
 },
 
 
-update: function(du) {
+landedSnails : function(){
+	
+	var allLanded = 0;
+	
+	for(var i = 0 ; i < entityManager._SnailsP1.length; i++){
+		if(entityManager._SnailsP1[i].isCollidingBottom === true){
+			allLanded++;
+		}	
+		if(entityManager._SnailsP2[i].isCollidingBottom === true){
+			allLanded++;
+		}	
+	}
+	if(allLanded === (entityManager._SnailsP1.length + entityManager._SnailsP2.length)){
+		
+		this.hasStarted = true;
+		}
+	
+},
 
+update: function(du) {
+	if(this.hasStarted === false){this.landedSnails();}
     for (var c = 0; c < this._categories.length; ++c) {
 
         var aCategory = this._categories[c];

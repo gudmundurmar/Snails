@@ -102,8 +102,8 @@ Landscape.prototype.pixelHitTest = function(target ) {
 			
 		if(R !== 0 && G !== 0 && B !== 0)
 		{
-			if(target._isActive)
-                console.log("bottomHIT");
+			//if(target._isActive)
+              //  console.log("bottomHIT");
 			target.isCollidingBottom = true;
 			return true;
 		}

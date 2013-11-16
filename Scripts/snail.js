@@ -86,7 +86,7 @@ Snail.prototype.isCollidingBottom = false;
 
 Snail.prototype.randomisePosition = function () {
     // Rock randomisation defaults (if nothing otherwise specified)
-    this.cx = this.cx || Math.random() * g_canvas.width;
+    this.cx = util.randRange(250, g_canvas.width - 250);
 	this.cy = 200;
 	
 	
@@ -115,7 +115,10 @@ var NOMINAL_ROTATE_RATE = 0.1;
 Snail.prototype.update = function (du) {
 	spatialManager.unregister(this);
 	if(this._isDeadNow || this.isOutOfMap()){
-		  
+		entityManager.generateDeath({
+        		cx : this.cx,
+        		cy : this.cy
+    	});
 		return entityManager.KILL_ME_NOW;
 	}
 	
@@ -232,7 +235,9 @@ Snail.prototype.update = function (du) {
 		if(this.isCollidingBottom)
 		{
 			this.xVel = 0;
-			if(this.yVel > 6.5){this.takeDamage(this.yVel * 0.9);};
+			if(this.yVel > 6.5 && entityManager.hasStarted === true){
+				this.takeDamage(this.yVel * 0.9);
+				};
 			this.yVel = 0;
 		}
 	}
@@ -247,7 +252,6 @@ Snail.prototype.update = function (du) {
 		this.isBackJumping = true;
 	}
 	if(this.rotation > Math.PI*2 && this.isBackJumping ===  true){
-		console.log("i gegn");
 		this.rotationAdded = 0;
 		this.rotation = 0;
 		this.isBackJumping = false;
@@ -334,10 +338,6 @@ Snail.prototype.takeDamage = function(damage){
 	this.health -= damage;
 	
 	if(this.health <= 0){
-		entityManager.generateDeath({
-        		cx : this.cx,
-        		cy : this.cy
-    	});
 		
 		this._isDeadNow = true;
 	}
