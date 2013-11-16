@@ -35,20 +35,36 @@ currentWeapon : "",
 	},
 
 
+	renderText : function (ctx, text, cx, cy, color){
+		
+		ctx.fillStyle = color;
+		ctx.fillText(text, cx, cy);
+		
+	},
+	
 	renderInterface: function(ctx){
 		ctx.strokeStyle="black";
-		ctx.fillStyle="red";
-		this.roundBox(ctx,800,700,this.p1Health,40,20, "blue",true);
-		this.roundBox(ctx,700,700,90,40,20, "blue",true);
-		ctx.fillStyle="blue";
-		this.roundBox(ctx,800,750,this.p2Health,40,20, "red",true);
-		this.roundBox(ctx,700,750,90,40,20, "red",true);
-		ctx.fillStyle="black";
 		ctx.font="22px Arial";
-		ctx.fillText("Player 1", 707,725);
-		ctx.fillText("Player 2", 707,775);
+		if(entityManager._SnailsP1.length !== 0){
+			ctx.fillStyle="red";
+			this.roundBox(ctx,800,700,this.p1Health,40,20, "blue",true);
+			this.roundBox(ctx,700,700,90,40,20, "blue",true);
+			
+			this.renderText(ctx, "Player 1", 707, 725, "black");
+			
+		}
+		
+		
+		if(entityManager._SnailsP2.length !== 0){
+			ctx.fillStyle="blue";
+			this.roundBox(ctx,800,750,this.p2Health,40,20, "red",true);
+			this.roundBox(ctx,700,750,90,40,20, "red",true);
+			this.renderText(ctx, "Player 2", 707, 775, "black");
+		}
+		
 		ctx.fillText(entityManager.windThisTurn,200,200);
 		this.roundBox(ctx,1600,725,200,40,20, "red",true);
+		
 		var bar = 500 * entityManager.windThisTurn;
 		if(bar > 0){
 			ctx.fillStyle="red";
@@ -79,8 +95,32 @@ currentWeapon : "",
 		this.currentWeapon = _activeWeapon;
 	},
 	
-	
+	renderArrow : function(ctx, cx, cy, color){
+		if(color === "p1"){ctx.fillStyle = "red";}
+		else{ctx.fillStyle = "blue";}
+		
+		ctx.save();
+		ctx.beginPath();
+		ctx.translate(cx,cy);
+		ctx.moveTo(0,0);
+		ctx.lineTo(5,20);
+		ctx.lineTo(-5,20);
+		ctx.closePath();
+		ctx.restore();
+		ctx.fill();
+		},
+		
+	renderBox : function (ctx, cx, cy, width, height, color, stroke){
+		if(stroke === undefined){ctx.strokeStyle = "rgba(1, 1, 1, 0)";}
+		else{ctx.strokeStyle = stroke}
+		ctx.strokeRect(cx,cy,width,height);
+		ctx.lineWidth = 5;
+		ctx.fillStyle = color;
+		ctx.fillRect(cx,cy,width,height);	
+	}
 }
+	
+
 
 
 var animation = {

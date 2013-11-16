@@ -23,10 +23,10 @@ Weapon.prototype.aimY=0;
 Weapon.prototype.aimDistance = 35;
 Weapon.prototype.started =false;
 
-Weapon.prototype.render = function(ctx,dir){
+Weapon.prototype.render = function(ctx,dir,rotateJump){
 	var spriteNow = this.sprites[this.selected];
 	display.renderActiveWeapon(this.sprites[this.selected]); //to render active weapon on the interface
-	this.sprites[this.selected].drawCentredAt(ctx,this.cx,this.cy,this.rotation,dir);
+	this.sprites[this.selected].drawCentredAt(ctx,this.cx,this.cy,this.rotation-rotateJump,dir);
     g_sprites.aim.drawCentredAt(ctx,this.aimX/* + this.aimDistance*/,this.aimY);
 	
 };
@@ -59,8 +59,6 @@ Weapon.prototype.fire = function(power){
             this.ammo =0;
             break;
         case 3: 
-            //Haldainnitakkanum
-			//console.log(power);
             entityManager.fireRocket(this.aimX,this.aimY, this.aimVectorX/10,this.aimVectorY/10,power); 
 			this.ammo =0;
         default:

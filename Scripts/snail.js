@@ -56,6 +56,7 @@ Snail.prototype.rememberResets = function () {
 Snail.prototype.player = "";
 Snail.prototype.thrust = 0;
 Snail.prototype.KEY_JUMP = 'J'.charCodeAt(0); // þarf að finna fyrir enter. J fyrru jump
+Snail.prototype.KEY_BACKJUMP = 'L'.charCodeAt(0); 
 Snail.prototype.KEY_LEFT   = 'A'.charCodeAt(0);
 Snail.prototype.KEY_FIRE  = ' '.charCodeAt(0); // hafa computeThrustMag fyrir þetta t.d. fyrir bazooka?
 Snail.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
@@ -74,6 +75,7 @@ Snail.prototype.xVel = 0;
 
 Snail.prototype.rotation = 0;
 Snail.prototype.rotationAdded =0;
+Snail.prototype.isBackJumping = false;
 
 Snail.prototype.isCollidingTop = false;
 Snail.prototype.isCollidingBottom = false;
@@ -136,7 +138,7 @@ Snail.prototype.update = function (du) {
 	var width = this.width;
 	var halfwidth = width/2;
 	
-	if (keys[this.KEY_LEFT] && this._isActive === true)
+	if (keys[this.KEY_LEFT] && this._isActive === true && this.isCollidingLandscape())
 	{
 		this.direction = -1;
 		
@@ -167,7 +169,7 @@ Snail.prototype.update = function (du) {
 		}
 	
 	}
-	if (keys[this.KEY_RIGHT] && this._isActive === true)
+	if (keys[this.KEY_RIGHT] && this._isActive === true && this.isCollidingLandscape())
 	{
 		this.direction = 1;
 		
@@ -199,19 +201,24 @@ Snail.prototype.update = function (du) {
 			this.cx += 3*du;
 		}	
 	}
-   
+
 	if (keys[this.KEY_JUMP] && this._isActive === true && this.isCollidingLandscape()) { 
-	
-		this.yVel = -4.5;
+		this.xVel = 3 * this.direction;
+		this.yVel = -3.5;
 		this.cy += this.yVel * du;
+		this.rotation = 0.25;
+		
 		//jump.play();hoppu hljoð Hér þurfum við að hafa exp fall og ákveða max hæð sem má hoppa
     }
+	
+	
 
     if(keys[this.KEY_AIM_UP] && this._isActive)
     	addRotate = NOMINAL_ROTATE_RATE*du;
     if(keys[this.KEY_AIM_DOWN] && this._isActive)
     	addRotate = -NOMINAL_ROTATE_RATE*du;
 
+	
 	
 	if(!this.isCollidingLandscape()){
 		
@@ -224,10 +231,27 @@ Snail.prototype.update = function (du) {
 		this.rotation=0;
 		if(this.isCollidingBottom)
 		{
-			if(this.yVel > 6.5){this.takeDamage(this.yVel * 0.5);};
+			this.xVel = 0;
+			if(this.yVel > 6.5){this.takeDamage(this.yVel * 0.9);};
 			this.yVel = 0;
 		}
 	}
+	if(this._isActive === true){
+	//debugging method fyrir active snail - console.log(whatevs); :P :D XD ;O
+	}
+	if(keys[this.KEY_BACKJUMP] && this._isActive && this.isCollidingLandscape()){
+		this.xVel = 0.5 * this.direction * -1;
+		this.yVel = -5.5;
+		this.cy += this.yVel * du;
+		this.rotationAdded = 0.09;
+		this.isBackJumping = true;
+	}
+	if(this.rotation > Math.PI*2 && this.isBackJumping ===  true){
+		console.log("i gegn");
+		this.rotationAdded = 0;
+		this.rotation = 0;
+		this.isBackJumping = false;
+		}
 	
     this._weapon.update(this.cx,this.cy,addRotate,this.direction);
     this.maybeFireBullet();
@@ -321,28 +345,21 @@ Snail.prototype.takeDamage = function(damage){
 
 Snail.prototype.render = function (ctx) {	
 	
-	ctx.fillStyle="white";
-	ctx.fillRect(this.cx-50,this.cy-70,100,25);
+	display.renderBox(ctx,this.cx-50,this.cy-70,100,25,"white","black");
+
 	
 	if(this._isActive === true){
-	
-		ctx.strokeStyle="green";
-		ctx.lineWidth = 5;
-		ctx.strokeRect(this.cx-50,this.cy-70,100,25);
-		ctx.fillRect(this.cx-50,this.cy-80,this.thrust * 18, 5);
+		display.renderBox(ctx,this.cx-50,this.cy-70,100,25,"white","green");
 		}
 	
 	
 	if(this.player === "p1"){
-		ctx.fillStyle="red";
+		display.renderText(ctx, Math.floor(this.health), this.cx-18, this.cy-52, "red");
 	}
 	else{
-		ctx.fillStyle="blue";
+		display.renderText(ctx, Math.floor(this.health), this.cx-18, this.cy-52, "blue");
 	}
-	ctx.font= "20px Arial"; 
-	ctx.fillText(Math.floor(this.health), this.cx-18, this.cy-52);
 	
-
     var origScale = this.sprite.scale;
 	
     this.sprite.scale = this._scale;
@@ -351,6 +368,11 @@ Snail.prototype.render = function (ctx) {
 	
     this.sprite.scale = origScale;
     if(this._isActive)
-		this._weapon.render(ctx,this.direction);
+		this._weapon.render(ctx,this.direction,this.rotation);
+		
+	if(this.cy < 0){
+		display.renderArrow(ctx,this.cx,0, this.player);
+		display.renderText(ctx, Math.floor(this.cy * -1),this.cx-15,40);
+	}
 
 };
