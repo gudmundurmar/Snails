@@ -52,6 +52,7 @@ Bullet.prototype.update = function (du) {
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
     spatialManager.unregister(this);
     if(this._isDeadNow) {
+        //if(this.ammo === 0) endTurnMakeNextActive(this.owner);
         return entityManager.KILL_ME_NOW;
 		
     }
@@ -70,6 +71,7 @@ Bullet.prototype.update = function (du) {
                 radius: this.getRadius(),
                 explosion : false
         });
+        //if(this.ammo === 0) endTurnMakeNextActive(this.owner);
         return entityManager.KILL_ME_NOW;
     } 
 
@@ -95,6 +97,7 @@ Bullet.prototype.update = function (du) {
     if(entityManager._Landscape[0].pixelHitTest(this, true))
         {
         entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),5);
+        //if(this.ammo === 0) endTurnMakeNextActive(this.owner);
         return entityManager.KILL_ME_NOW;
     }
     

@@ -51,12 +51,17 @@ Weapon.prototype.changeGun = function(whatgun){
 };
 Weapon.prototype.fire = function(power, owner){
     this.started = true;
+    if(this.ammo===0) {
+        this.started = false; //if already started shooting you can't change weapons
+        return;
+    }
+
     switch(this.selected){
         case 1: 
             this.ammo -= 5;
-            entityManager.fireBullet(this.aimX, this.aimY ,this.aimVectorX/10   ,this.aimVectorY/10,5);
+            entityManager.fireBullet(this.aimX, this.aimY ,this.aimVectorX/10   ,this.aimVectorY/10,5, owner, this.ammo);
             break;
-        case 2: entityManager.fireBullet(this.aimX,this.aimY, this.aimVectorX/10, this.aimVectorY/10,20);
+        case 2: entityManager.fireBullet(this.aimX,this.aimY, this.aimVectorX/10, this.aimVectorY/10,20, owner, this.ammo);
             this.ammo =0;
             break;
         case 3: 
@@ -69,6 +74,5 @@ Weapon.prototype.fire = function(power, owner){
         default:
             return;
     }
-    if(this.ammo===0)
-        this.started = false;
+    
 };
