@@ -82,14 +82,23 @@ Landscape.prototype.buildPixelMap = function( ctx ) {
 
 //Ætla aðeins að fikta í þessu þannig að þegar þú ferð upp fyrir skjáinn hverfuru bara útaf en kemur aftur!
 //Baldur
-Landscape.prototype.pixelHitTest = function(target ) {
-	var pos = target.getPos();
-	var halfheight = target.height/2;
-	var width = target.width;
-	var halfwidth = width/2;
-	var y1 = Math.floor(pos.posY+halfheight);
-	var y2 = Math.floor(pos.posY-halfheight);	
-	var x = Math.floor(pos.posX-halfwidth);
+Landscape.prototype.pixelHitTest = function(target, checkmiddle ) {
+    var pos = target.getPos();
+       if(checkmiddle === true) {
+        var halfheight = 0;
+        var width = 1;
+        var halfwidth = 0;
+    }
+    else {        
+        var halfheight = target.height/2;
+        var width = target.width;
+        var halfwidth = width/2;    
+    }
+ 
+   var y1 = Math.round(pos.posY+halfheight);
+   var y2 = Math.round(pos.posY-halfheight);   
+   var x = Math.round(pos.posX-halfwidth);
+
 
 	target.isCollidingBottom = false;
 	target.isCollidingLeft = false;

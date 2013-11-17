@@ -49,8 +49,6 @@ Weapon.prototype.update = function(xVal,yVal,rotation,dir){
     this.aimVectorY = this.aimDistance*Math.sin(this.rotation);
     this.aimX = this.aimVectorX+this.cx;
     this.aimY = this.aimVectorY + this.cy;
-	console.log(this.aimX);
-	console.log(this.aimY);
 
     if(-Math.PI/2<this.rotation-rotation &&this.rotation-rotation<Math.PI/2)
         this.rotation-=rotation;
@@ -63,12 +61,17 @@ Weapon.prototype.changeGun = function(whatgun){
 };
 Weapon.prototype.fire = function(power, owner){
     this.started = true;
+    if(this.ammo===0) {
+        this.started = false; //if already started shooting you can't change weapons
+        return;
+    }
+
     switch(this.selected){
         case 1: 
             this.ammo -= 5;
-            entityManager.fireBullet(this.aimX, this.aimY ,this.aimVectorX/10   ,this.aimVectorY/10,5);
+            entityManager.fireBullet(this.aimX, this.aimY ,this.aimVectorX/10   ,this.aimVectorY/10,5, owner, this.ammo);
             break;
-        case 2: entityManager.fireBullet(this.aimX,this.aimY, this.aimVectorX/10, this.aimVectorY/10,20);
+        case 2: entityManager.fireBullet(this.aimX,this.aimY, this.aimVectorX/10, this.aimVectorY/10,20, owner, this.ammo);
             this.ammo =0;
             break;
         case 3: 
@@ -90,6 +93,4 @@ Weapon.prototype.fire = function(power, owner){
         default:
             return;
     }
-    if(this.ammo===0)
-        this.started = false;
 };

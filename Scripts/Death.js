@@ -8,8 +8,7 @@ function Death(descr) {
     // Default sprite, if not otherwise specified
   
     this._scale = 1 ;
-	entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),60);
-
+	entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),this.radius);
 
 };
 
@@ -22,6 +21,9 @@ Death.prototype.height = 64;
 Death.prototype.width = 64;
 Death.prototype.maxDamage = 70;
 Death.prototype.power =1;
+Death.prototype.radius = 60;
+Death.prototype.explosion = true;
+
 
 Death.prototype.rememberResets = function () {
     // Remember my reset positions
@@ -51,6 +53,7 @@ Death.prototype.update = function (du) {
 	if(this.findWorms()&& this.timeFrame===1){
 		for(var i =0;i<this.findWorms().length;i++){
 			var worm =this.findWorms()[i].worm;
+			if(this.explosion === true) //check if it's a bomber
 			worm.blastAway(this.cx,this.cy,this.power);
 		}
 	}
@@ -74,7 +77,7 @@ Death.prototype.render = function (ctx) {
 
 
 	var cel = g_explosion[this.timeFrame];
-	
+	if(this.explosion === true)
 	cel.drawSheetAt(ctx,this.cx-(this.width/2), this.cy-(this.height/2) - this.timeFrame*1.5);	
 		
 };

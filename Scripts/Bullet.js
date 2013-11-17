@@ -61,6 +61,16 @@ Bullet.prototype.update = function (du) {
 		this.height = g_images.ship.height/4; //define the height of bullet prototype
 		this.width = g_images.ship.width/4; //define the width of bullet prototype
 	}
+    if(entityManager._Landscape[0].pixelHitTest(this, true, Math.floor(this.cx), Math.floor(this.cy)))
+    {
+        entityManager.generateDeath({
+                cx : this.cx,
+                cy : this.cy,
+                radius: this.getRadius(),
+                explosion : false
+        });
+        return entityManager.KILL_ME_NOW;
+    } 
 
     this.cx += this.velX * du;
     this.cy += this.velY * du;
@@ -80,7 +90,7 @@ Bullet.prototype.update = function (du) {
         return entityManager.KILL_ME_NOW;
     }
 
-    if(entityManager._Landscape[0].pixelHitTest(this))
+    if(entityManager._Landscape[0].pixelHitTest(this, true))
         {
         entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),5);
         return entityManager.KILL_ME_NOW;

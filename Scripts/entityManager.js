@@ -71,12 +71,14 @@ init: function() {
 	this._generateSnails();
 },
 
-fireBullet: function(cx, cy, velX, velY, rotation) {
+fireBullet: function(cx, cy, velX, velY, rotation, owner, ammo) {
     this._bullets.push(new Bullet({
+		ammo : ammo,
         cx   : cx,
         cy   : cy,
         velX : velX,
         velY : velY,
+		owner : owner,
 
         rotation : rotation
     }));
@@ -162,6 +164,12 @@ landedSnails : function(){
 		}
 	
 },
+
+getShotsNotExploded: function() {
+    return this._bullets.length;
+},
+
+
 
 update: function(du) {
 	if(this.hasStarted === false){this.landedSnails();}

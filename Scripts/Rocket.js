@@ -56,7 +56,6 @@ Rocket.prototype.update = function (du) {
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
     spatialManager.unregister(this);
     if(this._isDeadNow || this.isOutOfMap()) {
-		endTurnMakeNextActive(this.owner); 
         return entityManager.KILL_ME_NOW;
     }
 
@@ -72,7 +71,6 @@ Rocket.prototype.update = function (du) {
         		cx : this.cx,
         		cy : this.cy
     	});
-		endTurnMakeNextActive(this.owner); 
         return entityManager.KILL_ME_NOW;
     }
 	this.velX += entityManager.windThisTurn;
@@ -96,7 +94,6 @@ Rocket.prototype.update = function (du) {
         		cx : this.cx,
         		cy : this.cy
     	});
-		endTurnMakeNextActive(this.owner);
         return entityManager.KILL_ME_NOW;
     }
     // TODO: YOUR STUFF HERE! --- (Re-)Register
@@ -151,7 +148,6 @@ Holy.prototype.update = function (du) {
 
     spatialManager.unregister(this);
     if(this._isDeadNow || this.isOutOfMap()) {
-		endTurnMakeNextActive(this.owner); 
         return entityManager.KILL_ME_NOW;
     }
 	if(this.height === null || this.width === null)
@@ -189,7 +185,6 @@ Holy.prototype.update = function (du) {
         		cy : this.cy,
 				
     	});
-		endTurnMakeNextActive(this.owner); 
         return entityManager.KILL_ME_NOW;
 	}
 	
