@@ -62,12 +62,25 @@ Bullet.prototype.update = function (du) {
 		this.width = g_images.ship.width/4; //define the width of bullet prototype
 	}
 
+
+
     this.cx += this.velX * du;
     this.cy += this.velY * du;
 
     this.rotation += 1 * du;
     this.rotation = util.wrapRange(this.rotation,
                                    0, consts.FULL_CIRCLE);
+
+    if(entityManager._Landscape[0].pixelHitTest(this, true, Math.floor(this.cx), Math.floor(this.cy)))
+    {
+        entityManager.generateDeath({
+                cx : this.cx,
+                cy : this.cy,
+                radius: this.getRadius(),
+                explosion : false
+        });
+        return entityManager.KILL_ME_NOW;
+    } 
 
     if(this.cx > g_canvas.width || this.cx <0 || this.cy > g_canvas.height || this.cy<0)
         return entityManager.KILL_ME_NOW;
@@ -80,11 +93,9 @@ Bullet.prototype.update = function (du) {
         return entityManager.KILL_ME_NOW;
     }
 
-    if(entityManager._Landscape[0].pixelHitTest(this))
-        {
-        entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),5);
-        return entityManager.KILL_ME_NOW;
-    }
+
+    
+    
     
     // TODO: YOUR STUFF HERE! --- (Re-)Register
     spatialManager.register(this);
@@ -92,7 +103,7 @@ Bullet.prototype.update = function (du) {
 };
 
 Bullet.prototype.getRadius = function () {
-    return 4;
+    return 5;
 };
 
 Bullet.prototype.takeBulletHit = function () {
@@ -103,8 +114,6 @@ Bullet.prototype.takeBulletHit = function () {
 };
 
 Bullet.prototype.render = function (ctx) {
-
-
     g_sprites.bullet.drawCentredAt(
         ctx, this.cx, this.cy, this.rotation
     );

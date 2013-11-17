@@ -8,9 +8,8 @@ function Death(descr) {
     // Default sprite, if not otherwise specified
   
     this._scale = 1;
-	entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),60);
-
-
+    console.log(this.radius);
+	entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy), this.radius);
 };
 
 Death.prototype = new Entity();
@@ -22,6 +21,8 @@ Death.prototype.height = 64;
 Death.prototype.width = 64;
 Death.prototype.maxDamage = 70;
 Death.prototype.power =1;
+Death.prototype.radius = 60;
+Death.prototype.explosion = true;
 
 Death.prototype.rememberResets = function () {
     // Remember my reset positions
@@ -30,37 +31,33 @@ Death.prototype.rememberResets = function () {
     this.reset_rotation = this.rotation;
 };
 
-
-
 Death.prototype.update = function (du) {
 	//console.log(this.timeFrame);
-
 	
 	this.timeFrame++;
 	
 	if(this.timeFrame === 25){
 		this._isDeadNow = true;
-		
 	}
 	
 	spatialManager.unregister(this);
 	if(this._isDeadNow){
 		return entityManager.KILL_ME_NOW;
 	}
-
+	
 	if(this.findWorms()&& this.timeFrame===1){
 		for(var i =0;i<this.findWorms().length;i++){
 			var worm =this.findWorms()[i].worm;
 			worm.blastAway(this.cx,this.cy,this.power);
 		}
 	}
-
 	spatialManager.register(this);
+
 };
 
 
 Death.prototype.getRadius = function () {
-    return (g_explosion[this.timeFrame].width / 2) * 0.9;
+    return (g_explosion[this.timeFrame].radius / 2) * 0.9;
 };
 
 Death.prototype.findWorms = function(){
@@ -70,12 +67,16 @@ Death.prototype.findWorms = function(){
     );
 }
 
+
 Death.prototype.render = function (ctx) {
-
-
+	
 	var cel = g_explosion[this.timeFrame];
 	
+	
+	if(this.explosion === true)
 	cel.drawSheetAt(ctx,this.cx-(this.width/2), this.cy-(this.height/2) - this.timeFrame*1.5);	
+		
+	
 		
 };
 
@@ -122,7 +123,7 @@ Rip.prototype.update = function (du) {
 	if(this.isOutOfMap()){
 		return entityManager.KILL_ME_NOW;
 	}
-	
+ 	
 	this.cy +=this.yVel* du;
 	var prevY = this.cy;
 	var nextY = prevY + this.yVel * du;
@@ -152,11 +153,4 @@ Rip.prototype.isCollidingLandscape = function() {
 
 Rip.prototype.getRadius = function () {
     return (this.sprite.width / 2) * 0.1;
-};
-
-
-Rip.prototype.render = function (ctx) {
-
-this.sprite.drawCentredAt(ctx, this.cx, this.cy); 		
-		
 };
