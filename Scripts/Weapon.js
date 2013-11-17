@@ -15,6 +15,7 @@ function Weapon(descr) {
     this.sprites[1] = g_sprites.smg;
     this.sprites[2] = g_sprites.shotgun;
    	this.sprites[3] = g_sprites.rocketlauncher;
+   	this.sprites[4] = g_sprites.holy;
 };
 Weapon.prototype.rotation =0;
 Weapon.prototype.ammo = 50;
@@ -48,7 +49,7 @@ Weapon.prototype.changeGun = function(whatgun){
     if(!this.started)
         this.selected = whatgun;
 };
-Weapon.prototype.fire = function(power){
+Weapon.prototype.fire = function(power, owner){
     this.started = true;
     switch(this.selected){
         case 1: 
@@ -59,7 +60,11 @@ Weapon.prototype.fire = function(power){
             this.ammo =0;
             break;
         case 3: 
-            entityManager.fireRocket(this.aimX,this.aimY, this.aimVectorX/10,this.aimVectorY/10,power); 
+            entityManager.fireRocket(this.aimX,this.aimY, this.aimVectorX/10,this.aimVectorY/10, power, owner); 
+			this.ammo =0;
+			break;
+		case 4: 
+            entityManager.throwHoly(this.aimX,this.aimY, this.aimVectorX/10,this.aimVectorY/10, power, owner); 
 			this.ammo =0;
         default:
             return;

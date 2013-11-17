@@ -13,7 +13,6 @@ function handleKeyup(evt) {
 
 	if(evt.keyCode === 32){
 	hasBeenShot = true;
-	console.log("up");
 	}
 	keys[evt.keyCode] = false;
 	//console.log(evt.keyCode);

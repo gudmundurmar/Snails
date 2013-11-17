@@ -82,12 +82,25 @@ fireBullet: function(cx, cy, velX, velY, rotation) {
     }));
 },
 
-fireRocket: function(cx,cy,velX,velY,power){
+fireRocket: function(cx,cy,velX,velY,power, owner){
     this._bullets.push(new Rocket({
         cx : cx,
         cy : cy,
         velX: velX * power,
-        velY: velY * power
+        velY: velY * power,
+		owner: owner
+		
+    }));
+},
+
+throwHoly: function(cx,cy,velX,velY,power, owner){
+    this._bullets.push(new Holy({
+        cx : cx,
+        cy : cy,
+        velX: velX * power,
+        velY: velY * power,
+		owner: owner
+		
     }));
 },
 
@@ -166,11 +179,19 @@ changePlayer : "empty",
 changeTurn : function (p1Worm, p2Worm, currentPlayer){
 	
 	switch(currentPlayer){
-	case "p1" :	if(p2Worm > entityManager._SnailsP2.length-1){p2Worm = 0;};	entityManager._SnailsP2[p2Worm]._isActive = true;
+	case "p1" :	if(p2Worm > entityManager._SnailsP2.length-1){
+					this.changeWormP2 = 0;
+					p2Worm = 0;
+					};
+				entityManager._SnailsP2[p2Worm]._isActive = true;
                 this._activeSnail = this._SnailsP2[p2Worm];
-				
                 break;
-	case "p2" :	if(p1Worm > entityManager._SnailsP1.length-1){p1Worm = 0;};	entityManager._SnailsP1[p1Worm]._isActive = true;
+				
+	case "p2" :	if(p1Worm > entityManager._SnailsP1.length-1){
+					this.changeWormP1 = 0;
+					p1Worm = 0;
+					};	
+				entityManager._SnailsP1[p1Worm]._isActive = true;
                 this._activeSnail = this._SnailsP1[p1Worm];
                 break;
 	case "empty" : break;

@@ -290,24 +290,24 @@ var NOMINAL_GRAVITY = 0.12;
 
 function endTurnMakeNextActive(currentPlayer){
 	
-	
+	console.log(currentPlayer);
 	entityManager.currentWind();
 	if(currentPlayer === "p1"){
-		for(var i = 0 ; i < entityManager._SnailsP1.length; i++){
-			if(entityManager._SnailsP1[i]._isActive === true){
+		//for(var i = 0 ; i < entityManager._SnailsP1.length; i++){
+			//if(entityManager._SnailsP1[i]._isActive === true){
 				entityManager.changePlayer = "p1";
-				entityManager.changeWormP1 = i + 1;
-			}	
+				entityManager.changeWormP1 +=1;
+			//	
 		}
-	}
+	
 	else{				
-		for(var i = 0 ; i < entityManager._SnailsP2.length; i++){
-			if(entityManager._SnailsP2[i]._isActive === true){
+		//for(var i = 0 ; i < entityManager._SnailsP2.length; i++){
+			//if(entityManager._SnailsP2[i]._isActive === true){
 				entityManager.changePlayer = "p2";
-				entityManager.changeWormP2 = i + 1;
-			}
+				entityManager.changeWormP2 += 1;
+		//	
 			
-		}
+		//
 	}
 }
 
@@ -320,7 +320,7 @@ Snail.prototype.maybeFireBullet = function () {
 		}
 	
 	if((hasBeenShot === true || this.thrust > 5.5)&& this._isActive === true ){
-    	this._weapon.fire(this.thrust);
+    	this._weapon.fire(this.thrust,this.player);
 		
 		hasBeenShot = false;
 		this.thrust = 0;
@@ -328,7 +328,7 @@ Snail.prototype.maybeFireBullet = function () {
 		
  
 	if(this._weapon.ammo===0){
-		endTurnMakeNextActive(this.player); 
+		//endTurnMakeNextActive(this.player); 
 		this._weapon.ammo=50; 
 		this._isActive = false;
 		} 

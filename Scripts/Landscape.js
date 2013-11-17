@@ -80,30 +80,37 @@ Landscape.prototype.buildPixelMap = function( ctx ) {
 	return ctx.getImageData(0,0,this.width,this.height);
     };
 
-Landscape.prototype.pixelHitTest = function(target, checkmiddle, cx, cy ) {
-	
-    var pos = target.getPos();
-    if(cx && cy) {
-        pos.posX = cx;
-        pos.posY = cy;
-    }
-	if(checkmiddle === true) {
-        var halfheight = 0;
-        var width = 1;
-        var halfwidth = 0;
-    }
-    else {        
-        var halfheight = target.height/2;
-        var width = target.width;
-        var halfwidth = width/2;    
-    }
+//Ætla aðeins að fikta í þessu þannig að þegar þú ferð upp fyrir skjáinn hverfuru bara útaf en kemur aftur!
+//Baldur
+Landscape.prototype.pixelHitTest = function(target ) {
+	var pos = target.getPos();
+	var halfheight = target.height/2;
+	var width = target.width;
+	var halfwidth = width/2;
+	var y1 = Math.floor(pos.posY+halfheight);
+	var y2 = Math.floor(pos.posY-halfheight);	
+	var x = Math.floor(pos.posX-halfwidth);
 
-	var y1 = Math.round(pos.posY+halfheight);
-	var y2 = Math.round(pos.posY-halfheight);	
-	var x = Math.round(pos.posX-halfwidth);
-	
-	target.isCollidingTop = false;
 	target.isCollidingBottom = false;
+	target.isCollidingLeft = false;
+	target.isCollidingRight = false;
+
+
+	for(var i=y1-10; i>y2+10; i--)
+	{
+		var S1 = this.getPixAt(x-2,i).A;
+		var S2 = this.getPixAt(x+width+2,i).A;
+					
+		if(S1 !== 0)
+		{
+			target.isCollidingLeft = true;
+		}
+		if(S2 !== 0)
+		{
+			target.isCollidingRight = true;
+		}
+			
+	}
 
 	for(var i=x; i<width+x; i++)
 	{
@@ -113,14 +120,14 @@ Landscape.prototype.pixelHitTest = function(target, checkmiddle, cx, cy ) {
 			
 		if(R !== 0 && G !== 0 && B !== 0)
 		{
-			//console.log("HIT");
+              		//console.log("bottomHIT");
 			target.isCollidingBottom = true;
 			return true;
 		}
 			
 	}
 
-	for(var i=x; i<width+x; i++)
+	/*for(var i=x; i<width+x; i++)
 	{
 		var R = this.getPixAt(i,y2).R;
 		var G = this.getPixAt(i,y2).G;
@@ -129,12 +136,11 @@ Landscape.prototype.pixelHitTest = function(target, checkmiddle, cx, cy ) {
 		if(R !== 0 && G !== 0 && B !== 0)
 		{
 			console.log("TOP HIT");
-			target.isCollidingTop = true;
-			return true;
+			//target.isCollidingTop = true;
+			//return true;
 		}
 			
-	}
-
+	}*/
 	return false;	
 	
 };
