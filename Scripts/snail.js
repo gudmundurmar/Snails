@@ -341,7 +341,7 @@ Snail.prototype.getRadius = function () {
 };
 
 Snail.prototype.takeBulletHit = function () {
-    this.takeDamage(2);
+    this.takeDamage(50);
 };
 
 Snail.prototype.takeDamage = function(damage){
@@ -350,7 +350,10 @@ Snail.prototype.takeDamage = function(damage){
 	this.health -= damage;
 	
 	if(this.health <= 0){
-		
+		entityManager.generateRip({
+			cx : this.cx,
+			cy : this.cy
+		});
 		this._isDeadNow = true;
 	}
 }

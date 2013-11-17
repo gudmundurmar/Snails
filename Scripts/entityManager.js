@@ -33,6 +33,7 @@ _Landscape  : [],
 _SnailsP1 : [],
 _SnailsP2 : [],
 _Death : [],
+_Rip : [],
 
 
 // "PRIVATE" METHODS
@@ -62,7 +63,7 @@ _forEachOf: function(aCategory, fn) {
 KILL_ME_NOW : -1,
 
 deferredSetup : function () {
-    this._categories = [this._Landscape,this._SnailsP1,this._SnailsP2,this._Death,this._bullets];
+    this._categories = [this._Landscape,this._SnailsP1,this._SnailsP2,this._Rip, this._Death,this._bullets];
 },
 
 init: function() {
@@ -105,6 +106,10 @@ generateSnail : function(descr) {
 
 generateDeath : function(descr) {
     this._Death.push(new Death(descr));
+},
+
+generateRip : function(descr) {
+	this._Rip.push(new Rip(descr));
 },
 
 
