@@ -71,14 +71,12 @@ init: function() {
 	this._generateSnails();
 },
 
-fireBullet: function(cx, cy, velX, velY, rotation, owner, ammo) {
+fireBullet: function(cx, cy, velX, velY, rotation) {
     this._bullets.push(new Bullet({
-        ammo : ammo,
         cx   : cx,
         cy   : cy,
         velX : velX,
         velY : velY,
-        owner : owner,
 
         rotation : rotation
     }));
@@ -102,6 +100,24 @@ throwHoly: function(cx,cy,velX,velY,power, owner){
         velX: velX * power,
         velY: velY * power,
 		owner: owner
+		
+    }));
+},
+throwGrenade: function(cx,cy,velX,velY,power, owner){
+    this._bullets.push(new Grenade({
+        cx : cx,
+        cy : cy,
+        velX: velX * power,
+        velY: velY * power,
+		owner: owner
+		
+    }));
+},
+
+airStrike: function(start, aimObject){
+    this._bullets.push(new Airstrike({
+		cx : 0,
+        target : aimObject
 		
     }));
 },
@@ -145,10 +161,6 @@ landedSnails : function(){
 		this.hasStarted = true;
 		}
 	
-},
-
-getShotsNotExploded: function() {
-    return this._bullets.length;
 },
 
 update: function(du) {
@@ -205,11 +217,13 @@ changeTurn : function (p1Worm, p2Worm, currentPlayer){
 	this.changePlayer = "empty";
 	display.findTotalHealth();
 	
+	
 },
 
 windThisTurn : 0,
 
 currentWind : function(){
+	
 
 	var direction = Math.random() * 1;
 	if(direction < 0.5){direction = 1;}
@@ -237,7 +251,6 @@ render: function(ctx) {
         debugY += 10;
     }
 	animation.renderSeaFront(ctx);
-	
 	display.renderInterface(ctx);
 },
 

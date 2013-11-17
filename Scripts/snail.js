@@ -117,6 +117,7 @@ var NOMINAL_ROTATE_RATE = 0.1;
 
 Snail.prototype.update = function (du) {
 	spatialManager.unregister(this);
+	
 	if(this._isDeadNow || this.isOutOfMap()){
 		entityManager.generateDeath({
         		cx : this.cx,
@@ -325,11 +326,10 @@ Snail.prototype.maybeFireBullet = function () {
 		hasBeenShot = false;
 		this.thrust = 0;
 		}
-		
- 	console.log("fjuddi");
-	if((this._weapon.ammo === 0) && (entityManager.getShotsNotExploded() === 0)){
-		console.log("change");
-		endTurnMakeNextActive(this.player); 
+	
+ 
+	if(this._weapon.ammo===0){
+		//endTurnMakeNextActive(this.player); 
 		this._weapon.ammo=50; 
 		this._isActive = false;
 		} 
@@ -353,7 +353,8 @@ Snail.prototype.takeDamage = function(damage){
 	if(this.health <= 0){
 		entityManager.generateRip({
 			cx : this.cx,
-			cy : this.cy
+			cy : this.cy,
+			yVel : -5
 		});
 		this._isDeadNow = true;
 	}
@@ -385,7 +386,7 @@ Snail.prototype.render = function (ctx) {
 	
     this.sprite.scale = origScale;
     if(this._isActive)
-		this._weapon.render(ctx,this.direction,this.rotation);
+		this._weapon.render(ctx,this.direction,this.rotation,g_mouseX, g_mouseY);
 		
 	if(this.cy < 0){
 		display.renderArrow(ctx,this.cx,0, this.player);

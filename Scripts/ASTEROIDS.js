@@ -66,6 +66,10 @@ var KEY_1 = keyCode('1');
 var KEY_2 = keyCode('2');
 var KEY_3 = keyCode('3');
 var KEY_4 = keyCode('4');
+var KEY_5 = keyCode('5');
+var KEY_6 = keyCode('6');
+var KEY_7 = keyCode('7');
+var KEY_8 = keyCode('8');
 
 var KEY_W = keyCode('W');
 var KEY_S = keyCode('S');
@@ -83,6 +87,10 @@ function processDiagnostics() {
     if(eatKey(KEY_3)) entityManager._activeSnail._weapon.changeGun(3);
 	
     if(eatKey(KEY_4)) entityManager._activeSnail._weapon.changeGun(4);
+	
+    if(eatKey(KEY_5)) entityManager._activeSnail._weapon.changeGun(5);
+	
+    if(eatKey(KEY_6)) entityManager._activeSnail._weapon.changeGun(6);
 
 }
 
@@ -129,6 +137,8 @@ function requestPreloads() {
         rocketlauncher:"img/weapons/rocketlauncher.png",
         rocket:"img/weapons/rocket.png",
         holy:"img/weapons/holygrenade.png",
+        grenade:"img/weapons/grenade.png",
+        airstrike:"img/weapons/airstrike.png",
 		rip : "img/rip.png"
     };
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -152,8 +162,9 @@ function preloadDone() {
     g_sprites.rocket = new Sprite(g_images.rocket);
     g_sprites.holy = new Sprite(g_images.holy);
     g_sprites.sea = new Sprite(g_images.sea);
+    g_sprites.grenade = new Sprite(g_images.grenade);
+    g_sprites.airstrike = new Sprite(g_images.airstrike);
     g_sprites.rip = new Sprite(g_images.rip);
-	g_sprites.aim.scale = 0.25;
 
 	
 	loadExplosion(g_images.explosion);

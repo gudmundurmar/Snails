@@ -16,6 +16,8 @@ function Weapon(descr) {
     this.sprites[2] = g_sprites.shotgun;
    	this.sprites[3] = g_sprites.rocketlauncher;
    	this.sprites[4] = g_sprites.holy;
+   	this.sprites[5] = g_sprites.grenade;
+   	this.sprites[6] = g_sprites.airstrike;
 };
 Weapon.prototype.rotation =0;
 Weapon.prototype.ammo = 50;
@@ -24,12 +26,20 @@ Weapon.prototype.aimY=0;
 Weapon.prototype.aimDistance = 35;
 Weapon.prototype.started =false;
 
-Weapon.prototype.render = function(ctx,dir,rotateJump){
+Weapon.prototype.render = function(ctx,dir,rotateJump,g_mouseX, g_mouseY){
+	if(this.selected === 6){
+	g_sprites.aim.scale = 1;
+	g_sprites.aim.drawCentredAt(ctx,g_mouseX, g_mouseY);
+	}
+	else{
+		g_sprites.aim.scale = 0.25;
+		g_sprites.aim.drawCentredAt(ctx,this.aimX/* + this.aimDistance*/,this.aimY);
+		}
+	
 	var spriteNow = this.sprites[this.selected];
 	display.renderActiveWeapon(this.sprites[this.selected]); //to render active weapon on the interface
 	this.sprites[this.selected].drawCentredAt(ctx,this.cx,this.cy,this.rotation-rotateJump,dir);
-    g_sprites.aim.drawCentredAt(ctx,this.aimX/* + this.aimDistance*/,this.aimY);
-	
+
 };
 Weapon.prototype.update = function(xVal,yVal,rotation,dir){
 	this.cx=xVal;
@@ -39,6 +49,8 @@ Weapon.prototype.update = function(xVal,yVal,rotation,dir){
     this.aimVectorY = this.aimDistance*Math.sin(this.rotation);
     this.aimX = this.aimVectorX+this.cx;
     this.aimY = this.aimVectorY + this.cy;
+	console.log(this.aimX);
+	console.log(this.aimY);
 
     if(-Math.PI/2<this.rotation-rotation &&this.rotation-rotation<Math.PI/2)
         this.rotation-=rotation;
@@ -51,17 +63,12 @@ Weapon.prototype.changeGun = function(whatgun){
 };
 Weapon.prototype.fire = function(power, owner){
     this.started = true;
-    if(this.ammo===0) {
-        this.started = false; //if already started shooting you can't change weapons
-        return;
-    }
-
     switch(this.selected){
         case 1: 
             this.ammo -= 5;
-            entityManager.fireBullet(this.aimX, this.aimY ,this.aimVectorX/10   ,this.aimVectorY/10,5, owner, this.ammo);
+            entityManager.fireBullet(this.aimX, this.aimY ,this.aimVectorX/10   ,this.aimVectorY/10,5);
             break;
-        case 2: entityManager.fireBullet(this.aimX,this.aimY, this.aimVectorX/10, this.aimVectorY/10,20, owner, this.ammo);
+        case 2: entityManager.fireBullet(this.aimX,this.aimY, this.aimVectorX/10, this.aimVectorY/10,20);
             this.ammo =0;
             break;
         case 3: 
@@ -71,8 +78,18 @@ Weapon.prototype.fire = function(power, owner){
 		case 4: 
             entityManager.throwHoly(this.aimX,this.aimY, this.aimVectorX/10,this.aimVectorY/10, power, owner); 
 			this.ammo =0;
+			break;
+		case 5: 
+            entityManager.throwGrenade(this.aimX,this.aimY, this.aimVectorX/10,this.aimVectorY/10, power, owner); 
+			this.ammo =0;
+			break;
+		case 6: 
+            entityManager.airStrike(0, g_mouseX); 
+			this.ammo =0;
+			break;			
         default:
             return;
     }
-    
+    if(this.ammo===0)
+        this.started = false;
 };

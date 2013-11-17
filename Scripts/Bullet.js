@@ -52,7 +52,6 @@ Bullet.prototype.update = function (du) {
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
     spatialManager.unregister(this);
     if(this._isDeadNow) {
-        //if(this.ammo === 0) endTurnMakeNextActive(this.owner);
         return entityManager.KILL_ME_NOW;
 		
     }
@@ -62,19 +61,6 @@ Bullet.prototype.update = function (du) {
 		this.height = g_images.ship.height/4; //define the height of bullet prototype
 		this.width = g_images.ship.width/4; //define the width of bullet prototype
 	}
-
-    if(entityManager._Landscape[0].pixelHitTest(this, true, Math.floor(this.cx), Math.floor(this.cy)))
-    {
-        entityManager.generateDeath({
-                cx : this.cx,
-                cy : this.cy,
-                radius: this.getRadius(),
-                explosion : false
-        });
-        //if(this.ammo === 0) endTurnMakeNextActive(this.owner);
-        return entityManager.KILL_ME_NOW;
-    } 
-
 
     this.cx += this.velX * du;
     this.cy += this.velY * du;
@@ -94,10 +80,9 @@ Bullet.prototype.update = function (du) {
         return entityManager.KILL_ME_NOW;
     }
 
-    if(entityManager._Landscape[0].pixelHitTest(this, true))
+    if(entityManager._Landscape[0].pixelHitTest(this))
         {
         entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),5);
-        //if(this.ammo === 0) endTurnMakeNextActive(this.owner);
         return entityManager.KILL_ME_NOW;
     }
     

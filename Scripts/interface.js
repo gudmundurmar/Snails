@@ -117,7 +117,8 @@ currentWeapon : "",
 		ctx.lineWidth = 5;
 		ctx.fillStyle = color;
 		ctx.fillRect(cx,cy,width,height);	
-	}
+	},
+	
 }
 	
 

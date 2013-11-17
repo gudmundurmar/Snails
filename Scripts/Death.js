@@ -8,7 +8,7 @@ function Death(descr) {
     // Default sprite, if not otherwise specified
   
     this._scale = 1 ;
-	entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),this.radius);
+	entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),60);
 
 
 };
@@ -22,9 +22,6 @@ Death.prototype.height = 64;
 Death.prototype.width = 64;
 Death.prototype.maxDamage = 70;
 Death.prototype.power =1;
-Death.prototype.radius = 60;
-Death.prototype.explosion = true;
-
 
 Death.prototype.rememberResets = function () {
     // Remember my reset positions
@@ -54,7 +51,6 @@ Death.prototype.update = function (du) {
 	if(this.findWorms()&& this.timeFrame===1){
 		for(var i =0;i<this.findWorms().length;i++){
 			var worm =this.findWorms()[i].worm;
-			if(this.explosion === true) //check if it's a bomber
 			worm.blastAway(this.cx,this.cy,this.power);
 		}
 	}
@@ -79,7 +75,6 @@ Death.prototype.render = function (ctx) {
 
 	var cel = g_explosion[this.timeFrame];
 	
-	if(this.explosion === true)
 	cel.drawSheetAt(ctx,this.cx-(this.width/2), this.cy-(this.height/2) - this.timeFrame*1.5);	
 		
 };
@@ -100,7 +95,6 @@ Rip.prototype = new Entity();
 
 Rip.prototype.cx = 200;
 Rip.prototype.cy = 300;
-Rip.prototype.isCollidingBottom = false;
 Rip.prototype.yVel = 0;
 
 //Death.prototype.height = 64;
@@ -128,30 +122,28 @@ Rip.prototype.update = function (du) {
 	if(this.isOutOfMap()){
 		return entityManager.KILL_ME_NOW;
 	}
+	
+	if(entityManager._Landscape[0].pixelHitTest(this))
+        {
+		console.log("inn");
+		/*this.yVel *= -0.9;
+		if(this.yVel === 0.005){
+			this.yVel = 0;
+		}*/
+	}
+	else{
+		this.yVel += NOMINAL_GRAVITY;
+	}
+	
 	this.cy +=this.yVel* du;
 	var prevY = this.cy;
 	var nextY = prevY + this.yVel * du;
 	
-	if(!this.isCollidingLandscape()){
-		console.log("ekki collide");
-		this.yVel += NOMINAL_GRAVITY;
-	}
-	else
-	{
 
-			this.yVel = 0;
-		
-	}
 	spatialManager.register(this);
 };
 
-Rip.prototype.isCollidingLandscape = function() {
 
-	if(this.cy > 0 && entityManager._Landscape[0].pixelHitTest(this))
-    {
-		return true;
-    }
-}
 
 Rip.prototype.getRadius = function () {
     return (this.sprite.width / 2) * 0.9;
