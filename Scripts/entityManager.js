@@ -40,10 +40,11 @@ _Rip : [],
 // "PRIVATE" METHODS
 
 hasStarted : false,
+isFinished : false,
 
 _generateSnails : function() {
     var i,
-        NUM_SNAILS = 4;
+        NUM_SNAILS = 1;
 
     for (i = 0; i < NUM_SNAILS; ++i) {
         this.generateSnail();
@@ -186,10 +187,30 @@ landedSnails : function(){
 	
 },
 
+readyForTurn : function(){
+	
+	var finished = 0;
+	
+	for(var i = 0 ; i < entityManager._SnailsP1.length; i++){
+		if(entityManager._SnailsP1[i].isCollidingBottom === true){
+			finished++;
+		}	}
+	for(var i = 0 ; i < entityManager._SnailsP2.length; i++){
+
+		if(entityManager._SnailsP2[i].isCollidingBottom === true){
+			finished++;
+		}	
+	}
+	if(finished === (entityManager._SnailsP1.length + entityManager._SnailsP2.length)){
+		
+		return true;
+		}
+	
+},
+
 getShotsNotExploded: function() {
     return this._bullets.length;
 },
-
 
 
 update: function(du) {

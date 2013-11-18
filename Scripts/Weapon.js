@@ -96,6 +96,7 @@ Weapon.prototype.fire = function(power, owner){
 			break;
 		case 7: 
            entityManager.teleportSnail(g_mouseX,g_mouseY);
+		   this.ammo = 0;
 			break;			
         default:
             return;

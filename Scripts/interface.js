@@ -44,8 +44,9 @@ currentWeapon : "",
 	
 	renderInterface: function(ctx){
 		ctx.strokeStyle="black";
-		ctx.font="22px Arial";
+		
 		if(entityManager._SnailsP1.length !== 0){
+			ctx.font="22px Arial";
 			ctx.fillStyle="red";
 			this.roundBox(ctx,800,700,this.p1Health,40,20, "blue",true);
 			this.roundBox(ctx,700,700,90,40,20, "blue",true);
@@ -53,16 +54,42 @@ currentWeapon : "",
 			this.renderText(ctx, "Player 1", 707, 725, "black");
 			
 		}
+		else{
+			this.renderBox(ctx,220,40, 1500, 205, "white", "black");
+			ctx.strokeStyle="black";
+			ctx.font="200px Arial";	
+			this.renderText(ctx, "Player 2 wins", 400, 200, "blue");
+			if(!entityManager.isFinished){
+			for(var i = 0 ; i < entityManager._SnailsP2.length ; i++){
+				entityManager._SnailsP2[i].yVel = -5.5;
+				entityManager._SnailsP2[i].rotationAdded = 0.22;
+				}
+			}
+			entityManager.isFinished = true;
+		}
 		
 		
 		if(entityManager._SnailsP2.length !== 0){
+			ctx.font="22px Arial";
 			ctx.fillStyle="blue";
 			this.roundBox(ctx,800,750,this.p2Health,40,20, "red",true);
 			this.roundBox(ctx,700,750,90,40,20, "red",true);
 			this.renderText(ctx, "Player 2", 707, 775, "black");
 		}
-		
-		ctx.fillText(entityManager.windThisTurn,200,200);
+		else{
+			this.renderBox(ctx,220,40, 1500, 205, "white", "black");
+			ctx.strokeStyle="black";
+			ctx.font="200px Arial";	
+			this.renderText(ctx, "Player 2 wins", 400, 200, "red");
+			if(!entityManager.isFinished){
+			for(var i = 0 ; i < entityManager._SnailsP1.length ; i++){
+				entityManager._SnailsP1[i].yVel = -5.5;
+				entityManager._SnailsP1[i].rotationAdded = 0.22;
+				}
+			}
+			entityManager.isFinished = true;
+			ctx.font="22px Arial";
+		}
 		this.roundBox(ctx,1600,725,200,40,20, "red",true);
 		
 		var bar = 500 * entityManager.windThisTurn;
@@ -76,6 +103,10 @@ currentWeapon : "",
 		ctx.fillStyle = "black";
 		this.roundBox(ctx,50,700,100,100,20, "red",true);
 		this.currentWeapon.drawCentredAt(ctx,100,750);
+		if(entityManager.isFinished){
+			this.renderBox(ctx,250,707, 400, 90, "white", "black");
+			this.renderText(ctx, "Play again? Press Y for yes, N for no.", 275, 760, "black");
+		}
 	},
 	
 	findTotalHealth : function(){

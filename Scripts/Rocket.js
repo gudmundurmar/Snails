@@ -317,10 +317,10 @@ Airstrike.prototype.update = function (du) {
 	}
 	console.log(this.cx);
 	console.log(this.target);
-	if(this.cx + 20 >= this.target && this.ammo !== 0){
+	if(this.cx >= this.target-250 && this.ammo !== 0){
 		
 		this.timer++;
-		if(this.timer % 5 === 0){
+		if(this.timer % 10 === 0){
 			entityManager.fireRocket(this.cx, this.cy + 50, 1,1, 1); 
 			this.ammo--;
 			}

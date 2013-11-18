@@ -313,23 +313,18 @@ function endTurnMakeNextActive(currentPlayer){
 	console.log(currentPlayer);
 	entityManager.currentWind();
 	if(currentPlayer === "p1"){
-		//for(var i = 0 ; i < entityManager._SnailsP1.length; i++){
-			//if(entityManager._SnailsP1[i]._isActive === true){
 				entityManager.changePlayer = "p1";
 				entityManager.changeWormP1 +=1;
-			//	
 		}
 	
-	else{				
-		//for(var i = 0 ; i < entityManager._SnailsP2.length; i++){
-			//if(entityManager._SnailsP2[i]._isActive === true){
+	else{
 				entityManager.changePlayer = "p2";
 				entityManager.changeWormP2 += 1;
-		//	
-			
-		//
+
 	}
 }
+
+
 
 var hasBeenShot = false;
 
@@ -347,7 +342,7 @@ Snail.prototype.maybeFireBullet = function () {
 		}
 	
  
-	if((this._weapon.ammo === 0) && (entityManager.getShotsNotExploded() === 0)){
+	if((this._weapon.ammo === 0) && (entityManager.getShotsNotExploded() === 0) && entityManager.readyForTurn()){
 		console.log("change");
 		endTurnMakeNextActive(this.player); 
 

@@ -6,7 +6,12 @@ var keys = [];
 
 function handleKeydown(evt) {
     keys[evt.keyCode] = true;
-	//console.log(evt.keyCode);
+	if(entityManager.isFinished && evt.keyCode === 89){
+		location.reload();
+	}
+	if(entityManager.isFinished && evt.keyCode === 78){
+		 main._isGameOver = true;
+	}
 }
 
 function handleKeyup(evt) {
