@@ -16,6 +16,9 @@ var g_ctx = g_canvas.getContext("2d");
 //GMG used in the background
 //var g_imageData = g_ctx.createImageData(600, 600);
 
+//pick map
+var g_landNum;
+
 
 
 // The "nominal interval" is the one that all of our time-based units are

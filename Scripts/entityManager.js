@@ -212,6 +212,18 @@ getShotsNotExploded: function() {
     return this._bullets.length;
 },
 
+getLandscape: function() {
+
+	if(g_landNum === undefined)
+	{
+		return this._Landscape[0];
+	}
+	else
+	{
+		return this._Landscape[g_landNum];
+	}
+},
+
 
 update: function(du) {
 	if(this.hasStarted === false){this.landedSnails();}

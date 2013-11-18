@@ -298,7 +298,7 @@ Snail.prototype.update = function (du) {
 
 Snail.prototype.isCollidingLandscape = function() {
 
-	if(this.cy>0 && entityManager._Landscape[0].pixelHitTest(this))
+	if(this.cy>0 && entityManager.getLandscape().pixelHitTest(this))
     {
 		return true;
     }

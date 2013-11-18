@@ -99,6 +99,8 @@ Rip.prototype = new Entity();
 Rip.prototype.cx = 200;
 Rip.prototype.cy = 300;
 Rip.prototype.yVel = 0;
+Rip.prototype.height = 35;
+Rip.prototype.width = 27;
 
 //Death.prototype.height = 64;
 //Death.prototype.width = 64;
@@ -129,10 +131,10 @@ Rip.prototype.update = function (du) {
 	if(entityManager._Landscape[0].pixelHitTest(this))
         {
 		console.log("inn");
-		/*this.yVel *= -0.9;
+		this.yVel *= -0.6;
 		if(this.yVel === 0.005){
 			this.yVel = 0;
-		}*/
+		}
 	}
 	else{
 		this.yVel += NOMINAL_GRAVITY;
