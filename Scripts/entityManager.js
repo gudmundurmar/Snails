@@ -270,6 +270,25 @@ changeTurn : function (p1Worm, p2Worm, currentPlayer){
 	
 },
 
+readyForTurn : function(){
+	
+	var finished = 0;
+	
+	for(var i = 0 ; i < entityManager._SnailsP1.length; i++){
+		if(entityManager._SnailsP1[i].isCollidingBottom === true){
+			finished++;
+		}	
+		if(entityManager._SnailsP2[i].isCollidingBottom === true){
+			finished++;
+		}	
+	}
+	if(finished === (entityManager._SnailsP1.length + entityManager._SnailsP2.length)){
+		
+		return true;
+		}
+	
+},
+
 windThisTurn : 0,
 
 currentWind : function(){
