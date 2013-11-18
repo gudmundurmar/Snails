@@ -45,13 +45,22 @@ currentWeapon : "",
 	renderInterface: function(ctx){
 		ctx.strokeStyle="black";
 		
+		var yP1 = 700;
+		var yP2 = 750;
+		
+		if(this.p2Health>this.p1Health)
+		{
+			yP2 = 700;
+			yP1 = 750;
+		}
+		
 		if(entityManager._SnailsP1.length !== 0){
 			ctx.font="22px Arial";
 			ctx.fillStyle="red";
-			this.roundBox(ctx,800,700,this.p1Health,40,20, "blue",true);
-			this.roundBox(ctx,700,700,90,40,20, "blue",true);
+			this.roundBox(ctx,800,yP1,this.p1Health,40,20, "blue",true);
+			this.roundBox(ctx,700,yP1,90,40,20, "blue",true);
 			
-			this.renderText(ctx, "Player 1", 707, 725, "black");
+			this.renderText(ctx, "Player 1", 707, yP1+25, "black");
 			
 		}
 		else{
@@ -72,9 +81,9 @@ currentWeapon : "",
 		if(entityManager._SnailsP2.length !== 0){
 			ctx.font="22px Arial";
 			ctx.fillStyle="blue";
-			this.roundBox(ctx,800,750,this.p2Health,40,20, "red",true);
-			this.roundBox(ctx,700,750,90,40,20, "red",true);
-			this.renderText(ctx, "Player 2", 707, 775, "black");
+			this.roundBox(ctx,800,yP2,this.p2Health,40,20, "red",true);
+			this.roundBox(ctx,700,yP2,90,40,20, "red",true);
+			this.renderText(ctx, "Player 2", 707, yP2+25, "black");
 		}
 		else{
 			this.renderBox(ctx,220,40, 1500, 205, "white", "black");
