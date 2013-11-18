@@ -347,7 +347,7 @@ Snail.prototype.maybeFireBullet = function () {
 		}
 	
  
-	if((this._weapon.ammo === 0) && (entityManager.getShotsNotExploded() === 0)){
+	if((this._weapon.ammo === 0) && (entityManager.getShotsNotExploded() === 0) && entityManager.readyForTurn()){
 		console.log("change");
 		endTurnMakeNextActive(this.player); 
 
