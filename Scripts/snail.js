@@ -81,6 +81,7 @@ Snail.prototype.isBackJumping = false;
 Snail.prototype.isCollidingBottom = false;
 Snail.prototype.isCollidingLeft = false;
 Snail.prototype.isCollidingRight = false;
+Snail.prototype.timeFrame = 0;
 
 
 /*Snail.prototype.direction = 1;*/ // skoða í hvaða átt er verið að skjóta
@@ -148,6 +149,15 @@ Snail.prototype.update = function (du) {
 	if (keys[this.KEY_LEFT] && this._isActive === true && this.isCollidingLandscape())
 	{
 		this.direction = -1;
+
+		if(this.timeFrame < 2)
+		{	
+			++this.timeFrame;
+		}
+		else
+		{
+			this.timeFrame = 0;
+		}	
 		
 		var y1 = Math.floor(this.cy+halfheight-4); //check fourth pixel
 		var y2 = Math.floor(this.cy+halfheight-8); //check eighth pixel
@@ -179,6 +189,15 @@ Snail.prototype.update = function (du) {
 	if (keys[this.KEY_RIGHT] && this._isActive === true && this.isCollidingLandscape())
 	{
 		this.direction = 1;
+
+		if(this.timeFrame < 2)
+		{	
+			++this.timeFrame;
+		}
+		else
+		{
+			this.timeFrame = 0;
+		}	
 		
 		var y1 = Math.floor(this.cy+halfheight-4); //check fourth pixel
 		var y2 = Math.floor(this.cy+halfheight-8); //check eighth pixel
@@ -366,6 +385,14 @@ Snail.prototype.render = function (ctx) {
 	
 	display.renderBox(ctx,this.cx-50,this.cy-70,100,25,"white","black");
 
+	var cel = g_slime[this.timeFrame];
+	if(this.isCollidingLandscape())
+	{
+		cel.drawCentredAt(ctx,this.cx,this.cy,this.rotation,this.direction*-1);
+	}
+	else{
+		cel.drawCentredAt(ctx,this.cx,this.cy+3,this.rotation,this.direction*-1);
+	}
 	
 	if(this._isActive === true){
 			display.renderBox(ctx,this.cx-50,this.cy-70,100,25,"white","green");

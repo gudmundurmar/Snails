@@ -180,7 +180,7 @@ Holy.prototype.update = function (du) {
 	}
 
 	if(this.timer === 120){
-		entityManager.generateDeath({
+		entityManager.generateBigExplo({
         		cx : this.cx,
         		cy : this.cy,
 				
@@ -359,6 +359,8 @@ Teleport.prototype.timeTo = -1;
 Teleport.prototype.width = 200;
 Teleport.prototype.height = 200;
 Teleport.prototype.travel = false;
+Teleport.prototype.timeTo = -1;
+Teleport.prototype.timeFrom = 10;
 /*Grenade.prototype.power = 1;
 Grenade.prototype.angle =0;
 Grenade.prototype.direction =1;
@@ -367,25 +369,15 @@ Grenade.prototype.timer = 3 * SECS_TO_NOMINALS;
 */
 
 Teleport.prototype.update = function (du) {
-
     spatialManager.unregister(this);
-	if(!this.travel){
 		this.timeTo++;
-		}
+		this.timeFrom--;
 	if(this.timeTo === 10){
-		this.travel = true;
-	}
-	
-	if(this.travel){
-		this.timeTo--;
-	}
-	if(this.timeTo < 0 && this.travel){
 		return entityManager.KILL_ME_NOW;
 	}
     spatialManager.register(this);
 	
 	
-
 };
 
 Teleport.prototype.getRadius = function () {
@@ -393,12 +385,10 @@ Teleport.prototype.getRadius = function () {
 };
 
 Teleport.prototype.render = function (ctx) {
-	if(!this.travel){
 		var cel = g_teleport[this.timeTo];
 		cel.drawSheetAt(ctx,this.fromcx-(this.width/2), this.fromcy-(this.height/2) - this.timeTo);	   
-	}
-	else{
-		var cel = g_teleport[this.timeTo];
-		cel.drawSheetAt(ctx,this.cx-(this.width/2), this.cy-(this.height/2) - this.timeTo);	   
-	}
+	
+		var cel1 = g_teleport[this.timeFrom];
+		cel1.drawSheetAt(ctx,this.cx-(this.width/2), this.cy-(this.height/2) - this.timeFrom);	   
+	
 };

@@ -133,6 +133,7 @@ function requestPreloads() {
 		sea    : "img/sea.png",
 		snail  : "img/army-snail.png",
 		explosion : "img/explosion.png",
+		bigexplosion: "img/HugeExplSprite.png",
 		aim: "img/aim.png",
         smg: "img/weapons/smg.png",
         shotgun: "img/weapons/shotgun.png",
@@ -144,7 +145,10 @@ function requestPreloads() {
         teleport:"img/teleport.png",
         teleportaim:"img/weapons/teleportaim.png",
         teleportaim1:"img/weapons/teleportaim1.png",
-		rip : "img/rip.png"
+		rip : "img/rip.png",
+	slime1:"img/slime/slime1.png",
+	slime2:"img/slime/slime3.png",
+	slime3:"img/slime/slime3.png"
     };
     imagesPreload(requiredImages, g_images, preloadDone);
 }
@@ -172,10 +176,15 @@ function preloadDone() {
     g_sprites.teleportaim = new Sprite(g_images.teleportaim);
     g_sprites.teleportaim1 = new Sprite(g_images.teleportaim1);
     g_sprites.rip = new Sprite(g_images.rip);
+	g_sprites.slime1 = new Sprite(g_images.slime1);
+	g_sprites.slime2 = new Sprite(g_images.slime2);
+	g_sprites.slime3 = new Sprite(g_images.slime3);
 
 	
 	loadExplosion(g_images.explosion);
+	loadBigExplosion(g_images.bigexplosion);
 	loadTeleport(g_images.teleport);
+	loadSlime();
 
     entityManager.init();
 
@@ -188,48 +197,83 @@ var g_explosion = [];
 
 function loadExplosion(exploImage){
 
-var celWidth  = 64;//320
-var celHeight = 64;//320
-var numCols = 5;
-var numRows = 5;
-var numCels = 25;
+	var celWidth  = 64;//320
+	var celHeight = 64;//320
+	var numCols = 5;
+	var numRows = 5;
+	var numCels = 25;
 
-var exploSprite;
+	var exploSprite;
 
-for (var row = 0; row < numRows; ++row) {
-        for (var col = 0; col < numCols; ++col) {
-            exploSprite = new Explosionsprite(col * celWidth, row * celHeight,
-                                celWidth, celHeight,exploImage); 
-            g_explosion.push(exploSprite);
-        }
+	for (var row = 0; row < numRows; ++row) {
+        	for (var col = 0; col < numCols; ++col) {
+        	    exploSprite = new Explosionsprite(col * celWidth, row * celHeight,
+        	                        celWidth, celHeight,exploImage); 
+        	    g_explosion.push(exploSprite);
+        	}
+	}
+
+	g_explosion.splice(numCels);		
 }
 
-g_explosion.splice(numCels);
+var g_bigexplosion = [];
+
+function loadBigExplosion(bigExploImage){
+
+	var celWidth  = 110;//660
+	var celHeight = 110;//440
+	var numCols = 6;
+	var numRows = 4;
+	var numCels = 24;
+
+	var exploSprite;
+
+
+	for (var row = 0; row < numRows; ++row) {
+        	for (var col = 0; col < numCols; ++col) {
+        	    exploSprite = new Explosionsprite(col * celWidth, row * celHeight,
+                	                celWidth, celHeight,bigExploImage); 
+            		g_bigexplosion.push(exploSprite);
+        	}
+	}
+
+	g_bigexplosion.splice(numCels);
 		
 }
+
 
 var g_teleport = [];
 
 function loadTeleport(teleImage){
 
-var celWidth  = 200;//320
-var celHeight = 200;//320
-var numCols = 5;
-var numRows = 2;
-var numCels = 10;
+	var celWidth  = 200;
+	var celHeight = 200;
+	var numCols = 5;
+	var numRows = 2;
+	var numCels = 10;
 
-var teleSprite;
+	var teleSprite;
 
-for (var row = 0; row < numRows; ++row) {
-        for (var col = 0; col < numCols; ++col) {
-            teleSprite = new Explosionsprite(col * celWidth, row * celHeight,
-                                celWidth, celHeight,teleImage); 
-            g_teleport.push(teleSprite);
-        }
+	for (var row = 0; row < numRows; ++row) {
+        	for (var col = 0; col < numCols; ++col) {
+        	    teleSprite = new Explosionsprite(col * celWidth, row * celHeight,
+        	                        celWidth, celHeight,teleImage); 
+        	    g_teleport.push(teleSprite);
+        	}
+	}
+
+	g_teleport.splice(numCels);		
 }
 
-g_teleport.splice(numCels);
-		
+var g_slime = [];
+
+function loadSlime()
+{
+	g_slime.push(g_sprites.slime1);
+	g_slime.push(g_sprites.slime2);
+	g_slime.push(g_sprites.slime3);
+
+	g_slime.splice(3);
 }
 
 // Kick it off
