@@ -17,8 +17,8 @@ Death.prototype = new Entity();
 Death.prototype.cx = 200;
 Death.prototype.cy = 300;
 Death.prototype.timeFrame = 0;
-Death.prototype.height = 220;
-Death.prototype.width = 220;
+Death.prototype.height = 64;
+Death.prototype.width = 64;
 Death.prototype.maxDamage = 70;
 Death.prototype.power =1;
 Death.prototype.radius = 60;
@@ -178,8 +178,8 @@ BigExplo.prototype = new Entity();
 BigExplo.prototype.cx = 200;
 BigExplo.prototype.cy = 300;
 BigExplo.prototype.timeFrame = 0;
-BigExplo.prototype.height = 64;
-BigExplo.prototype.width = 64;
+BigExplo.prototype.height = 220;
+BigExplo.prototype.width = 220;
 BigExplo.prototype.maxDamage = 70;
 BigExplo.prototype.power =1;
 BigExplo.prototype.radius = 100;
@@ -239,6 +239,6 @@ BigExplo.prototype.render = function (ctx) {
 
 	var cel = g_bigexplosion[this.timeFrame];
 	if(this.explosion === true)
-	cel.drawSheetAt(ctx,this.cx-(this.width/2), this.cy-(this.height/2) - this.timeFrame*1.5);	
+	cel.drawSheetAt(ctx,this.cx-(this.width/4), this.cy-(this.height/4) - this.timeFrame*1.5);	
 		
 };
