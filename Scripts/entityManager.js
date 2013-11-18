@@ -224,6 +224,8 @@ getLandscape: function() {
 	}
 },
 
+seaOffset: 0,
+seaLevel : 680,
 
 update: function(du) {
 	if(this.hasStarted === false){this.landedSnails();}
@@ -248,9 +250,16 @@ update: function(du) {
 		
     }
    this.changeTurn(this.changeWormP1,this.changeWormP2, this.changePlayer);
+	
+	if(this.seaOffset<199)
+	{
+		this.seaOffset += 1;
+	}
+	else{
+		this.seaOffset = 0;
+	}
+	console.log(this.seaOffset);
 },
-
-seaLevel : 680,
 
 changeWormP1 : 0,
 changeWormP2 : 0,
@@ -312,8 +321,8 @@ render: function(ctx) {
         }
         debugY += 10;
     }
-	animation.renderSeaFront(ctx);
-	display.renderInterface(ctx);
+	animation.renderSeaFront(ctx, this.seaOffset);
+	display.renderInterface(ctx, this.seaOffset);
 },
 
 renderLandscape: function(ctx, canvas) {

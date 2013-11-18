@@ -166,30 +166,32 @@ currentWeapon : "",
 
 var animation = {
 	
-	renderSeaBack : function(ctx){
-		g_sprites.sea.drawCentredAt(ctx,0,700);
-		g_sprites.sea.drawCentredAt(ctx,200,700);
-		g_sprites.sea.drawCentredAt(ctx,400,700);
-		g_sprites.sea.drawCentredAt(ctx,600,700);
-		g_sprites.sea.drawCentredAt(ctx,800,700);
-		g_sprites.sea.drawCentredAt(ctx,1000,700);
-		g_sprites.sea.drawCentredAt(ctx,1200,700);
-		g_sprites.sea.drawCentredAt(ctx,1400,700);
-		g_sprites.sea.drawCentredAt(ctx,1600,700);
-		g_sprites.sea.drawCentredAt(ctx,1800,700);
+	renderSeaBack : function(ctx, offset){
+		g_sprites.sea.drawCentredAt(ctx,-200+offset,700);
+		g_sprites.sea.drawCentredAt(ctx,0+offset,700);
+		g_sprites.sea.drawCentredAt(ctx,200+offset,700);
+		g_sprites.sea.drawCentredAt(ctx,400+offset,700);
+		g_sprites.sea.drawCentredAt(ctx,600+offset,700);
+		g_sprites.sea.drawCentredAt(ctx,800+offset,700);
+		g_sprites.sea.drawCentredAt(ctx,1000+offset,700);
+		g_sprites.sea.drawCentredAt(ctx,1200+offset,700);
+		g_sprites.sea.drawCentredAt(ctx,1400+offset,700);
+		g_sprites.sea.drawCentredAt(ctx,1600+offset,700);
+		g_sprites.sea.drawCentredAt(ctx,1800+offset,700);
 	},
 	
-	renderSeaFront : function(ctx){
-		g_sprites.sea.drawCentredAt(ctx,0,750);
-		g_sprites.sea.drawCentredAt(ctx,200,750);
-		g_sprites.sea.drawCentredAt(ctx,400,750);
-		g_sprites.sea.drawCentredAt(ctx,600,750);
-		g_sprites.sea.drawCentredAt(ctx,800,750);
-		g_sprites.sea.drawCentredAt(ctx,1000,750);
-		g_sprites.sea.drawCentredAt(ctx,1200,750);
-		g_sprites.sea.drawCentredAt(ctx,1400,750);
-		g_sprites.sea.drawCentredAt(ctx,1600,750);
-		g_sprites.sea.drawCentredAt(ctx,1800,750);
+	renderSeaFront : function(ctx, offset){
+		g_sprites.sea.drawCentredAt(ctx,-200+offset,750);
+		g_sprites.sea.drawCentredAt(ctx,0+offset,750);
+		g_sprites.sea.drawCentredAt(ctx,200+offset,750);
+		g_sprites.sea.drawCentredAt(ctx,400+offset,750);
+		g_sprites.sea.drawCentredAt(ctx,600+offset,750);
+		g_sprites.sea.drawCentredAt(ctx,800+offset,750);
+		g_sprites.sea.drawCentredAt(ctx,1000+offset,750);
+		g_sprites.sea.drawCentredAt(ctx,1200+offset,750);
+		g_sprites.sea.drawCentredAt(ctx,1400+offset,750);
+		g_sprites.sea.drawCentredAt(ctx,1600+offset,750);
+		g_sprites.sea.drawCentredAt(ctx,1800+offset,750);
 	}
 
 }
