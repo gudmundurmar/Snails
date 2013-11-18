@@ -44,7 +44,7 @@ isFinished : false,
 
 _generateSnails : function() {
     var i,
-        NUM_SNAILS = 1;
+        NUM_SNAILS = 4;
 
     for (i = 0; i < NUM_SNAILS; ++i) {
         this.generateSnail();
@@ -267,25 +267,6 @@ changeTurn : function (p1Worm, p2Worm, currentPlayer){
 	this.changePlayer = "empty";
 	display.findTotalHealth();
 	
-	
-},
-
-readyForTurn : function(){
-	
-	var finished = 0;
-	
-	for(var i = 0 ; i < entityManager._SnailsP1.length; i++){
-		if(entityManager._SnailsP1[i].isCollidingBottom === true){
-			finished++;
-		}	
-		if(entityManager._SnailsP2[i].isCollidingBottom === true){
-			finished++;
-		}	
-	}
-	if(finished === (entityManager._SnailsP1.length + entityManager._SnailsP2.length)){
-		
-		return true;
-		}
 	
 },
 

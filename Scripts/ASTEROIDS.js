@@ -220,12 +220,12 @@ var g_bigexplosion = [];
 
 function loadBigExplosion(bigExploImage){
 
-	var celWidth  = 165;//660
-	var celHeight = 165;//440
+	var celWidth  = 110;//660
+	var celHeight = 110;//440
 	var numCols = 6;
 	var numRows = 4;
 	var numCels = 24;
-	
+
 	var exploSprite;
 
 

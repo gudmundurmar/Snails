@@ -178,13 +178,8 @@ BigExplo.prototype = new Entity();
 BigExplo.prototype.cx = 200;
 BigExplo.prototype.cy = 300;
 BigExplo.prototype.timeFrame = 0;
-<<<<<<< HEAD
 BigExplo.prototype.height = 220;
 BigExplo.prototype.width = 220;
-=======
-BigExplo.prototype.height = 330;
-BigExplo.prototype.width = 330;
->>>>>>> c0bd39b41113fef3311ad2eb69a2069d70541779
 BigExplo.prototype.maxDamage = 70;
 BigExplo.prototype.power =1;
 BigExplo.prototype.radius = 100;
