@@ -124,6 +124,22 @@ airStrike: function(start, aimObject){
     }));
 },
 
+teleportSnail: function(targetX, targetY){
+    var xTele = this._activeSnail.cx;
+    var yTele = this._activeSnail.cy;
+	
+	this._activeSnail.cx = targetX;
+	this._activeSnail.cy = targetY;
+	
+	this._bullets.push(new Teleport({
+		fromcx : xTele,
+		fromcy : yTele,
+		cx : targetX,
+        cy : targetY
+		
+    }));
+},
+
 
 //New background line
 generateLandscape : function(descr) {

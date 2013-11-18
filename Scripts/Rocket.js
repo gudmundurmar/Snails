@@ -340,3 +340,65 @@ Airstrike.prototype.render = function (ctx) {
 
         g_sprites.airstrike.drawCentredAt(ctx, this.cx, this.cy, this.angle);
 };
+
+function Teleport(descr) {
+
+    this.setup(descr);
+}
+
+Teleport.prototype = new Entity();
+    
+// Initial, inheritable, default values
+Teleport.prototype.cx = 0;
+Teleport.prototype.cy = 50;
+Teleport.prototype.fromcx = 50;
+Teleport.prototype.fromcy = 50;
+Teleport.prototype.target = "";
+Teleport.prototype.ammo = 5;
+Teleport.prototype.timeTo = -1;
+Teleport.prototype.width = 200;
+Teleport.prototype.height = 200;
+Teleport.prototype.travel = false;
+/*Grenade.prototype.power = 1;
+Grenade.prototype.angle =0;
+Grenade.prototype.direction =1;
+Grenade.prototype.owner = "";
+Grenade.prototype.timer = 3 * SECS_TO_NOMINALS;
+*/
+
+Teleport.prototype.update = function (du) {
+
+    spatialManager.unregister(this);
+	if(!this.travel){
+		this.timeTo++;
+		}
+	if(this.timeTo === 10){
+		this.travel = true;
+	}
+	
+	if(this.travel){
+		this.timeTo--;
+	}
+	if(this.timeTo < 0 && this.travel){
+		return entityManager.KILL_ME_NOW;
+	}
+    spatialManager.register(this);
+	
+	
+
+};
+
+Teleport.prototype.getRadius = function () {
+    return 13;
+};
+
+Teleport.prototype.render = function (ctx) {
+	if(!this.travel){
+		var cel = g_teleport[this.timeTo];
+		cel.drawSheetAt(ctx,this.fromcx-(this.width/2), this.fromcy-(this.height/2) - this.timeTo);	   
+	}
+	else{
+		var cel = g_teleport[this.timeTo];
+		cel.drawSheetAt(ctx,this.cx-(this.width/2), this.cy-(this.height/2) - this.timeTo);	   
+	}
+};

@@ -18,6 +18,7 @@ function Weapon(descr) {
    	this.sprites[4] = g_sprites.holy;
    	this.sprites[5] = g_sprites.grenade;
    	this.sprites[6] = g_sprites.airstrike;
+   	this.sprites[7] = g_sprites.teleportaim;
 };
 Weapon.prototype.rotation =0;
 Weapon.prototype.ammo = 50;
@@ -30,6 +31,9 @@ Weapon.prototype.render = function(ctx,dir,rotateJump,g_mouseX, g_mouseY){
 	if(this.selected === 6){
 	g_sprites.aim.scale = 1;
 	g_sprites.aim.drawCentredAt(ctx,g_mouseX, g_mouseY);
+	}
+	else if(this.selected === 7){
+		g_sprites.teleportaim1.drawCentredAt(ctx,g_mouseX, g_mouseY);
 	}
 	else{
 		g_sprites.aim.scale = 0.25;
@@ -89,6 +93,9 @@ Weapon.prototype.fire = function(power, owner){
 		case 6: 
             entityManager.airStrike(0, g_mouseX); 
 			this.ammo =0;
+			break;
+		case 7: 
+           entityManager.teleportSnail(g_mouseX,g_mouseY);
 			break;			
         default:
             return;
