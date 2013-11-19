@@ -407,24 +407,20 @@ Baseball.prototype = new Entity();
 
 Baseball.prototype.ammo = 5;
 Baseball.prototype.timeFrame = 0;
-Baseball.prototype.power = 2.5;
+Baseball.prototype.power = 1.2;
 
 Baseball.prototype.update = function (du) {
     spatialManager.unregister(this);
 	this.timeFrame++;
 	base.play();
-
-	var possibleWorms = this.findWorms(this.radius*3);
-	if(possibleWorms&& this.timeFrame===1){
-		
-		for(var i =0;i<possibleWorms.length;i++)
-		{
-			var worm =possibleWorms[i].worm;
-			if(this.explosion === true) //check if it's a bomber
-			worm.blastAway(this.cx,this.cy,this.power,this.radius*3);
+	if(this.timeFrame === 1){
+	if(this.findWorms()&& this.timeFrame===1){
+		for(var i =0;i<this.findWorms().length;i++){
+			var worm =this.findWorms()[i].worm;
+			worm.baseball(this.cx,this.cy,this.power);
+			}
 		}
 	}
-	
 	
 	if(this.timeFrame === 15){
 		
@@ -434,6 +430,13 @@ Baseball.prototype.update = function (du) {
 	
 	
 };
+
+Baseball.prototype.findWorms = function(){
+	var pos= this.getPos();
+	return spatialManager.findSnailsInRange(
+    pos.posX, pos.posY, this.getRadius()
+    );
+}
 
 
 Baseball.prototype.getRadius = function(){
