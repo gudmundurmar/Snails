@@ -51,13 +51,6 @@ Entity.prototype.setPos = function (cx, cy) {
     this.cy = cy;
 };
 
-Entity.prototype.findWorms = function(radius){
-    var pos= this.getPos();
-    return spatialManager.findSnailsInRange(
-    pos.posX, pos.posY, radius
-    );
-}
-
 Entity.prototype.hitland = function () {
     this.velX = 0;
     this.velY = 0;

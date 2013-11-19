@@ -19,6 +19,7 @@ function Weapon(descr) {
    	this.sprites[5] = g_sprites.grenade;
    	this.sprites[6] = g_sprites.airstrike;
    	this.sprites[7] = g_sprites.teleportaim;
+   	this.sprites[8] = g_sprites.bat;
 };
 Weapon.prototype.rotation =0;
 Weapon.prototype.ammo = 50;
@@ -26,7 +27,6 @@ Weapon.prototype.aimX=0;
 Weapon.prototype.aimY=0;
 Weapon.prototype.aimDistance = 35;
 Weapon.prototype.started =false;
-Weapon.prototype.spraying = 10;
 
 Weapon.prototype.render = function(ctx,dir,rotateJump,g_mouseX, g_mouseY){
 	if(this.selected === 6){
@@ -36,6 +36,9 @@ Weapon.prototype.render = function(ctx,dir,rotateJump,g_mouseX, g_mouseY){
 	else if(this.selected === 7){
 		g_sprites.teleportaim1.drawCentredAt(ctx,g_mouseX, g_mouseY);
 	}
+	else if(this.selected === 8){
+		g_sprites.cap.drawCentredAt(ctx,this.cx + 28*dir, this.cy-15,this.rotation-rotateJump, dir);
+	}
 	else{
 		g_sprites.aim.scale = 0.25;
 		g_sprites.aim.drawCentredAt(ctx,this.aimX/* + this.aimDistance*/,this.aimY);
@@ -43,10 +46,15 @@ Weapon.prototype.render = function(ctx,dir,rotateJump,g_mouseX, g_mouseY){
 	
 	var spriteNow = this.sprites[this.selected];
 	display.renderActiveWeapon(this.sprites[this.selected]); //to render active weapon on the interface
-	this.sprites[this.selected].drawCentredAt(ctx,this.cx,this.cy,this.rotation-rotateJump,dir);
+	if(this.selected === 8 && this.ammo === 0){
+		this.sprites[this.selected].drawCentredAt(ctx,this.cx+40,this.cy,this.rotation-rotateJump,-1);
+		}
+	else{
+		this.sprites[this.selected].drawCentredAt(ctx,this.cx,this.cy,this.rotation-rotateJump,dir);
+	}
 
 };
-Weapon.prototype.update = function(xVal,yVal,rotation,dir,player){
+Weapon.prototype.update = function(xVal,yVal,rotation,dir){
 	this.cx=xVal;
 	this.cy=yVal;
 
@@ -54,14 +62,6 @@ Weapon.prototype.update = function(xVal,yVal,rotation,dir,player){
     this.aimVectorY = this.aimDistance*Math.sin(this.rotation);
     this.aimX = this.aimVectorX+this.cx;
     this.aimY = this.aimVectorY + this.cy;
-
-    if(this.selected ===1 && this.started===true &&this.ammo !==0){
-        entityManager.fireBullet(this.aimX, this.aimY ,this.aimVectorX/10   ,this.aimVectorY/10,5, player, this.ammo);
-        this.ammo -=5;
-    }
-    if(this.ammo ===0){
-        this.started =false;
-    }
 
     if(-Math.PI/2<this.rotation-rotation &&this.rotation-rotation<Math.PI/2)
         this.rotation-=rotation;
@@ -72,26 +72,19 @@ Weapon.prototype.changeGun = function(whatgun){
     if(!this.started)
         this.selected = whatgun;
 };
-Weapon.prototype.offsetAim= function(degrees){
-    //A little linear algebra!
-    return {aimVectorX:     this.aimVectorX*Math.cos(consts.RADIANS_PER_DEGREE*degrees) - this.aimVectorY*Math.sin(consts.RADIANS_PER_DEGREE*degrees),
-            aimVectorY:     this.aimVectorX*Math.sin(consts.RADIANS_PER_DEGREE*degrees) + this.aimVectorY*Math.cos(consts.RADIANS_PER_DEGREE*degrees)}
-}
 Weapon.prototype.fire = function(power, owner){
     this.started = true;
     if(this.ammo===0) {
-        this.started = false; //if you started shooting you can't change weapons
+        this.started = false; //if already started shooting you can't change weapons
         return;
     }
 
     switch(this.selected){
         case 1: 
             this.ammo -= 5;
+            entityManager.fireBullet(this.aimX, this.aimY ,this.aimVectorX/10   ,this.aimVectorY/10,5, owner, this.ammo);
             break;
-        case 2: 
-            entityManager.fireBullet(this.aimX,this.aimY, this.aimVectorX/10, this.aimVectorY/10,20, owner, this.ammo);
-            entityManager.fireBullet(this.aimX,this.aimY, this.offsetAim(20).aimVectorX/10,this.offsetAim(20).aimVectorY/10,20, owner, this.ammo);
-            entityManager.fireBullet(this.aimX,this.aimY, this.offsetAim(-20).aimVectorX/10,this.offsetAim(-20).aimVectorY/10,20, owner, this.ammo);
+        case 2: entityManager.fireBullet(this.aimX,this.aimY, this.aimVectorX/10, this.aimVectorY/10,20, owner, this.ammo);
             this.ammo =0;
 			shotgun.play();
             break;
@@ -116,11 +109,12 @@ Weapon.prototype.fire = function(power, owner){
            entityManager.teleportSnail(g_mouseX,g_mouseY);
 		   teleport.play();
 		   this.ammo = 0;
-			break;			
+		   break;
+		case 8:	
+			entityManager.baseBall(this.cx,this.cy);
+		   this.ammo = 0;
+			break;		
         default:
             return;
     }
 };
-var airstrike = new Audio('sounds/flugvel.wav');
-var shotgun = new Audio('sounds/shotgun.wav');
-var teleport = new Audio('sounds/teleport.wav');

@@ -93,6 +93,8 @@ function processDiagnostics() {
     if(eatKey(KEY_6)) entityManager._activeSnail._weapon.changeGun(6);
 	
     if(eatKey(KEY_7)) entityManager._activeSnail._weapon.changeGun(7);
+	
+    if(eatKey(KEY_8)) entityManager._activeSnail._weapon.changeGun(8);
 
 }
 
@@ -145,6 +147,8 @@ function requestPreloads() {
         teleport:"img/teleport.png",
         teleportaim:"img/weapons/teleportaim.png",
         teleportaim1:"img/weapons/teleportaim1.png",
+        bat:"img/weapons/bat.png",
+        cap:"img/weapons/cap.png",
 		rip : "img/rip.png",
 	slime1:"img/slime/slime1.png",
 	slime2:"img/slime/slime3.png",
@@ -175,6 +179,8 @@ function preloadDone() {
     g_sprites.airstrike = new Sprite(g_images.airstrike);
     g_sprites.teleportaim = new Sprite(g_images.teleportaim);
     g_sprites.teleportaim1 = new Sprite(g_images.teleportaim1);
+    g_sprites.bat = new Sprite(g_images.bat);
+    g_sprites.cap = new Sprite(g_images.cap);
     g_sprites.rip = new Sprite(g_images.rip);
 	g_sprites.slime1 = new Sprite(g_images.slime1);
 	g_sprites.slime2 = new Sprite(g_images.slime2);

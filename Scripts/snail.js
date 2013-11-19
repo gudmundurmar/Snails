@@ -109,15 +109,10 @@ Snail.prototype.isOutOfMap = function(){
 	
 }
 
-Snail.prototype.blastAway = function(x,y,power,maxDist){
-	this.xVel = (this.cx - x)*power/300;
-	this.yVel = (this.cy - y)*power/300;
-	this.rotationAdded = power/200;
-	var damage = 50/(1+(maxDist/Math.sqrt(util.distSq(this.cx,this.cy,x,y))));
-	console.log("damage",damage);
-	console.log("distance",Math.sqrt(util.distSq(this.cx,this.cy,x,y)));
-
-	this.takeDamage(damage);
+Snail.prototype.blastAway = function(x,y,power){
+	this.xVel = (this.cx - x)*power/2;
+	this.yVel = (this.cy - y)*power/2;
+	this.rotationAdded = power;
 }
 
 var NOMINAL_ROTATE_RATE = 0.1;
@@ -310,7 +305,7 @@ Snail.prototype.update = function (du) {
 		this.isBackJumping = false;
 		}
 	
-    this._weapon.update(this.cx,this.cy,addRotate,this.direction,this.player);
+    this._weapon.update(this.cx,this.cy,addRotate,this.direction);
     this.maybeFireBullet();
 
 		spatialManager.register(this);
@@ -433,8 +428,14 @@ Snail.prototype.render = function (ctx) {
     this.sprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation,this.direction*-1); 
 	
     this.sprite.scale = origScale;
-    if(this._isActive)
-		this._weapon.render(ctx,this.direction,this.rotation,g_mouseX, g_mouseY);
+    if(this._isActive){
+		//if(this._weapon.selected === 8 && this._weapon.ammo === 0){
+			//this._weapon.render(ctx,this.direction * -1,this.rotation,g_mouseX, g_mouseY);
+			
+		//else{
+			this._weapon.render(ctx,this.direction,this.rotation,g_mouseX, g_mouseY);
+			
+		}
 		
 	if(this.cy < 0){
 		display.renderArrow(ctx,this.cx,0, this.player);
@@ -470,6 +471,13 @@ function makeSound(){
 	
 }
 
+
+//------!!!!!!
+//
+//---SOUNDS---
+//
+//------!!!!!!
+
 var zero = new Audio('sounds/worm/delighted.wav');
 var one = new Audio('sounds/worm/dirtjob.wav');
 var two = new Audio('sounds/worm/eager.wav');
@@ -493,3 +501,9 @@ var backjump = new Audio('sounds/jump1.wav');
 var move = new Audio('sounds/slim.wav');
 var end = new Audio('sounds/tapa.wav');
 var test = new Audio('sounds/theme.wav');
+
+var airstrike = new Audio('sounds/flugvel.wav');
+var shotgun = new Audio('sounds/shotgun.wav');
+var teleport = new Audio('sounds/teleport.wav');
+var haleluja = new Audio('sounds/haleluja.mp3');
+var ding = new Audio('sounds/ding.wav');

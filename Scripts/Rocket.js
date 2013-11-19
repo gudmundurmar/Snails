@@ -209,9 +209,6 @@ Holy.prototype.render = function (ctx) {
         g_sprites.holy.drawCentredAt(ctx, this.cx, this.cy, this.angle);
 };
 
-var haleluja = new Audio('sounds/haleluja.mp3');
-
-
 function Grenade(descr) {
 
     this.setup(descr);
@@ -401,4 +398,46 @@ Teleport.prototype.render = function (ctx) {
 	
 };
 
-var ding = new Audio('sounds/ding.wav');
+function Baseball(descr) {
+	this.setup(descr);
+}
+
+Baseball.prototype = new Entity();
+
+Baseball.prototype.ammo = 5;
+Baseball.prototype.timeFrame = 0;
+Baseball.prototype.power = 2.5;
+
+Baseball.prototype.update = function (du) {
+    spatialManager.unregister(this);
+	this.timeFrame++;
+
+	if(this.findWorms()&& this.timeFrame===1){
+		for(var i =0;i<this.findWorms().length;i++){
+			var worm =this.findWorms()[i].worm;
+				worm.blastAway(this.cx,this.cy,this.power);
+		}
+	}
+	
+	
+	if(this.timeFrame === 15){
+		return entityManager.KILL_ME_NOW;
+	}
+    spatialManager.register(this);
+	
+	
+};
+
+Baseball.prototype.findWorms = function(){
+	var pos= this.getPos();
+	return spatialManager.findSnailsInRange(
+    pos.posX, pos.posY, this.getRadius()
+    );
+}
+
+Baseball.prototype.getRadius = function(){
+	return 20;
+}
+
+Baseball.prototype.render = function() {
+}

@@ -75,14 +75,16 @@ init: function() {
 	this._generateSnails();
 },
 
-fireBullet: function(cx, cy, velX, velY, damage, owner, ammo) {
+fireBullet: function(cx, cy, velX, velY, rotation, owner, ammo) {
     this._bullets.push(new Bullet({
+		ammo : ammo,
         cx   : cx,
         cy   : cy,
         velX : velX,
         velY : velY,
 		owner : owner,
-        damage : damage
+
+        rotation : rotation
     }));
 },
 
@@ -113,7 +115,8 @@ throwGrenade: function(cx,cy,velX,velY,power, owner){
         cy : cy,
         velX: velX * power,
         velY: velY * power,
-		owner: owner	
+		owner: owner
+		
     }));
 },
 
@@ -137,6 +140,14 @@ teleportSnail: function(targetX, targetY){
 		fromcy : yTele,
 		cx : targetX,
         cy : targetY
+		
+    }));
+},
+
+baseBall: function(cx, cy){
+    this._bullets.push(new Baseball({
+		cx : cx,
+        cy : cy
 		
     }));
 },
@@ -324,6 +335,7 @@ render: function(ctx) {
         }
         debugY += 10;
     }
+	animation.renderSeaBack(ctx, this.seaOffset);
 	animation.renderSeaFront(ctx, this.seaOffset);
 	display.renderInterface(ctx, this.seaOffset);
 },
