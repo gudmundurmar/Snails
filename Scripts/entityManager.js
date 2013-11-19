@@ -51,6 +51,8 @@ _generateSnails : function() {
     }
 	this.currentWind();
 	display.findTotalHealth(); // þurfum að hafa þessi 2 hér í einskonar initial game()
+	test.play();
+	test.volume = 0.3;
 
 	
 },
@@ -258,7 +260,6 @@ update: function(du) {
 	else{
 		this.seaOffset = 0;
 	}
-	console.log(this.seaOffset);
 },
 
 changeWormP1 : 0,
@@ -274,6 +275,7 @@ changeTurn : function (p1Worm, p2Worm, currentPlayer){
 					};
 				entityManager._SnailsP2[p2Worm]._isActive = true;
                 this._activeSnail = this._SnailsP2[p2Worm];
+				this._activeSnail.turnTime = 20 * SECS_TO_NOMINALS;
 				this.currentWind();
                 break;
 				
@@ -283,6 +285,7 @@ changeTurn : function (p1Worm, p2Worm, currentPlayer){
 					};	
 				entityManager._SnailsP1[p1Worm]._isActive = true;
                 this._activeSnail = this._SnailsP1[p1Worm];
+                this._activeSnail.turnTime = 20 * SECS_TO_NOMINALS;
 				this.currentWind();
                 break;
 	case "empty" : break;

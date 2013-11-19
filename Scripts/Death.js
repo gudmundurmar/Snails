@@ -4,7 +4,8 @@ function Death(descr) {
     this.setup(descr);
 
     this.rememberResets();
-    
+    deathexplo.play();
+	deathexplo.volume = 0.1;
     // Default sprite, if not otherwise specified
   
     this._scale = 1 ;
@@ -169,7 +170,7 @@ function BigExplo(descr) {
     this.rememberResets();
     
     // Default sprite, if not otherwise specified
-  
+	haleexplo.play();
     this._scale = 1 ;
 	entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),this.radius);
 
@@ -244,3 +245,6 @@ BigExplo.prototype.render = function (ctx) {
 	cel.drawSheetAt(ctx,this.cx-(this.width/4), this.cy-(this.height/4) - this.timeFrame*1.5);	
 		
 };
+
+var haleexplo = new Audio('sounds/explo1.WAV');
+var deathexplo = new Audio('sounds/miniexplo.wav');

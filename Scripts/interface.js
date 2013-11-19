@@ -73,9 +73,11 @@ currentWeapon : "",
 				entityManager._SnailsP2[i].yVel = -5.5;
 				entityManager._SnailsP2[i].rotationAdded = 0.22;
 				entityManager._SnailsP2[i]._isActive = false;
+				end.play();
 				}
 			}
 			entityManager.isFinished = true;
+			
 		}
 		
 		
@@ -96,9 +98,11 @@ currentWeapon : "",
 				entityManager._SnailsP1[i].yVel = -5.5;
 				entityManager._SnailsP1[i].rotationAdded = 0.22;
 				entityManager._SnailsP1[i]._isActive = false;
+				end.play();
 				}
 			}
 			entityManager.isFinished = true;
+			
 			ctx.font="22px Arial";
 		}
 		this.roundBox(ctx,1600,725,200,40,20, "red",true);

@@ -82,7 +82,7 @@ Snail.prototype.isCollidingBottom = false;
 Snail.prototype.isCollidingLeft = false;
 Snail.prototype.isCollidingRight = false;
 Snail.prototype.timeFrame = 0;
-Snail.prototype.turnTime = 300;
+Snail.prototype.turnTime = 20 * SECS_TO_NOMINALS;
 
 
 /*Snail.prototype.direction = 1;*/ // skoða í hvaða átt er verið að skjóta
@@ -121,8 +121,8 @@ Snail.prototype.update = function (du) {
 	spatialManager.unregister(this);
 	
 	if(this._isActive){
-		this.turnTime--;
-		if(this.turnTime === 0){
+		this.turnTime -= du;
+		if(this.turnTime <= 0){
 			endTurnMakeNextActive(this.player); 
 			this._weapon.ammo=50; 
 			this._isActive = false;
@@ -145,7 +145,7 @@ Snail.prototype.update = function (du) {
 	}
 
 	this.rotation += this.rotationAdded*du;
-
+	move.volume = 0.2;
 	this.cy +=this.yVel* du;
 	this.cx += this.xVel*du;
 	var prevY = this.cy;
@@ -159,6 +159,8 @@ Snail.prototype.update = function (du) {
 	
 	if (keys[this.KEY_LEFT] && this._isActive === true && this.isCollidingLandscape())
 	{
+		move.play();
+		
 		this.direction = -1;
 
 		if(this.timeFrame < 2)
@@ -199,6 +201,7 @@ Snail.prototype.update = function (du) {
 	}
 	if (keys[this.KEY_RIGHT] && this._isActive === true && this.isCollidingLandscape())
 	{
+		move.play();
 		this.direction = 1;
 
 		if(this.timeFrame < 2)
@@ -240,12 +243,13 @@ Snail.prototype.update = function (du) {
 	}
 
 	if (keys[this.KEY_JUMP] && this._isActive === true && this.isCollidingLandscape()) { 
+		frontjump.play();
 		this.xVel = 3 * this.direction;
-		this.yVel = -3.5;
+		this.yVel = -2.5;
 		this.cy += this.yVel * du;
 		this.rotation = 0.25;
 		
-		//jump.play();hoppu hljoð Hér þurfum við að hafa exp fall og ákveða max hæð sem má hoppa
+		
     }
 	
 	
@@ -288,8 +292,9 @@ Snail.prototype.update = function (du) {
 	//debugging method fyrir active snail - console.log(whatevs); :P :D XD ;O
 	}
 	if(keys[this.KEY_BACKJUMP] && this._isActive && this.isCollidingLandscape()){
+		backjump.play();
 		this.xVel = 0.5 * this.direction * -1;
-		this.yVel = -5.5;
+		this.yVel = -4.5;
 		this.cy += this.yVel * du;
 		this.rotationAdded = 0.09;
 		this.isBackJumping = true;
@@ -331,6 +336,7 @@ function endTurnMakeNextActive(currentPlayer){
 				entityManager.changeWormP2 += 1;
 
 	}
+	makeSound();
 }
 
 
@@ -367,6 +373,7 @@ Snail.prototype.getRadius = function () {
 };
 
 Snail.prototype.takeBulletHit = function () {
+	
     this.takeDamage(50);
 };
 
@@ -401,8 +408,9 @@ Snail.prototype.render = function (ctx) {
 	if(this._isActive === true){
 			display.renderBox(ctx,this.cx-50,this.cy-70,100,25,"white","green");
 			display.renderBox(ctx, this.cx-50,this.cy-80,this.thrust * 18, 5, "red", "yellow");
-			//display.renderBox(ctx, 200,607,500,500, "red", "yellow");
-			display.renderText(ctx,this.turnTime, 100, 100, "blue");
+			display.renderBox(ctx, 47,25,125,55, "white", "black");
+			display.renderText(ctx,Math.ceil(this.turnTime/100), 90, 70, "Black");
+			display.renderText(ctx,"Time Left  ", 60, 50, "Black");
 		}
 	
 	
@@ -429,3 +437,54 @@ Snail.prototype.render = function (ctx) {
 	}
 
 };
+
+function makeSound(){
+
+	var sound = Math.floor(Math.random() * 17);
+
+	switch(sound){
+		case 0 : zero.play(); break;
+		case 1 : one.play(); break;
+		case 2 : two.play(); break;
+		case 3 : three.play(); break;
+		case 4 : four.play(); break;
+		case 5 : five.play(); break;
+		case 6 : six.play(); break;
+		case 7 : seven.play(); break;
+		case 8 : eight.play(); break;
+		case 9 : nine.play(); break;
+		case 10 : ten.play(); break;
+		case 11: eleven.play(); break;
+		case 12: twelve.play(); break;
+		case 13: thirteen.play(); break;
+		case 14: fourteen.play(); break;
+		case 15: fifteen.play(); break;
+		case 16: sixteen.play(); break;
+		
+	}
+	
+}
+
+var zero = new Audio('sounds/worm/delighted.wav');
+var one = new Audio('sounds/worm/dirtjob.wav');
+var two = new Audio('sounds/worm/eager.wav');
+var three = new Audio('sounds/worm/evil.wav');
+var four = new Audio('sounds/worm/fedup.wav');
+var five = new Audio('sounds/worm/imbecil.wav');
+var six = new Audio('sounds/worm/japhoi.wav');
+var seven = new Audio('sounds/worm/um-yeah.wav');
+var eight = new Audio('sounds/worm/son-of-imbecil.wav');
+var nine = new Audio('sounds/worm/whoee-hee.wav');
+var ten = new Audio('sounds/worm/uhhuh.wav');
+var eleven = new Audio('sounds/worm/shaken.wav');
+var twelve = new Audio('sounds/worm/not-funny.wav');
+var thirteen = new Audio('sounds/worm/newbie.wav');
+var fourteen = new Audio('sounds/worm/more-stupid.wav');
+var fifteen = new Audio('sounds/worm/hitchoo.wav');
+var sixteen = new Audio('sounds/worm/backdogg.wav');
+
+var frontjump = new Audio('sounds/jump4.ogg');
+var backjump = new Audio('sounds/jump1.wav');
+var move = new Audio('sounds/slim.wav');
+var end = new Audio('sounds/tapa.wav');
+var test = new Audio('sounds/theme.wav');

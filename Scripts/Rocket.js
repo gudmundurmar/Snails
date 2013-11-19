@@ -164,11 +164,15 @@ Holy.prototype.update = function (du) {
 		this.velY *= -0.5;
 		this.cx += this.velX;
 		this.cy += this.velY;
+		if(this.bounce <= 8) ding.play();
 	}
 	else{
 		this.velY += NOMINAL_GRAVITY;
 	}
 	if(this.bounce === 8){
+		
+		haleluja.play();
+		haleluja.volume=.09;
 		console.log("inn");
 		this.velX = 0;
 		this.velY = 0;
@@ -204,6 +208,9 @@ Holy.prototype.getRadius = function () {
 Holy.prototype.render = function (ctx) {
         g_sprites.holy.drawCentredAt(ctx, this.cx, this.cy, this.angle);
 };
+
+var haleluja = new Audio('sounds/haleluja.mp3');
+
 
 function Grenade(descr) {
 
@@ -259,6 +266,7 @@ Grenade.prototype.update = function (du) {
 
 	if(this.cy > 0 && entityManager._Landscape[0].pixelHitTest(this))
         {
+		ding.play();
 		this.velX *= -0.8;
 		this.velY *= -0.5;
 		this.cx += this.velX;
@@ -385,10 +393,12 @@ Teleport.prototype.getRadius = function () {
 };
 
 Teleport.prototype.render = function (ctx) {
-		var cel = g_teleport[this.timeTo];
+		var cel = g_teleport[this.timeFrom];
 		cel.drawSheetAt(ctx,this.fromcx-(this.width/2), this.fromcy-(this.height/2) - this.timeTo);	   
 	
-		var cel1 = g_teleport[this.timeFrom];
+		var cel1 = g_teleport[this.timeTo];
 		cel1.drawSheetAt(ctx,this.cx-(this.width/2), this.cy-(this.height/2) - this.timeFrom);	   
 	
 };
+
+var ding = new Audio('sounds/ding.wav');
