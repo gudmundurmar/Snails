@@ -27,6 +27,7 @@ Weapon.prototype.aimX=0;
 Weapon.prototype.aimY=0;
 Weapon.prototype.aimDistance = 35;
 Weapon.prototype.started =false;
+Weapon.prototype.spraying = 10;
 
 Weapon.prototype.render = function(ctx,dir,rotateJump,g_mouseX, g_mouseY){
 	if(this.selected === 6){
@@ -54,7 +55,7 @@ Weapon.prototype.render = function(ctx,dir,rotateJump,g_mouseX, g_mouseY){
 	}
 
 };
-Weapon.prototype.update = function(xVal,yVal,rotation,dir){
+Weapon.prototype.update = function(xVal,yVal,rotation,dir,player){
 	this.cx=xVal;
 	this.cy=yVal;
 
@@ -63,9 +64,24 @@ Weapon.prototype.update = function(xVal,yVal,rotation,dir){
     this.aimX = this.aimVectorX+this.cx;
     this.aimY = this.aimVectorY + this.cy;
 
+    if(this.selected ===1 && this.started===true &&this.ammo !==0){
+        entityManager.fireBullet(this.aimX, this.aimY ,this.aimVectorX/10   ,this.aimVectorY/10,5, player, this.ammo);
+        this.ammo -=5;
+    }
+    if(this.ammo ===0){
+        this.started =false;
+    }
+
+	
     if(-Math.PI/2<this.rotation-rotation &&this.rotation-rotation<Math.PI/2)
         this.rotation-=rotation;
 };
+
+Weapon.prototype.offsetAim= function(degrees){
+    //A little linear algebra!
+    return {aimVectorX:     this.aimVectorX*Math.cos(consts.RADIANS_PER_DEGREE*degrees) - this.aimVectorY*Math.sin(consts.RADIANS_PER_DEGREE*degrees),
+            aimVectorY:     this.aimVectorX*Math.sin(consts.RADIANS_PER_DEGREE*degrees) + this.aimVectorY*Math.cos(consts.RADIANS_PER_DEGREE*degrees)}
+}
 
 
 Weapon.prototype.changeGun = function(whatgun){
@@ -75,16 +91,18 @@ Weapon.prototype.changeGun = function(whatgun){
 Weapon.prototype.fire = function(power, owner){
     this.started = true;
     if(this.ammo===0) {
-        this.started = false; //if already started shooting you can't change weapons
+        this.started = false; //if you started shooting you can't change weapons
         return;
     }
 
     switch(this.selected){
         case 1: 
             this.ammo -= 5;
-            entityManager.fireBullet(this.aimX, this.aimY ,this.aimVectorX/10   ,this.aimVectorY/10,5, owner, this.ammo);
             break;
-        case 2: entityManager.fireBullet(this.aimX,this.aimY, this.aimVectorX/10, this.aimVectorY/10,20, owner, this.ammo);
+        case 2: 
+            entityManager.fireBullet(this.aimX,this.aimY, this.aimVectorX/10, this.aimVectorY/10,20, owner, this.ammo);
+            entityManager.fireBullet(this.aimX,this.aimY, this.offsetAim(20).aimVectorX/10,this.offsetAim(20).aimVectorY/10,20, owner, this.ammo);
+            entityManager.fireBullet(this.aimX,this.aimY, this.offsetAim(-20).aimVectorX/10,this.offsetAim(-20).aimVectorY/10,20, owner, this.ammo);
             this.ammo =0;
 			shotgun.play();
             break;

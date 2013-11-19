@@ -83,10 +83,11 @@ Bullet.prototype.update = function (du) {
         return entityManager.KILL_ME_NOW;
     // Handle collisions
     //
-    var hitEntity = this.findHitEntity();
-    if (hitEntity) {
-        var canTakeHit = hitEntity.takeBulletHit;
-        if (canTakeHit) canTakeHit.call(hitEntity); 
+    //  Bullets only do damage to worms. Not other bullets and landscape
+    // is another thing.
+    var hitworm = this.findWorms(this.getRadius());
+    if(hitworm.length !==0){
+        hitworm[0].worm.takeDamage(this.damage);
         return entityManager.KILL_ME_NOW;
     }
 
@@ -106,7 +107,7 @@ Bullet.prototype.getRadius = function () {
 };
 
 Bullet.prototype.takeBulletHit = function () {
-    this.kill();
+    //this.kill();
     
     // Make a noise when I am zapped by another bullet
     this.zappedSound.play();

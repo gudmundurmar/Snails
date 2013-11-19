@@ -412,10 +412,13 @@ Baseball.prototype.update = function (du) {
     spatialManager.unregister(this);
 	this.timeFrame++;
 
-	if(this.findWorms()&& this.timeFrame===1){
-		for(var i =0;i<this.findWorms().length;i++){
-			var worm =this.findWorms()[i].worm;
-				worm.blastAway(this.cx,this.cy,this.power);
+	var possibleWorms = this.findWorms(this.radius*3);
+	if(possibleWorms&& this.timeFrame===1){
+		for(var i =0;i<possibleWorms.length;i++)
+		{
+			var worm =possibleWorms[i].worm;
+			if(this.explosion === true) //check if it's a bomber
+			worm.blastAway(this.cx,this.cy,this.power,this.radius*3);
 		}
 	}
 	
@@ -428,12 +431,6 @@ Baseball.prototype.update = function (du) {
 	
 };
 
-Baseball.prototype.findWorms = function(){
-	var pos= this.getPos();
-	return spatialManager.findSnailsInRange(
-    pos.posX, pos.posY, this.getRadius()
-    );
-}
 
 Baseball.prototype.getRadius = function(){
 	return 20;
