@@ -75,11 +75,16 @@ var KEY_9 = keyCode('9');
 var KEY_W = keyCode('W');
 var KEY_S = keyCode('S');
 
+var KEY_M = keyCode('M');
+
 function processDiagnostics() {
 
 
 
     if (eatKey(KEY_SPATIAL)) g_renderSpatialDebug = !g_renderSpatialDebug;
+
+    //AudioListener.volume
+
 
     if(eatKey(KEY_1)) entityManager._activeSnail._weapon.changeGun(1);
 

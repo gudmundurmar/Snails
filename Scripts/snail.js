@@ -101,13 +101,13 @@ Snail.prototype.isOutOfMap = function(){
 }
 
 Snail.prototype.blastAway = function(x,y,power,maxDist){
+	console.log("MXdst",maxDist);
+	console.log("dstX",this.cx-x);
 	this.xVel = (this.cx - x)*power/300;
 	this.yVel = (this.cy - y)*power/300;
 	this.rotationAdded = power/200;
-	var damage = 50/(1+(maxDist/Math.sqrt(util.distSq(this.cx,this.cy,x,y))));
-	console.log("damage",damage);
-	console.log("distance",Math.sqrt(util.distSq(this.cx,this.cy,x,y)));
-
+	var dist = Math.sqrt(util.distSq(this.cx,this.cy,x,y));
+	var damage = Math.floor(10*maxDist/dist);
 	this.takeDamage(damage);
  }
 
@@ -131,6 +131,7 @@ Snail.prototype.update = function (du) {
         		cx : this.cx,
         		cy : this.cy
     	});
+    	endTurnMakeNextActive(this.player);
 		return entityManager.KILL_ME_NOW;
 	}
 	

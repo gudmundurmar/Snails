@@ -8,7 +8,7 @@ function Death(descr) {
 	deathexplo.volume = 0.1;
     // Default sprite, if not otherwise specified
   
-    this._scale = 1 ;
+    this._scale = 1;
 	entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),this.radius);
 
 };
@@ -178,7 +178,7 @@ BigExplo.prototype.timeFrame = 0;
 BigExplo.prototype.height = 220;
 BigExplo.prototype.width = 220;
 BigExplo.prototype.maxDamage = 70;
-BigExplo.prototype.power =1;
+BigExplo.prototype.power =100;
 BigExplo.prototype.radius = 100;
 BigExplo.prototype.explosion = true;
 
@@ -212,7 +212,7 @@ BigExplo.prototype.update = function (du) {
 		for(var i =0;i<this.findWorms().length;i++){
 			var worm =this.findWorms()[i].worm;
 			if(this.explosion === true) //check if it's a bomber
-			worm.blastAway(this.cx,this.cy,this.power);
+			worm.blastAway(this.cx,this.cy,this.power,this.radius*3);
 		}
 	}
 
