@@ -508,3 +508,4 @@ var ding = new Audio('sounds/ding.wav');
 var ouchFall = new Audio('sounds/ow.wav');
 var fire = new Audio('sounds/fire.wav');
 var base = new Audio('sounds/base.wav');
+var smg = new Audio('sounds/mp5.wav');

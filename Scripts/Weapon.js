@@ -99,6 +99,7 @@ Weapon.prototype.fire = function(power, owner){
     switch(this.selected){
         case 1: 
             this.ammo -= 5;
+            smg.play();
             break;
         case 2: 
             entityManager.fireBullet(this.aimX,this.aimY, this.aimVectorX/10, this.aimVectorY/10,20, owner, this.ammo);
@@ -125,7 +126,6 @@ Weapon.prototype.fire = function(power, owner){
 			this.ammo =0;
 			break;
 		case 7: 
-<<<<<<< HEAD
            entityManager.teleportSnail(g_mouseX,g_mouseY);
 		   teleport.play();
 		   this.ammo = 0;
