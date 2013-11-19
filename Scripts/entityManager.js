@@ -151,6 +151,18 @@ baseBall: function(cx, cy){
     }));
 },
 
+blowtorch: function(cx,cy, velX, velY){
+
+	this._bullets.push(new Blowtorch({
+		cx : cx,
+		cy : cy,
+		xVel : velX,
+        yVel : velY
+		
+    }));
+	
+},	
+
 
 //New background line
 generateLandscape : function(descr) {

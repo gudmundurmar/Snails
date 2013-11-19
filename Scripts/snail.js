@@ -126,7 +126,6 @@ Snail.prototype.update = function (du) {
 		}
 	}
 	
-	
 	if(this._isDeadNow || this.isOutOfMap()){
 		entityManager.generateDeath({
         		cx : this.cx,
@@ -506,3 +505,5 @@ var teleport = new Audio('sounds/teleport.wav');
 var haleluja = new Audio('sounds/haleluja.mp3');
 var ding = new Audio('sounds/ding.wav');
 var ouchFall = new Audio('sounds/ow.wav');
+var fire = new Audio('sounds/fire.wav');
+var base = new Audio('sounds/base.wav');

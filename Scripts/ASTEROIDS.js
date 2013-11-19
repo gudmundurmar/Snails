@@ -70,6 +70,7 @@ var KEY_5 = keyCode('5');
 var KEY_6 = keyCode('6');
 var KEY_7 = keyCode('7');
 var KEY_8 = keyCode('8');
+var KEY_9 = keyCode('9');
 
 var KEY_W = keyCode('W');
 var KEY_S = keyCode('S');
@@ -95,6 +96,8 @@ function processDiagnostics() {
     if(eatKey(KEY_7)) entityManager._activeSnail._weapon.changeGun(7);
 	
     if(eatKey(KEY_8)) entityManager._activeSnail._weapon.changeGun(8);
+	
+    if(eatKey(KEY_9)) entityManager._activeSnail._weapon.changeGun(9);
 
 }
 
@@ -149,6 +152,8 @@ function requestPreloads() {
         teleportaim1:"img/weapons/teleportaim1.png",
         bat:"img/weapons/bat.png",
         cap:"img/weapons/cap.png",
+        blow:"img/weapons/blow.png",
+        fire:"img/weapons/fire.png",
 		rip : "img/rip.png",
 	slime1:"img/slime/slime1.png",
 	slime2:"img/slime/slime3.png",
@@ -181,6 +186,8 @@ function preloadDone() {
     g_sprites.teleportaim1 = new Sprite(g_images.teleportaim1);
     g_sprites.bat = new Sprite(g_images.bat);
     g_sprites.cap = new Sprite(g_images.cap);
+    g_sprites.blow = new Sprite(g_images.blow);
+    g_sprites.fire = new Sprite(g_images.fire);
     g_sprites.rip = new Sprite(g_images.rip);
 	g_sprites.slime1 = new Sprite(g_images.slime1);
 	g_sprites.slime2 = new Sprite(g_images.slime2);

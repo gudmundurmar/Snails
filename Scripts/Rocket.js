@@ -263,6 +263,7 @@ Grenade.prototype.update = function (du) {
 
 	if(this.cy > 0 && entityManager._Landscape[0].pixelHitTest(this))
         {
+		ding.pause();
 		ding.play();
 		this.velX *= -0.8;
 		this.velY *= -0.5;
@@ -411,9 +412,11 @@ Baseball.prototype.power = 2.5;
 Baseball.prototype.update = function (du) {
     spatialManager.unregister(this);
 	this.timeFrame++;
+	base.play();
 
 	var possibleWorms = this.findWorms(this.radius*3);
 	if(possibleWorms&& this.timeFrame===1){
+		
 		for(var i =0;i<possibleWorms.length;i++)
 		{
 			var worm =possibleWorms[i].worm;
@@ -424,6 +427,7 @@ Baseball.prototype.update = function (du) {
 	
 	
 	if(this.timeFrame === 15){
+		
 		return entityManager.KILL_ME_NOW;
 	}
     spatialManager.register(this);
@@ -437,4 +441,63 @@ Baseball.prototype.getRadius = function(){
 }
 
 Baseball.prototype.render = function() {
+}
+
+
+function Blowtorch(descr) {
+	
+	this.setup(descr);
+}
+
+Blowtorch.prototype = new Entity();
+
+Blowtorch.prototype.ammo = 5;
+Blowtorch.prototype.timeFrame = 0;
+Blowtorch.prototype.power = 2.5;
+Blowtorch.prototype.cx = 2.5;
+Blowtorch.prototype.cy = 2.5;
+Blowtorch.prototype.xVel = 0;
+Blowtorch.prototype.yVel = 0;
+Blowtorch.prototype.damage = 0.5;
+
+Blowtorch.prototype.isOutOfMap = function(){
+
+	if(this.cx < 0 || this.cx > g_canvas.width || this.cy > entityManager.seaLevel){
+	return true;
+	}	
+}
+
+Blowtorch.prototype.update = function (du) {
+    spatialManager.unregister(this);
+	fire.play();
+	this.timeFrame++;
+	this.angle = Math.atan(this.yVel/this.xVel);
+	entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),this.getRadius());
+	
+	
+	if(this.timeFrame === 115 || this.isOutOfMap()){
+		fire.pause();
+		return entityManager.KILL_ME_NOW;
+	}
+	
+	var hitworm = this.findWorms(this.getRadius()/2);
+    if(hitworm.length !==0){
+        hitworm[0].worm.takeDamage(this.damage);
+    }
+	
+	this.cx += this.xVel * du;
+    this.cy += this.yVel * du;
+    spatialManager.register(this);
+};
+
+Blowtorch.prototype.getRadius = function(){
+	return 35;
+}
+
+Blowtorch.prototype.render = function(ctx) {
+	if(this.xVel <0){
+	g_sprites.fire.drawCentredAt(ctx, this.cx, this.cy,this.angle*-1,-1);}
+	else{
+	g_sprites.fire.drawCentredAt(ctx, this.cx, this.cy,this.angle);
+	}
 }

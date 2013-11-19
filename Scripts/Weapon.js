@@ -20,6 +20,7 @@ function Weapon(descr) {
    	this.sprites[6] = g_sprites.airstrike;
    	this.sprites[7] = g_sprites.teleportaim;
    	this.sprites[8] = g_sprites.bat;
+   	this.sprites[9] = g_sprites.blow;
 };
 Weapon.prototype.rotation =0;
 Weapon.prototype.ammo = 50;
@@ -131,7 +132,11 @@ Weapon.prototype.fire = function(power, owner){
 		case 8:	
 			entityManager.baseBall(this.cx,this.cy);
 		   this.ammo = 0;
-			break;		
+			break;	
+		case 9:	
+			entityManager.blowtorch(this.aimX,this.aimY, this.aimVectorX/10,this.aimVectorY/10);
+		    this.ammo = 0;
+			break;	
         default:
             return;
     }
