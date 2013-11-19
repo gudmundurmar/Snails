@@ -21,7 +21,7 @@ Death.prototype.timeFrame = 0;
 Death.prototype.height = 64;
 Death.prototype.width = 64;
 Death.prototype.maxDamage = 70;
-Death.prototype.power =1;
+Death.prototype.power =70;
 Death.prototype.radius = 60;
 Death.prototype.explosion = true;
 
@@ -50,12 +50,14 @@ Death.prototype.update = function (du) {
 	if(this._isDeadNow){
 		return entityManager.KILL_ME_NOW;
 	}
-
-	if(this.findWorms()&& this.timeFrame===1){
-		for(var i =0;i<this.findWorms().length;i++){
-			var worm =this.findWorms()[i].worm;
+	//thvi sprengjan theytir i threfalt staerra svaedi en that eydir pixlum
+	var possibleWorms = this.findWorms(this.radius*3);
+	if(possibleWorms&& this.timeFrame===1){
+		for(var i =0;i<possibleWorms.length;i++)
+		{
+			var worm =possibleWorms[i].worm;
 			if(this.explosion === true) //check if it's a bomber
-			worm.blastAway(this.cx,this.cy,this.power);
+				worm.blastAway(this.cx,this.cy,this.power,this.radius*3);
 		}
 	}
 
@@ -67,20 +69,11 @@ Death.prototype.getRadius = function () {
     return (g_explosion[this.timeFrame].width / 2) * 0.9;
 };
 
-Death.prototype.findWorms = function(){
-	var pos= this.getPos();
-	return spatialManager.findSnailsInRange(
-    pos.posX, pos.posY, this.getRadius()
-    );
-}
 
 Death.prototype.render = function (ctx) {
-
-
 	var cel = g_explosion[this.timeFrame];
 	if(this.explosion === true)
 	cel.drawSheetAt(ctx,this.cx-(this.width/2), this.cy-(this.height/2) - this.timeFrame*1.5);	
-		
 };
 
 function Rip(descr) {
@@ -131,7 +124,6 @@ Rip.prototype.update = function (du) {
 	
 	if(entityManager._Landscape[0].pixelHitTest(this))
         {
-		console.log("inn");
 		this.yVel *= -0.6;
 		if(this.yVel === 0.005){
 			this.yVel = 0;
@@ -221,7 +213,6 @@ BigExplo.prototype.update = function (du) {
 			worm.blastAway(this.cx,this.cy,this.power);
 		}
 	}
-
 	spatialManager.register(this);
 };
 

@@ -75,16 +75,14 @@ init: function() {
 	this._generateSnails();
 },
 
-fireBullet: function(cx, cy, velX, velY, rotation, owner, ammo) {
+fireBullet: function(cx, cy, velX, velY, damage, owner, ammo) {
     this._bullets.push(new Bullet({
-		ammo : ammo,
         cx   : cx,
         cy   : cy,
         velX : velX,
         velY : velY,
 		owner : owner,
-
-        rotation : rotation
+        damage : damage
     }));
 },
 
@@ -115,8 +113,7 @@ throwGrenade: function(cx,cy,velX,velY,power, owner){
         cy : cy,
         velX: velX * power,
         velY: velY * power,
-		owner: owner
-		
+		owner: owner	
     }));
 },
 

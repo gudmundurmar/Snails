@@ -109,10 +109,15 @@ Snail.prototype.isOutOfMap = function(){
 	
 }
 
-Snail.prototype.blastAway = function(x,y,power){
-	this.xVel = (this.cx - x)*power/2;
-	this.yVel = (this.cy - y)*power/2;
-	this.rotationAdded = power;
+Snail.prototype.blastAway = function(x,y,power,maxDist){
+	this.xVel = (this.cx - x)*power/300;
+	this.yVel = (this.cy - y)*power/300;
+	this.rotationAdded = power/200;
+	var damage = 50/(1+(maxDist/Math.sqrt(util.distSq(this.cx,this.cy,x,y))));
+	console.log("damage",damage);
+	console.log("distance",Math.sqrt(util.distSq(this.cx,this.cy,x,y)));
+
+	this.takeDamage(damage);
 }
 
 var NOMINAL_ROTATE_RATE = 0.1;
@@ -305,7 +310,7 @@ Snail.prototype.update = function (du) {
 		this.isBackJumping = false;
 		}
 	
-    this._weapon.update(this.cx,this.cy,addRotate,this.direction);
+    this._weapon.update(this.cx,this.cy,addRotate,this.direction,this.player);
     this.maybeFireBullet();
 
 		spatialManager.register(this);
