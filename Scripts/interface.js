@@ -72,6 +72,7 @@ currentWeapon : "",
 			for(var i = 0 ; i < entityManager._SnailsP2.length ; i++){
 				entityManager._SnailsP2[i].yVel = -5.5;
 				entityManager._SnailsP2[i].rotationAdded = 0.22;
+				entityManager._SnailsP2[i]._isActive = false;
 				}
 			}
 			entityManager.isFinished = true;
@@ -94,6 +95,7 @@ currentWeapon : "",
 			for(var i = 0 ; i < entityManager._SnailsP1.length ; i++){
 				entityManager._SnailsP1[i].yVel = -5.5;
 				entityManager._SnailsP1[i].rotationAdded = 0.22;
+				entityManager._SnailsP1[i]._isActive = false;
 				}
 			}
 			entityManager.isFinished = true;

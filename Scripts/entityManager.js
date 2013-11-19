@@ -274,6 +274,7 @@ changeTurn : function (p1Worm, p2Worm, currentPlayer){
 					};
 				entityManager._SnailsP2[p2Worm]._isActive = true;
                 this._activeSnail = this._SnailsP2[p2Worm];
+				this.currentWind();
                 break;
 				
 	case "p2" :	if(p1Worm > entityManager._SnailsP1.length-1){
@@ -282,10 +283,12 @@ changeTurn : function (p1Worm, p2Worm, currentPlayer){
 					};	
 				entityManager._SnailsP1[p1Worm]._isActive = true;
                 this._activeSnail = this._SnailsP1[p1Worm];
+				this.currentWind();
                 break;
 	case "empty" : break;
 	}
 	this.changePlayer = "empty";
+	
 	display.findTotalHealth();
 	
 	

@@ -82,6 +82,7 @@ Snail.prototype.isCollidingBottom = false;
 Snail.prototype.isCollidingLeft = false;
 Snail.prototype.isCollidingRight = false;
 Snail.prototype.timeFrame = 0;
+Snail.prototype.turnTime = 300;
 
 
 /*Snail.prototype.direction = 1;*/ // skoða í hvaða átt er verið að skjóta
@@ -118,6 +119,16 @@ var NOMINAL_ROTATE_RATE = 0.1;
 
 Snail.prototype.update = function (du) {
 	spatialManager.unregister(this);
+	
+	if(this._isActive){
+		this.turnTime--;
+		if(this.turnTime === 0){
+			endTurnMakeNextActive(this.player); 
+			this._weapon.ammo=50; 
+			this._isActive = false;
+		}
+	}
+	
 	
 	if(this._isDeadNow || this.isOutOfMap()){
 		entityManager.generateDeath({
@@ -309,9 +320,7 @@ var NOMINAL_GRAVITY = 0.12;
 
 
 function endTurnMakeNextActive(currentPlayer){
-	
-	console.log(currentPlayer);
-	entityManager.currentWind();
+
 	if(currentPlayer === "p1"){
 				entityManager.changePlayer = "p1";
 				entityManager.changeWormP1 +=1;
@@ -392,6 +401,8 @@ Snail.prototype.render = function (ctx) {
 	if(this._isActive === true){
 			display.renderBox(ctx,this.cx-50,this.cy-70,100,25,"white","green");
 			display.renderBox(ctx, this.cx-50,this.cy-80,this.thrust * 18, 5, "red", "yellow");
+			//display.renderBox(ctx, 200,607,500,500, "red", "yellow");
+			display.renderText(ctx,this.turnTime, 100, 100, "blue");
 		}
 	
 	
