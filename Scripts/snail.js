@@ -106,17 +106,23 @@ Snail.prototype.update = function (du) {
 	spatialManager.unregister(this);
 
 	if(this._isDeadNow === true){
+		if(this._isActive === true ){
+			endTurnMakeNextActive(this.player);
+		}
 		return entityManager.KILL_ME_NOW;
 	}
 	
-		if(this._isActive === true && this.isOutOfMap()){
+	if(this.isOutOfMap()){
 		entityManager.generateDeath({
         		cx : this.cx,
         		cy : this.cy
     	});
-    	endTurnMakeNextActive(this.player);
+		if(this._isActive === true ){
+			endTurnMakeNextActive(this.player);
+		}
 		return entityManager.KILL_ME_NOW;
 	}
+
 	
 
 	if(this._isActive){
@@ -380,6 +386,7 @@ Snail.prototype.takeDamage = function(damage){
 		this._isDeadNow = true;
 		if(this._isActive === true){
 			endTurnMakeNextActive(this.player);
+			this._isActive = false;
 		}
 	}
 }
