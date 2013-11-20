@@ -83,7 +83,7 @@ Snail.prototype.turnTime = 20 * SECS_TO_NOMINALS;
 Snail.prototype.randomisePosition = function () {
     // Rock randomisation defaults (if nothing otherwise specified)
     this.cx = util.randRange(250, g_canvas.width - 250);
-	this.cy = 200;
+	this.cy = 0;
 	
 	
     //this.cy = this.cy || Math.random() * g_canvas.height;
@@ -320,6 +320,11 @@ Snail.prototype.isCollidingLandscape = function() {
 
 var NOMINAL_GRAVITY = 0.12;
 
+Snail.prototype.baseball = function(x,y,power){
+	this.xVel = (this.cx - x)*power/2;
+	this.yVel = (this.cy - y)*power/2;
+	this.rotationAdded = power/2;
+}
 
 function endTurnMakeNextActive(currentPlayer){
 

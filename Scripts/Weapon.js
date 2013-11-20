@@ -126,9 +126,12 @@ Weapon.prototype.fire = function(power, owner){
 			this.ammo =0;
 			break;
 		case 7: 
-           entityManager.teleportSnail(g_mouseX,g_mouseY);
-		   teleport.play();
-		   this.ammo = 0;
+            if(entityManager._Landscape[0].getPixAt(g_mouseX,g_mouseY).A ===0)
+            {
+                entityManager.teleportSnail(g_mouseX,g_mouseY);
+		        teleport.play();
+		        this.ammo = 0;
+            }
 		   break;
 		case 8:	
 			entityManager.baseBall(this.cx,this.cy);
@@ -138,12 +141,6 @@ Weapon.prototype.fire = function(power, owner){
 			entityManager.blowtorch(this.aimX,this.aimY, this.aimVectorX/10,this.aimVectorY/10);
 		    this.ammo = 0;
 			break;	
-            if(entityManager._Landscape[0].getPixAt(g_mouseX,g_mouseY).A ===0)
-            {
-                entityManager.teleportSnail(g_mouseX,g_mouseY);
-		        teleport.play();
-		        this.ammo = 0;
-            }
 			break;			
         default:
             return;
