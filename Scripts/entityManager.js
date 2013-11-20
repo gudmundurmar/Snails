@@ -242,13 +242,8 @@ update: function(du) {
     }
    this.changeTurn(this.changeWormP1,this.changeWormP2, this.changePlayer);
 	
-	if(this.seaOffset<199)
-	{
-		this.seaOffset += 1;
-	}
-	else{
-		this.seaOffset = 0;
-	}
+	this.updateSea = du;
+	
 },
 
 changeWormP1 : 0,
@@ -285,20 +280,27 @@ changeTurn : function (p1Worm, p2Worm, currentPlayer){
 },
 
 windThisTurn : 0,
+windDirection : 1,
+updateSea : 0 ,
 
 currentWind : function(){
 	
 
 	var direction = Math.random() * 1;
-	if(direction < 0.5){direction = 1;}
-	else{direction = -1;}
+	if(direction < 0.5){direction = 1;
+						this.windDirection = 1}
+	else{direction = -1;
+		this.windDirection = -1;}
 	
 	var maxWind = 0.15;
 	var	minWind = 0;
 		
 	this.windThisTurn = util.randRange(minWind,maxWind) * direction;
+	this.seacx = 0;
 	
 },
+
+seacx : 0,
 
 render: function(ctx) {
     var debugX = 10, debugY = 100;
@@ -314,8 +316,11 @@ render: function(ctx) {
         }
         debugY += 10;
     }
-	animation.renderSeaBack(ctx, this.seaOffset * Math.round(this.windThisTurn*20));
-	animation.renderSeaFront(ctx, this.seaOffset * Math.round(this.windThisTurn*20));
+	
+	var moveSea = this.windDirection+this.updateSea*this.windThisTurn*10;
+	this.seacx += moveSea*1.1;
+	animation.renderSeaBack(ctx,(this.seacx));
+	animation.renderSeaFront(ctx,(this.seacx));
 	display.renderInterface(ctx);
 },
 
