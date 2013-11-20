@@ -126,8 +126,9 @@ Landscape.prototype.pixelHitTest = function(target, checkmiddle ) {
 		var R = this.getPixAt(i,y1).R;
 		var G = this.getPixAt(i,y1).G;
 		var B = this.getPixAt(i,y1).B;
+        var A = this.getPixAt(i,y1).A;
 			
-		if(R !== 0 && G !== 0 && B !== 0)
+		if(R !== 0 && G !== 0 && B !== 0 || A !== 0)
 		{
               		//console.log("bottomHIT");
 			target.isCollidingBottom = true;
@@ -243,7 +244,7 @@ Landscape.prototype.deletePixAt = function(x0,y0,radius){
 };
 
 Landscape.prototype.drawPixAt = function(x,y){
-	this.pixelMap.data[this.findIndex(x,y)] = 0;
+       this.pixelMap.data[this.findIndex(x,y)] = 0;
         this.pixelMap.data[this.findIndex(x,y)+1] = 0;
         this.pixelMap.data[this.findIndex(x,y)+2]=0;
         this.pixelMap.data[this.findIndex(x,y)+3] = 0;
