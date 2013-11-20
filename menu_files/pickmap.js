@@ -1,14 +1,15 @@
 $(document).ready(function() {
-	$("#Level1").on("click", function() {
+	$(".Level1").on("click", function() {
 		localStorage.setItem("g_landNum", '1');
 	});
-	$("#Level2").on("click", function() {
+	$(".Level2").on("click", function() {
 		localStorage.setItem("g_landNum", '2');
 	});
-	$("#Level3").on("click", function() {
+	$(".Level3").on("click", function() {
 		localStorage.setItem("g_landNum", '3');
 	});
-	$("#Level4").on("click", function() {
+	$(".Level4").on("click", function() {
 		localStorage.setItem("g_landNum", '4');
 	});
+
 });
