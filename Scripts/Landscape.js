@@ -4,13 +4,6 @@
 
 "use strict";
 
-/* jshint browser: true, devel: true, globalstrict: true */
-
-/*
-0        1         2         3         4         5         6         7         8
-12345678901234567890123456789012345678901234567890123456789012345678901234567890
-*/
-
 
 // A generic contructor which accepts an arbitrary descriptor object
 function Landscape(descr) {
@@ -80,8 +73,6 @@ Landscape.prototype.buildPixelMap = function( ctx ) {
 	return ctx.getImageData(0,0,this.width,this.height);
     };
 
-//Ætla aðeins að fikta í þessu þannig að þegar þú ferð upp fyrir skjáinn hverfuru bara útaf en kemur aftur!
-//Baldur
 Landscape.prototype.pixelHitTest = function(target, checkmiddle ) {
     var pos = target.getPos();
        if(checkmiddle === true) {
@@ -130,27 +121,12 @@ Landscape.prototype.pixelHitTest = function(target, checkmiddle ) {
 			
 		if(R !== 0 && G !== 0 && B !== 0 || A !== 0)
 		{
-              		//console.log("bottomHIT");
-			target.isCollidingBottom = true;
+      			target.isCollidingBottom = true;
 			return true;
 		}
 			
 	}
 
-	/*for(var i=x; i<width+x; i++)
-	{
-		var R = this.getPixAt(i,y2).R;
-		var G = this.getPixAt(i,y2).G;
-		var B = this.getPixAt(i,y2).B;
-			
-		if(R !== 0 && G !== 0 && B !== 0)
-		{
-			console.log("TOP HIT");
-			//target.isCollidingTop = true;
-			//return true;
-		}
-			
-	}*/
 	return false;	
 	
 };
@@ -170,45 +146,7 @@ Landscape.prototype.getPixAt = function(x,y){
 Landscape.prototype.findIndex = function(x,y){
     return 4*(1876*y + x);
 };
-Landscape.prototype.deletePixAt = function(x0,y0,radius){
-    //Teiknar fylltan kassa
-	var offset = 20;
-    /*for(var i =x0-offset;i<x0+offset;i++)
-    {
-        for(var j = y0-offset;j<y0+offset;j++){
-            this.pixelMap.data[this.findIndex(i,j)] = 0;
-            this.pixelMap.data[this.findIndex(i,j)+1] = 0;
-            this.pixelMap.data[this.findIndex(i,j)+2]=0;
-            this.pixelMap.data[this.findIndex(i,j)+3] = 255;
-        }
-    }*/
-	
-	//Teiknar hring
-	/*var radius = 20;
-	var x = radius, y = 0;
-  	var radiusError = 1-x;
- 
-  	while(x >= y)
-  	{
-  		this.drawPixAt(x + x0, y + y0);
-    		this.drawPixAt(y + x0, x + y0);
-    		this.drawPixAt(-x + x0, y + y0);
-    		this.drawPixAt(-y + x0, x + y0);
-    		this.drawPixAt(-x + x0, -y + y0);
-    		this.drawPixAt(-y + x0, -x + y0);
-    		this.drawPixAt(x + x0, -y + y0);
-    		this.drawPixAt(y + x0, -x + y0);
- 
-    		y++;
-        	if(radiusError<0)
-        	        radiusError+=2*y+1;
-        	else
-        	{
-        	        x--;
-        	        radiusError+=2*(y-x+1);
-        	}
-  	}*/
-	
+Landscape.prototype.deletePixAt = function(x0,y0,radius){    	
 
 	//Teiknar fylltan hring
 	var x = radius;

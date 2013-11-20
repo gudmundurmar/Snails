@@ -2,18 +2,14 @@
 //
 "use strict";
 
-
-//Entity manager tharf ad firea bullet.
-//Eg tharf ad lata vita hvernig bullet.
-//Erfi ekki fra entity, a ekki alveg vid.
 function Weapon(descr) {
  for (var property in descr) {
         this[property] = descr[property];
     }
-    this.selected = 1;
-    this.sprites = new Array()
-    this.sprites[1] = g_sprites.smg;
-    this.sprites[2] = g_sprites.shotgun;
+    	this.selected = 1;
+    	this.sprites = new Array()
+    	this.sprites[1] = g_sprites.smg;
+    	this.sprites[2] = g_sprites.shotgun;
    	this.sprites[3] = g_sprites.rocketlauncher;
    	this.sprites[4] = g_sprites.holy;
    	this.sprites[5] = g_sprites.grenade;
@@ -43,7 +39,7 @@ Weapon.prototype.render = function(ctx,dir,rotateJump,g_mouseX, g_mouseY){
 	}
 	else{
 		g_sprites.aim.scale = 0.25;
-		g_sprites.aim.drawCentredAt(ctx,this.aimX/* + this.aimDistance*/,this.aimY);
+		g_sprites.aim.drawCentredAt(ctx,this.aimX,this.aimY);
 		}
 	
 	var spriteNow = this.sprites[this.selected];

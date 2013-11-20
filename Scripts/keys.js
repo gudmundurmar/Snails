@@ -5,22 +5,27 @@
 var keys = [];
 
 function handleKeydown(evt) {
+
+	var KEY_Y = keyCode('Y');
+	var KEY_N = keyCode('N');
+
     keys[evt.keyCode] = true;
-	if(entityManager.isFinished && evt.keyCode === 89){
+	if(entityManager.isFinished && evt.keyCode === KEY_Y){
 		location.reload();
 	}
-	if(entityManager.isFinished && evt.keyCode === 78){
+	if(entityManager.isFinished && evt.keyCode === KEY_N){
 		 history.go(-1);
 	}
 }
 
 function handleKeyup(evt) {
 
-	if(evt.keyCode === 32){
+	var SPACE = 32;
+
+	if(evt.keyCode === SPACE){
 	hasBeenShot = true;
 	}
 	keys[evt.keyCode] = false;
-	//console.log(evt.keyCode);
 }
 
 // Inspects, and then clears, a key's state

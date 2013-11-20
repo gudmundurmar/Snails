@@ -46,10 +46,10 @@ Snail.prototype.rememberResets = function () {
 
 Snail.prototype.player = "";
 Snail.prototype.thrust = 0;
-Snail.prototype.KEY_JUMP = 'J'.charCodeAt(0); // þarf að finna fyrir enter. J fyrru jump
+Snail.prototype.KEY_JUMP = 'J'.charCodeAt(0); 
 Snail.prototype.KEY_BACKJUMP = 'L'.charCodeAt(0); 
 Snail.prototype.KEY_LEFT   = 'A'.charCodeAt(0);
-Snail.prototype.KEY_FIRE  = ' '.charCodeAt(0); // hafa computeThrustMag fyrir þetta t.d. fyrir bazooka?
+Snail.prototype.KEY_FIRE  = ' '.charCodeAt(0);
 Snail.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
 Snail.prototype.KEY_0 = '0'.charCodeAt(0);
 Snail.prototype.KEY_1 = '1'.charCodeAt(0);
@@ -68,36 +68,26 @@ Snail.prototype.rotation = 0;
 Snail.prototype.rotationAdded =0;
 Snail.prototype.isBackJumping = false;
 
-//Snail.prototype.isCollidingTop = false;
 Snail.prototype.isCollidingBottom = false;
 Snail.prototype.isCollidingLeft = false;
 Snail.prototype.isCollidingRight = false;
 Snail.prototype.timeFrame = 0;
 Snail.prototype.turnTime = 20 * SECS_TO_NOMINALS;
 
-
-/*Snail.prototype.direction = 1;*/ // skoða í hvaða átt er verið að skjóta
-
-//Snail.prototype.weapon = new Gun(this.cx,this.cy);
-
 Snail.prototype.randomisePosition = function () {
-    // Rock randomisation defaults (if nothing otherwise specified)
-    this.cx = util.randRange(250, g_canvas.width - 250);
+ 
+	this.cx = util.randRange(250, g_canvas.width - 250);
 	this.cy = 0;
 	
 	
-    //this.cy = this.cy || Math.random() * g_canvas.height;
-    //this.rotation = this.rotation || 0;
 };
 
 Snail.prototype.isOutOfMap = function(){
 
 	if(this.cx < 0 || this.cx > g_canvas.width || this.cy > entityManager.seaLevel){
 	if(this._isActive){endTurnMakeNextActive(this.player);}
-	return true;
-	}
-	//vantar hér breytuna seaLevel til að tjékka á hvenær snigillinn drukknar
-	
+		return true;
+	}	
 }
 
 Snail.prototype.blastAway = function(x,y,power,maxDist){
@@ -290,9 +280,7 @@ Snail.prototype.update = function (du) {
 			this.yVel = 0;
 		}
 	}
-	if(this._isActive === true){
-	//debugging method fyrir active snail - console.log(whatevs); :P :D XD ;O
-	}
+
 	if(keys[this.KEY_BACKJUMP] && this._isActive && this.isCollidingLandscape()){
 		backjump.play();
 		this.xVel = 0.5 * this.direction * -1;
@@ -334,13 +322,13 @@ Snail.prototype.baseball = function(x,y,power){
 function endTurnMakeNextActive(currentPlayer){
 
 	if(currentPlayer === "p1"){
-				entityManager.changePlayer = "p1";
-				entityManager.changeWormP1 +=1;
-		}
+			entityManager.changePlayer = "p1";
+			entityManager.changeWormP1 +=1;
+	}
 	
 	else{
-				entityManager.changePlayer = "p2";
-				entityManager.changeWormP2 += 1;
+			entityManager.changePlayer = "p2";
+			entityManager.changeWormP2 += 1;
 
 	}
 	makeSound();
@@ -365,7 +353,7 @@ Snail.prototype.maybeFireBullet = function () {
 	
  
 	if((this._weapon.ammo === 0) && (entityManager.getShotsNotExploded() === 0) && entityManager.readyForTurn()){
-		console.log("change");
+
 		endTurnMakeNextActive(this.player); 
 
 		this._weapon.ammo=50; 
@@ -380,8 +368,7 @@ Snail.prototype.getRadius = function () {
 };
 
 Snail.prototype.takeDamage = function(damage){
-	//eitthvað með að við skoðum hvaða vopn hann tók hitt frá
-	//breyta þessu yfir í það að þegar þeir eru hættir að hreyfast eða þegar turnið klárast þá minnka lífið þeirra. Bara eins og í leiknum
+	
 	this.health -= damage;
 	
 	if(this.health <= 0){
@@ -433,14 +420,11 @@ Snail.prototype.render = function (ctx) {
     this.sprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation,this.direction*-1); 
 	
     this.sprite.scale = origScale;
-    if(this._isActive){
-		//if(this._weapon.selected === 8 && this._weapon.ammo === 0){
-			//this._weapon.render(ctx,this.direction * -1,this.rotation,g_mouseX, g_mouseY);
+	if(this._isActive){
+		
+		this._weapon.render(ctx,this.direction,this.rotation,g_mouseX, g_mouseY);
 			
-		//else{
-			this._weapon.render(ctx,this.direction,this.rotation,g_mouseX, g_mouseY);
-			
-		}
+	}
 		
 	if(this.cy < 0){
 		display.renderArrow(ctx,this.cx,0, this.player);

@@ -36,8 +36,6 @@ Death.prototype.rememberResets = function () {
 
 
 Death.prototype.update = function (du) {
-	//console.log(this.timeFrame);
-
 	
 	this.timeFrame++;
 	
@@ -98,9 +96,6 @@ Rip.prototype.cy = 300;
 Rip.prototype.yVel = 0;
 Rip.prototype.height = 35;
 Rip.prototype.width = 27;
-
-//Death.prototype.height = 64;
-//Death.prototype.width = 64;
 
 Rip.prototype.rememberResets = function () {
     // Remember my reset positions
@@ -164,7 +159,6 @@ function BigExplo(descr) {
 
     this.rememberResets();
     
-    // Default sprite, if not otherwise specified
 	haleexplo.play();
     this._scale = 1 ;
 	entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),this.radius);
@@ -194,8 +188,6 @@ BigExplo.prototype.rememberResets = function () {
 
 
 BigExplo.prototype.update = function (du) {
-	//console.log(this.timeFrame);
-
 	
 	this.timeFrame++;
 	
