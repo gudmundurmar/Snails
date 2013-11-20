@@ -312,8 +312,6 @@ changeTurn : function (p1Worm, p2Worm, currentPlayer){
 	this.changePlayer = "empty";
 	
 	display.findTotalHealth();
-	
-	
 },
 
 windThisTurn : 0,
