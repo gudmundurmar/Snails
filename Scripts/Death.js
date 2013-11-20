@@ -57,7 +57,7 @@ Death.prototype.update = function (du) {
 		{
 			var worm =possibleWorms[i].worm;
 			if(this.explosion === true) //check if it's a bomber
-			worm.blastAway(this.cx,this.cy,this.power,this.radius*3);
+			worm.blastAway(this.cx,this.cy,this.power,this.radius*2);
 		}
 	}
 
