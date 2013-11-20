@@ -314,9 +314,9 @@ render: function(ctx) {
         }
         debugY += 10;
     }
-	animation.renderSeaBack(ctx, this.seaOffset);
-	animation.renderSeaFront(ctx, this.seaOffset);
-	display.renderInterface(ctx, this.seaOffset);
+	animation.renderSeaBack(ctx, this.seaOffset * Math.round(this.windThisTurn*20));
+	animation.renderSeaFront(ctx, this.seaOffset * Math.round(this.windThisTurn*20));
+	display.renderInterface(ctx);
 },
 
 renderLandscape: function(ctx, canvas) {

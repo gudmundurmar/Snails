@@ -53,7 +53,19 @@ Explosionsprite.prototype.drawSheetAt = function (ctx, x, y) {
     ctx.drawImage(this.image, 
                   this.sx, this.sy, this.width, this.height,
                   x, y, this.width, this.height);
-}
+};
+Sprite.prototype.drawWrappedCentredAt = function (ctx, cx, cy, rotation) {
+    
+    // Get "screen width"
+    var sw = g_canvas.width;
+    
+    // Draw primary instance
+    this.drawCentredAt(ctx, cx, cy, rotation);
+    
+    // Left and Right wraps
+    this.drawCentredAt(ctx, cx - sw, cy, rotation);
+    this.drawCentredAt(ctx, cx + sw, cy, rotation);
+};
 
 Sprite.prototype.drawSnailCentredAt = function (ctx, cx, cy, rotation) {
     if (rotation === undefined) rotation = 0;
@@ -75,10 +87,11 @@ Sprite.prototype.drawSnailCentredAt = function (ctx, cx, cy, rotation) {
 
 
 
+
 Sprite.prototype.drawAimAwayFrom = function(ctx, cx,cy,rotation,dir){
     ctx.save();
     ctx.scale(this.scale,this.scale);
     ctx.drawImage(this.image,cx,cy);
     ctx.restore();
-}
+};
 
