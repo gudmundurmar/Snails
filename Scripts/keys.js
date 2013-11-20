@@ -10,7 +10,7 @@ function handleKeydown(evt) {
 		location.reload();
 	}
 	if(entityManager.isFinished && evt.keyCode === 78){
-		 main._isGameOver = true;
+		 history.go(-1);
 	}
 }
 

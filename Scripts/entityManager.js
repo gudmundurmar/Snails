@@ -44,7 +44,7 @@ isFinished : false,
 
 _generateSnails : function() {
     var i,
-        NUM_SNAILS = 4;
+        NUM_SNAILS = 5;
 
     for (i = 0; i < NUM_SNAILS; ++i) {
         this.generateSnail();

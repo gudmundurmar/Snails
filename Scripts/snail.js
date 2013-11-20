@@ -115,7 +115,11 @@ var NOMINAL_ROTATE_RATE = 0.1;
 Snail.prototype.update = function (du) {
 	spatialManager.unregister(this);
 
-		if(this._isDeadNow || this.isOutOfMap()){
+	if(this._isDeadNow === true){
+		return entityManager.KILL_ME_NOW;
+	}
+	
+		if(this._isActive === true && this.isOutOfMap()){
 		entityManager.generateDeath({
         		cx : this.cx,
         		cy : this.cy
@@ -124,6 +128,7 @@ Snail.prototype.update = function (du) {
 		return entityManager.KILL_ME_NOW;
 	}
 	
+
 	if(this._isActive){
 		this.turnTime -= du;
 		if(this.turnTime <= 0){
@@ -374,11 +379,6 @@ Snail.prototype.getRadius = function () {
     return (this.sprite.width / 2) * 0.9;
 };
 
-Snail.prototype.takeBulletHit = function () {
-	
-    this.takeDamage(50);
-};
-
 Snail.prototype.takeDamage = function(damage){
 	//eitthvað með að við skoðum hvaða vopn hann tók hitt frá
 	//breyta þessu yfir í það að þegar þeir eru hættir að hreyfast eða þegar turnið klárast þá minnka lífið þeirra. Bara eins og í leiknum
@@ -391,6 +391,9 @@ Snail.prototype.takeDamage = function(damage){
 			yVel : -5
 		});
 		this._isDeadNow = true;
+		if(this._isActive === true){
+			endTurnMakeNextActive(this.player);
+		}
 	}
 }
 
