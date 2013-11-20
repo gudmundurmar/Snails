@@ -136,6 +136,7 @@ function renderSimulation(ctx) {
 var g_images = {};
 
 function requestPreloads() {
+    console.log(g_landNum);
 
     var requiredImages = {
         ship   : "https://notendur.hi.is/~pk/308G/images/ship.png",

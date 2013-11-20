@@ -17,9 +17,9 @@ var g_ctx = g_canvas.getContext("2d");
 //var g_imageData = g_ctx.createImageData(600, 600);
 
 //pick map
-var g_landNum = "";
+var g_landNum = 1;
 
-if(localStorage.getItem("g_landNum") !== undefined)
+if(localStorage.getItem("g_landNum") !== undefined && localStorage.getItem("g_landNum") !== null )
 	var g_landNum = parseInt(localStorage.getItem("g_landNum"));
 
 
