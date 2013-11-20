@@ -101,8 +101,6 @@ Snail.prototype.isOutOfMap = function(){
 }
 
 Snail.prototype.blastAway = function(x,y,power,maxDist){
-	console.log("MXdst",maxDist);
-	console.log("dstX",this.cx-x);
 	this.xVel = (this.cx - x)*power/300;
 	this.yVel = (this.cy - y)*power/300;
 	this.rotationAdded = power/200;
@@ -116,6 +114,15 @@ var NOMINAL_ROTATE_RATE = 0.1;
 
 Snail.prototype.update = function (du) {
 	spatialManager.unregister(this);
+
+		if(this._isDeadNow || this.isOutOfMap()){
+		entityManager.generateDeath({
+        		cx : this.cx,
+        		cy : this.cy
+    	});
+    	endTurnMakeNextActive(this.player);
+		return entityManager.KILL_ME_NOW;
+	}
 	
 	if(this._isActive){
 		this.turnTime -= du;
@@ -126,14 +133,6 @@ Snail.prototype.update = function (du) {
 		}
 	}
 	
-	if(this._isDeadNow || this.isOutOfMap()){
-		entityManager.generateDeath({
-        		cx : this.cx,
-        		cy : this.cy
-    	});
-    	endTurnMakeNextActive(this.player);
-		return entityManager.KILL_ME_NOW;
-	}
 	
 	if(this.height === null || this.width === null)
 	{
