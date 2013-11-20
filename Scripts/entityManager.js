@@ -235,14 +235,9 @@ getShotsNotExploded: function() {
 
 getLandscape: function() {
 
-	if(g_landNum === undefined)
-	{
-		return this._Landscape[0];
-	}
-	else
-	{
-		return this._Landscape[g_landNum];
-	}
+	return this._Landscape[0];
+	
+	
 },
 
 seaOffset: 0,

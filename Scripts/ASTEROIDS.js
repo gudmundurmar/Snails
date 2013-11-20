@@ -139,7 +139,7 @@ function requestPreloads() {
 
     var requiredImages = {
         ship   : "https://notendur.hi.is/~pk/308G/images/ship.png",
-        land   : "img/Whiteline.png",
+        land   : "img/Whiteline"+g_landNum+".png",
 		sea    : "img/sea.png",
 		snail  : "img/army-snail.png",
 		explosion : "img/explosion.png",
