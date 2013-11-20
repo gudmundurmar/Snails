@@ -5,7 +5,7 @@ function Death(descr) {
 
     this.rememberResets();
     deathexplo.play();
-	deathexplo.volume = 0.1;
+	deathexplo.volume = 0.7;
     // Default sprite, if not otherwise specified
   
     this._scale = 1;
@@ -51,16 +51,17 @@ Death.prototype.update = function (du) {
 		return entityManager.KILL_ME_NOW;
 	}
 	//thvi sprengjan theytir i threfalt staerra svaedi en that eydir pixlum
+	if(this.timeFrame === 1){
 	var possibleWorms = this.findWorms(this.radius*3);
 	if(possibleWorms&& this.timeFrame===1){
 		for(var i =0;i<possibleWorms.length;i++)
 		{
 			var worm =possibleWorms[i].worm;
 			if(this.explosion === true) //check if it's a bomber
-			worm.blastAway(this.cx,this.cy,this.power,this.radius*2);
+			worm.blastAway(this.cx,this.cy,this.power,this.radius*3);
 		}
 	}
-
+}
 	spatialManager.register(this);
 };
 
