@@ -52,7 +52,7 @@ Rocket.prototype.update = function (du) {
 		this.width = g_images.rocket.width; //define the width of rocket prototype
 	}
 
-	if(entityManager._Landscape[0].pixelHitTest(this))
+	if(this.cy > 0 && entityManager._Landscape[0].pixelHitTest(this))
         {
 		entityManager.generateDeath({
         		cx : this.cx,
@@ -385,13 +385,12 @@ Baseball.prototype.power = 1.2;
 Baseball.prototype.update = function (du) {
     spatialManager.unregister(this);
 	this.timeFrame++;
-	if(g_sound)
-		base.play();
+	if(g_sound) base.play();
 	if(this.timeFrame === 1){
 	if(this.findWorms()&& this.timeFrame===1){
 		for(var i =0;i<this.findWorms().length;i++){
 			var worm =this.findWorms()[i].worm;
-			worm.baseball(this.cx,this.cy,this.power);
+			worm.baseball(this.cx,this.power);
 			}
 		}
 	}

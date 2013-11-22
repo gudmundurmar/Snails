@@ -320,10 +320,13 @@ Snail.prototype.isCollidingLandscape = function() {
 
 var NOMINAL_GRAVITY = 0.12;
 
-Snail.prototype.baseball = function(x,y,power){
+Snail.prototype.baseball = function(x,power){
+	if(this._isActive !== true){
 	this.xVel = (this.cx - x)*power/2;
-	this.yVel = (this.cy - y)*power/2;
-	this.rotationAdded = power/2;
+	this.yVel = -5;
+	this.rotationAdded = 0.3;
+	this.takeDamage(20);
+	}
 }
 
 function endTurnMakeNextActive(currentPlayer){
