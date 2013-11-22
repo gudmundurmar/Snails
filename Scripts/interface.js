@@ -124,6 +124,8 @@ currentWeapon : "",
 			this.renderBox(ctx,250,707, 400, 90, "white", "black");
 			this.renderText(ctx, "Play again? Press Y for yes, N for no.", 275, 760, "black");
 		}
+
+		if(!g_sound) g_sprites.mute.drawCentredAt(ctx,g_canvas.width-g_images.mute.width,g_images.mute.height);
 	},
 	
 	findTotalHealth : function(){

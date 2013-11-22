@@ -162,7 +162,8 @@ function requestPreloads() {
 		rip : "img/rip.png",
 	slime1:"img/slime/slime1.png",
 	slime2:"img/slime/slime3.png",
-	slime3:"img/slime/slime3.png"
+	slime3:"img/slime/slime3.png",
+    mute: "img/mute.png"
     };
     imagesPreload(requiredImages, g_images, preloadDone);
 }
@@ -197,6 +198,7 @@ function preloadDone() {
 	g_sprites.slime1 = new Sprite(g_images.slime1);
 	g_sprites.slime2 = new Sprite(g_images.slime2);
 	g_sprites.slime3 = new Sprite(g_images.slime3);
+    g_sprites.mute = new Sprite(g_images.mute);
 
 	
 	loadExplosion(g_images.explosion);
