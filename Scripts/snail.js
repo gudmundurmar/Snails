@@ -156,7 +156,8 @@ Snail.prototype.update = function (du) {
 	
 	if (keys[this.KEY_LEFT] && this._isActive === true && this.isCollidingLandscape())
 	{
-		move.play();
+		if(g_sound)
+			move.play();
 		
 		this.direction = -1;
 
@@ -198,7 +199,7 @@ Snail.prototype.update = function (du) {
 	}
 	if (keys[this.KEY_RIGHT] && this._isActive === true && this.isCollidingLandscape())
 	{
-		move.play();
+		if(g_sound) move.play();
 		this.direction = 1;
 
 		if(this.timeFrame < 2)
@@ -240,7 +241,7 @@ Snail.prototype.update = function (du) {
 	}
 
 	if (keys[this.KEY_JUMP] && this._isActive === true && this.isCollidingLandscape()) { 
-		frontjump.play();
+		if(g_sound) frontjump.play();
 		this.xVel = 3 * this.direction;
 		this.yVel = -2.5;
 		this.cy += this.yVel * du;
@@ -281,14 +282,14 @@ Snail.prototype.update = function (du) {
 			this.xVel = 0;
 			if(this.yVel > 6.5 && entityManager.hasStarted === true){
 				this.takeDamage(this.yVel * 0.9);
-				ouchFall.play();
+				if(g_sound) ouchFall.play();
 				};
 			this.yVel = 0;
 		}
 	}
 
 	if(keys[this.KEY_BACKJUMP] && this._isActive && this.isCollidingLandscape()){
-		backjump.play();
+		if(g_sound) backjump.play();
 		this.xVel = 0.5 * this.direction * -1;
 		this.yVel = -4.5;
 		this.cy += this.yVel * du;
@@ -445,23 +446,23 @@ function makeSound(){
 	var sound = Math.floor(Math.random() * 17);
 
 	switch(sound){
-		case 0 : zero.play(); break;
-		case 1 : one.play(); break;
-		case 2 : two.play(); break;
-		case 3 : three.play(); break;
-		case 4 : four.play(); break;
-		case 5 : five.play(); break;
-		case 6 : six.play(); break;
-		case 7 : seven.play(); break;
-		case 8 : eight.play(); break;
-		case 9 : nine.play(); break;
-		case 10 : ten.play(); break;
-		case 11: eleven.play(); break;
-		case 12: twelve.play(); break;
-		case 13: thirteen.play(); break;
-		case 14: fourteen.play(); break;
-		case 15: fifteen.play(); break;
-		case 16: sixteen.play(); break;
+		case 0 : if(g_sound) zero.play(); break;
+		case 1 : if(g_sound) one.play(); break;
+		case 2 : if(g_sound) two.play(); break;
+		case 3 : if(g_sound) three.play(); break;
+		case 4 : if(g_sound) four.play(); break;
+		case 5 : if(g_sound) five.play(); break;
+		case 6 : if(g_sound) six.play(); break;
+		case 7 : if(g_sound) seven.play(); break;
+		case 8 : if(g_sound) eight.play(); break;
+		case 9 : if(g_sound) nine.play(); break;
+		case 10 : if(g_sound) ten.play(); break;
+		case 11: if(g_sound) eleven.play(); break;
+		case 12: if(g_sound) twelve.play(); break;
+		case 13: if(g_sound) thirteen.play(); break;
+		case 14: if(g_sound) fourteen.play(); break;
+		case 15: if(g_sound) fifteen.play(); break;
+		case 16: if(g_sound) sixteen.play(); break;
 		
 	}
 	
@@ -507,3 +508,8 @@ var ouchFall = new Audio('sounds/ow.wav');
 var fire = new Audio('sounds/fire.wav');
 var base = new Audio('sounds/base.wav');
 var smg = new Audio('sounds/mp5.wav');
+
+var g_all_sounds = [zero,one,two,three,four,five,six,seven,eight,nine,ten,
+					eleven,twelve,thirteen,fourteen,fifteen,sixteen,
+					frontjump,backjump,move,end,test,airstrike,shotgun,
+					teleport,haleluja,ding,ouchFall,fire,base,smg];

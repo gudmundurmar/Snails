@@ -95,14 +95,14 @@ Weapon.prototype.fire = function(power, owner){
     switch(this.selected){
         case 1: 
             this.ammo -= 5;
-            smg.play();
+            if(g_sound) smg.play();
             break;
         case 2: 
             entityManager.fireBullet(this.aimX,this.aimY, this.aimVectorX/10, this.aimVectorY/10,20, owner, this.ammo);
             entityManager.fireBullet(this.aimX,this.aimY, this.offsetAim(20).aimVectorX/10,this.offsetAim(20).aimVectorY/10,20, owner, this.ammo);
             entityManager.fireBullet(this.aimX,this.aimY, this.offsetAim(-20).aimVectorX/10,this.offsetAim(-20).aimVectorY/10,20, owner, this.ammo);
             this.ammo =0;
-			shotgun.play();
+			if(g_sound) shotgun.play();
             break;
         case 3: 
             entityManager.fireRocket(this.aimX,this.aimY, this.aimVectorX/10,this.aimVectorY/10, power, owner); 
@@ -118,14 +118,14 @@ Weapon.prototype.fire = function(power, owner){
 			break;
 		case 6: 
             entityManager.airStrike(0, g_mouseX); 
-			airstrike.play();
+			if(g_sound) airstrike.play();
 			this.ammo =0;
 			break;
 		case 7: 
             if(entityManager._Landscape[0].getPixAt(g_mouseX,g_mouseY).A ===0)
             {
                 entityManager.teleportSnail(g_mouseX,g_mouseY);
-		        teleport.play();
+		        if(g_sound) teleport.play();
 		        this.ammo = 0;
             }
 		   break;

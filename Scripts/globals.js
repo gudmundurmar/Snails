@@ -12,10 +12,13 @@ Evil, ugly (but "necessary") globals, which everyone can use.
 /* jshint browser: true, devel: true, globalstrict: true */
 
 var g_canvas = document.getElementById("myCanvas");
+
 var g_ctx = g_canvas.getContext("2d");
 //GMG used in the background
 //var g_imageData = g_ctx.createImageData(600, 600);
 
+
+var g_sound = true;
 //pick map
 var g_landNum = 1;
 

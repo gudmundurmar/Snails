@@ -147,14 +147,16 @@ Holy.prototype.update = function (du) {
 		this.velY *= -0.5;
 		this.cx += this.velX;
 		this.cy += this.velY;
-		if(this.bounce <= 8) ding.play();
+		if(g_sound)
+			{if(this.bounce <= 8) ding.play();}
 	}
 	else{
 		this.velY += NOMINAL_GRAVITY;
 	}
 	if(this.bounce === 8){
 		
-		haleluja.play();
+		if(g_sound)
+			haleluja.play();
 		haleluja.volume=.3;
 		this.velX = 0;
 		this.velY = 0;
@@ -246,7 +248,8 @@ Grenade.prototype.update = function (du) {
 	if(this.cy > 0 && entityManager._Landscape[0].pixelHitTest(this))
         {
 		ding.pause();
-		ding.play();
+		if(g_sound)
+			ding.play();
 		this.velX *= -0.8;
 		this.velY *= -0.5;
 		this.cx += this.velX;
@@ -382,7 +385,8 @@ Baseball.prototype.power = 1.2;
 Baseball.prototype.update = function (du) {
     spatialManager.unregister(this);
 	this.timeFrame++;
-	base.play();
+	if(g_sound)
+		base.play();
 	if(this.timeFrame === 1){
 	if(this.findWorms()&& this.timeFrame===1){
 		for(var i =0;i<this.findWorms().length;i++){
@@ -442,7 +446,8 @@ Blowtorch.prototype.isOutOfMap = function(){
 
 Blowtorch.prototype.update = function (du) {
     spatialManager.unregister(this);
-	fire.play();
+	if(g_sound)
+		fire.play();
 	this.timeFrame++;
 	this.angle = Math.atan(this.yVel/this.xVel);
 	entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),this.getRadius());

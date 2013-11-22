@@ -29,7 +29,9 @@ _generateSnails : function() {
     }
 	this.currentWind();
 	display.findTotalHealth(); // þurfum að hafa þessi 2 hér í einskonar initial game()
-	test.play();
+	if(g_sound)
+		test.play();
+	test.loop = true;
 	test.volume = 0.3;
 	
 },

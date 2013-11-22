@@ -8,6 +8,7 @@ function handleKeydown(evt) {
 
 	var KEY_Y = keyCode('Y');
 	var KEY_N = keyCode('N');
+	var KEY_M = keyCode('M');
 
     keys[evt.keyCode] = true;
 	if(entityManager.isFinished && evt.keyCode === KEY_Y){
@@ -15,6 +16,15 @@ function handleKeydown(evt) {
 	}
 	if(entityManager.isFinished && evt.keyCode === KEY_N){
 		 history.go(-1);
+	}
+	if(evt.keyCode === KEY_M){
+		g_sound = !g_sound;
+		if(g_sound) test.play();
+		else {
+			for(var i = 0; i<g_all_sounds.length; i++){
+				g_all_sounds[i].pause();
+			}
+		};
 	}
 }
 

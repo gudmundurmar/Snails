@@ -73,7 +73,8 @@ currentWeapon : "",
 				entityManager._SnailsP2[i].yVel = -5.5;
 				entityManager._SnailsP2[i].rotationAdded = 0.22;
 				entityManager._SnailsP2[i]._isActive = false;
-				end.play();
+				if(g_sound)
+					end.play();
 				}
 			}
 			entityManager.isFinished = true;
@@ -98,7 +99,8 @@ currentWeapon : "",
 				entityManager._SnailsP1[i].yVel = -5.5;
 				entityManager._SnailsP1[i].rotationAdded = 0.22;
 				entityManager._SnailsP1[i]._isActive = false;
-				end.play();
+				if(g_sound)
+					end.play();
 				}
 			}
 			entityManager.isFinished = true;

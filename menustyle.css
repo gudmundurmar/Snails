@@ -1,3 +1,31 @@
 .darkcolor {
 	color:black !important;
+	font-size: 50px;
+	text-shadow: white 0.2em 0.1em 0.2em;
+}
+.lightcolor {
+	color:white !important;
+	font-size: 50px;
+	text-shadow: black 0.2em 0.1em 0.2em;
+}
+
+.btn-lg {
+	border-style: double;
+	padding: 10px 16px;
+	font-size: 30px;
+	line-height: 2;
+	border-radius: 20px;
+	border-color: grey;
+	background-color: #333;
+}
+
+.hover:hover {
+	opacity: 0.9;
+}
+
+.bigger {
+	color:#333 !important;
+	text-shadow: white 0.2em 0.0em 0.5em !important;
+	font-size: 30px !important;
+	font-weight: bold;
 }

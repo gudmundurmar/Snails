@@ -4,7 +4,8 @@ function Death(descr) {
     this.setup(descr);
 
     this.rememberResets();
-    deathexplo.play();
+    if(g_sound)
+    	deathexplo.play();
 	deathexplo.volume = 0.7;
     // Default sprite, if not otherwise specified
   
@@ -159,7 +160,8 @@ function BigExplo(descr) {
 
     this.rememberResets();
     
-	haleexplo.play();
+	if(g_sound)
+		haleexplo.play();
     this._scale = 1 ;
 	entityManager._Landscape[0].deletePixAt(Math.floor(this.cx),Math.floor(this.cy),this.radius);
 
