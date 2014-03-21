@@ -17,4 +17,4 @@ Copyright (c) 2013-2014 The Core. See the LICENSE file for license rights and li
 - Hilmar Orn Hergeirsson [hoh40@hi.is](mailto:hoh40@hi.is)
 - Ottar Gudmundsson [otg2@hi.is](mailto:otg2@hi.is)
 
-Current working branch GMG
+*Current working branch **GMG***
